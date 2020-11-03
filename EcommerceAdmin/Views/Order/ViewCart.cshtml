@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "ViewCart";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="/Home/Index">home</a></li>
+                        <li>Shopping Cart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!--shopping cart area start -->
+<div class="shopping_cart_area mt-32">
+    <div class="container">
+        <form action="#">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table_desc">
+                        <div class="cart_page table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="product_remove">Delete</th>
+                                        <th class="product_thumb">Image</th>
+                                        <th class="product_name">Product</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product_quantity">Quantity</th>
+                                        <th class="product_total">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblCartBody">
+                                    @if (Session["Cart"] != null)
+                                    {
+                                        foreach (var items in (List<EcommerceAdmin.Models.Entity.Ent_Product>)Session["Cart"])
+                                        {
+                                            <tr id="@items.Product_ID" class="tblRow">
+                                                <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                                <td class="product_thumb"><a href="#"><img src="../../ProductImages/@items.Product_Image" alt=""></a></td>
+                                                <td class="product_name" productname="@items.Product_Name"><a href="#">@items.Product_Name</a></td>
+                                                <td class="product-price" price="@items.Product_Price">AED @items.Product_Price</td>
+                                                @*<td class="product_quantity"><label>@items.Quantity</label><input min="1" max="100" class="ProductQty" value="@items.Quantity" type="number"></td>*@
+                                                <td class="product_quantity"> <input min="1" max="100" class="ProductQty" value="@items.Quantity" type="number"></td>
+                                                <td class="product_total">AED @items.Product_Total</td>
+                                                <td hidden class="Product_Image">@items.Product_Image</td>
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="cart_submit">
+                            <button type="submit" id="btnUpdateCart">update cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--coupon code area start-->
+            <div class="coupon_area">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code left">
+                            <h3>Coupon</h3>
+                            <div class="coupon_inner">
+                                <p>Enter your coupon code if you have one.</p>
+                                <input placeholder="Coupon code" type="text">
+                                <button type="submit">Apply coupon</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code right">
+                            <h3>Cart Totals</h3>
+                            <div class="coupon_inner">
+                                <div class="cart_subtotal">
+                                    <p>Subtotal</p>
+                                    <p class="cart_amount">AED @Session["Total"]</p>
+                                </div>
+                                <div class="cart_subtotal ">
+                                    <p>Shipping</p>
+                                    <p class="cart_amount"><span>Flat Rate:</span> AED 0.00</p>
+                                </div>
+                                <a href="#">Calculate shipping</a>
+
+                                <div class="cart_subtotal">
+                                    <p>Total</p>
+                                    <p class="cart_amount">AED @Session["Total"]</p>
+                                </div>
+                                <div class="checkout_btn">
+                                    <a href="checkout.html">Proceed to Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--coupon code area end-->
+        </form>
+    </div>
+</div>
+<!--shopping cart area end -->
+<script>
+    
+    $(document).ready(function () {
+        $('#btnUpdateCart').click(function () {
+            var count = $('#tblCartBody tr').length;
+            if (count > 0) {
+                var CartList = new Array();
+                $("#tblCartBody .tblRow").each(function () {
+                    var ProductModel = new Object();
+                    ProductModel.Product_ID = $(this).attr('id');
+                    ProductModel.Product_Name = $(this).find(".product_name").attr('productname');
+                    ProductModel.Quantity = $(this).find(".ProductQty").val();
+                    ProductModel.Product_Image = $(this).find(".Product_Image").html();
+                    ProductModel.Product_Price = $(this).find(".product-price").attr('price');
+                    CartList.push(ProductModel);
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Order/UpdateCart",
+                    data: JSON.stringify({ "CartList": CartList }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    //beforeSend: function () { $("#loader").css("display", "block"); },
+                    //complete: function () { $("#loader").css("display", "none"); },
+                    success: OnSuccessSaveCall,
+                    error: OnErrorSaveCall
+                });
+
+                function OnSuccessSaveCall(data) {
+                    if (data > 0) {
+                        location.reload();
+                    }
+
+                    else {
+                        alert("Failed");
+                    }
+                }
+                function OnErrorSaveCall() {
+                    alert("Failed");
+                }
+            }
+            else {
+                alert("Cart Is Empty");
+            }
+        });
+
+
+        $('.product_remove').click(function () {   
+            var row = $(this).closest('tr');
+            var CartID = row.attr('id');           
+            $.ajax({
+                type: 'POST',
+                url: '/Order/DeleteCart',
+                data: "{ 'CartID': '" + CartID + "' }",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {               
+                    //$("#" + CartID).fadeOut("slow").remove();
+                    location.reload();
+                    //var div = document.getElementById(CartID);
+                    //div.remove();
+                    //$('.cart_quantity').html(data);
+                }
+            });
+        });                         
+    });
+    
+</script>

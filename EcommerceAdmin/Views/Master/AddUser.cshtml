@@ -1,0 +1,120 @@
+﻿@model EcommerceAdmin.Models.Entity.Ent_User 
+@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .inputValid {
+        color: #dd4b39;
+    }
+</style>
+<script src="../../Scripts/ajax/user.js"></script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        USER MASTER
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Master/Users">User List</a></li>
+        <li class="active">User Master</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- SELECT2 EXAMPLE -->
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">User Details</h3>
+           
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <input type="hidden" id="UserID" value="@Model.User_ID">
+               
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>User Name</label>
+                        <input type="text" class="form-control" id="Name" value="@Model.User_Name" placeholder="Enter Name">
+                        <span class="help-block inputValid" id="validName"></span>
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>Designation</label>
+                        <input type="text" class="form-control" id="Designation" value="@Model.User_Designation" placeholder="Enter Designation">
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" class="form-control" id="Phone" value="@Model.User_Phone" placeholder="Enter Phone">
+                        <span class="help-block inputValid" id="validPhone"></span>
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" id="Email" value="@Model.User_Email" placeholder="Enter Email">
+                        <span class="help-block inputValid" id="validMail"></span>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>User Type</label>
+                        <select class="form-control" id="UserType" >
+                            <option value="Admin" @(Model.User_Type=="Admin"?"selected":"")>Admin</option>
+                            <option value="Employee" @(Model.User_Type=="Employee"?"selected":"")>Manager</option>
+                            <option value="Staff" @(Model.User_Type=="Staff"?"selected":"")>Staff</option>                          
+                        </select>
+                    </div>
+
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" id="Username" value="@Model.User_Username" placeholder="Enter Username">
+                        <span class="help-block inputValid" id="validUsername"></span>
+                    </div> 
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" id="Password" value="@Model.User_Password" placeholder="Enter Password">
+                        <span class="help-block inputValid" id="validPassword"></span>
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" id="CPassword" value="@Model.User_Password" placeholder="Confirm Password">
+                        <span class="help-block inputValid" id="validCPassword"></span>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea class="form-control" id="Address" rows="3" placeholder="Enter Address">@Model.User_Address</textarea>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="button" class="btn btn-success pull-right">
+                CANCEL
+            </button>
+            <button type="button" class="btn btn-primary pull-right" id="btnAddUser" style="margin-right: 5px;">
+                SUBMIT
+            </button>
+        </div>
+    </div>
+    <!-- /.box -->
+
+
+</section>
+
+
+

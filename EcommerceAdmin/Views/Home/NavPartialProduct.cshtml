@@ -1,0 +1,349 @@
+﻿@model List<EcommerceAdmin.Models.Entity.Ent_Category>
+@{
+    List<EcommerceAdmin.Models.Entity.Ent_Product> listProduct = ViewBag.listProduct;
+    List<EcommerceAdmin.Models.Entity.Ent_Brand> listBrand = ViewBag.listBrand;
+    List<EcommerceAdmin.Models.Entity.Ent_SubCategory> listSubCategory = ViewBag.listSubCategory;
+    var CategoryName = ViewBag.CategoryName;
+    var CategoryID = ViewBag.CategoryID;
+    var SubCategoryID = ViewBag.SubCategoryID;
+    var SubCategoryName = ViewBag.SubCategoryName;
+}
+
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="/Home/Index">Home</a></li>
+                        <li><a id="categoryLink" href="">@CategoryName </a></li>
+                        <li>@SubCategoryName </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="SubCategoryID" value="@SubCategoryID">
+<input type="hidden" id="CategoryID" value="@CategoryID">
+<!--breadcrumbs area end-->
+<!--shop  area start-->
+<div class="shop_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-12">
+                <!--shop wrapper start-->
+                <!--shop toolbar start-->
+
+                <div class="shop_title">
+                    <h1>Shop Our Products!</h1>
+                </div>
+                <div class="shop_toolbar_wrapper">
+                    <div class="shop_toolbar_btn">
+                        <button data-role="grid_3" type="button" class=" btn-grid-3" data-toggle="tooltip" title="3"></button>
+                        <button data-role="grid_4" type="button" class=" btn-grid-4" data-toggle="tooltip" title="4"></button>
+                        <button data-role="grid_list" type="button" class="active btn-list" data-toggle="tooltip" title="List"></button>
+                    </div>
+                    <div class=" niceselect_option">
+                        <form class="select_option" action="#">
+                            <select name="orderby" id="short">
+                                <option selected value="1">Sort by average rating</option>
+                                <option value="2">Sort by popularity</option>
+                                <option value="3">Sort by newness</option>
+                                <option value="4">Sort by price: low to high</option>
+                                <option value="5">Sort by price: high to low</option>
+                                <option value="6">Product Name: Z</option>
+                            </select>
+                        </form>
+
+
+                    </div>
+                    <div class="page_amount">
+                        <p>Showing 1–9 of @listProduct.Count results</p>
+                    </div>
+                </div>
+                <!--shop toolbar end-->
+
+                <div class="row shop_wrapper grid_list">
+                
+                    @foreach (var item in listProduct)
+                    {
+                        <div class="col-12 ">
+                            <div class="single_product">
+                                <div class="product_name grid_name">
+                                    <h3><a href="product-details.html">@item.Product_Name</a></h3>
+                                    <p class="manufacture_product"><a href="#">Accessories</a></p>
+                                </div>
+                                <div class="product_thumb">
+                                    <a class="primary_img" href="product-details.html">
+                                        @if (item.Product_Image != "" && item.Product_Image != null && File.Exists(Server.MapPath("~/ProductImages/" + item.Product_Image)))
+                                        {<img src="../../ProductImages/@item.Product_Image" alt=""> }
+                                        else
+                                        {
+                                            <img src="../../assetsclient/img/noimage.png" alt="">
+                                        }
+                                    </a>
+                                    @*<div class="label_product">
+                                        <span class="label_sale">-47%</span>
+                                    </div>*@
+                                    <div class="action_links">
+                                        <ul>
+                                            <li class="quick_button"><a href="#" data-toggle="modal" data-target="#modal_box" title="quick view"> <span class="lnr lnr-magnifier"></span></a></li>
+                                            <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><span class="lnr lnr-heart"></span></a></li>
+                                            <li class="compare"><a href="compare.html" title="compare"><span class="lnr lnr-sync"></span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product_content grid_content">
+                                    <div class="content_inner">
+                                        <div class="product_ratings">
+                                            <ul>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product_footer d-flex align-items-center">
+                                            <div class="price_box">
+                                                <span class="current_price">$160.00</span>
+                                                <span class="old_price">$3200.00</span>
+                                            </div>
+                                            <div class="add_to_cart">
+                                                <a href="cart.html" title="add to cart" item="@item.Product_ID"><span class="lnr lnr-cart"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product_content list_content">
+                                    <div class="left_caption">
+                                        <div class="product_name">
+                                            <h3><a href="product-details.html">@item.Product_Name</a></h3>
+                                        </div>
+                                        <div class="product_ratings">
+                                            <ul>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                                <li><a href="#"><i class="ion-star"></i></a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="product_desc">
+                                            <p style="min-width:313px;">@item.Product_Description</p>
+                                        </div>
+                                        <div class="text_available">
+                                            <p>Category: <span>@CategoryName</span></p>                                         
+                                        </div>
+                                        <div class="text_available">
+                                            <p>Brand: <span>@item.entBrand.Brand_Name</span></p>                                           
+                                        </div>
+                                    </div>
+                                    <div class="right_caption">
+                                        @*<div class="text_available">
+                                            <p>availabe: <span>99 in stock</span></p>
+                                        </div>*@
+                                        <div class="price_box">
+                                            @if (item.Product_Discount == 0)
+                                            {
+                                                <span class="current_price">AED @item.Product_Price</span>
+                                                @*<span class="old_price">$420.00</span>*@
+                                            }
+                                            else
+                                            {
+                                                <span class="current_price">AED @item.Product_Discount</span>
+                                            <span class="old_price">AED @item.Product_Price</span>
+                                            }
+
+                                        </div>
+                                        <div class="cart_links_btn">
+                                            <a href="#" title="add to cart" item="@item.Product_ID"  class="btnAddToCart">add to cart</a>
+                                        </div>
+                                        <div class="action_links_btn">
+                                            <ul>
+                                                <li class="quick_button"><a href="#" data-toggle="modal" data-target="#modal_box" title="quick view"> <span class="lnr lnr-magnifier"></span></a></li>
+                                                <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><span class="lnr lnr-heart"></span></a></li>
+                                                <li class="compare"><a href="compare.html" title="compare"><span class="lnr lnr-sync"></span></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="shop_toolbar t_bottom">
+                    <div class="pagination">
+                        <ul>
+                            <li class="current">1</li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li class="next"><a href="#">next</a></li>
+                            <li><a href="#">>></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--shop toolbar end-->
+                <!--shop wrapper end-->
+            </div>
+            <div class="col-lg-3 col-md-12">
+                <!--sidebar widget start-->
+                <aside class="sidebar_widget">
+                    <div class="widget_inner">
+
+                        <div class="widget_list widget_categories">
+                            <h2>BRANDS</h2>
+                            <ul>
+                                @foreach (var brand in listBrand)
+                                {
+                                    <li>
+                                        <input type="checkbox" class="brandFilter" value="@brand.Brand_ID">
+                                        <a href="#">@brand.Brand_Name</a>
+                                        <span class="checkmark"></span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="widget_list widget_categories">
+                            <h2>sub categories</h2>
+                            <ul>
+                                @foreach (var cat in listSubCategory)
+                                {
+                                    <li>
+                                        <input type="checkbox" class="subCategoryFilter" value="@cat.Category_ID" @(SubCategoryID==cat.Category_ID?"checked":"")>
+                                        <a href="#">@cat.Category_Name</a>
+                                        <span class="checkmark"></span>
+                                    </li>
+                                }
+                                @*<li>
+                                        <input type="checkbox">
+                                        <a href="#" style="font-weight:bold">Scroll Compressors (6)</a>
+                                        <span class="checkmark"></span>
+                                    </li>*@
+
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+                <!--sidebar widget end-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--shop  area end-->
+
+<script>
+    function FillProducts()
+    {
+        var CategoryId = $('#CategoryID').val();
+        var subCategoryId = "";
+        var brands = "";
+        var arrayCategory = [];
+        $('input:checked.subCategoryFilter').each(function () {
+            arrayCategory.push($(this).val());
+            if (subCategoryId == "")
+                subCategoryId = $(this).val();
+            else
+                subCategoryId = subCategoryId + "," + $(this).val();
+        })
+
+        var arrayBrand = [];
+        $('input:checked.brandFilter').each(function () {
+            arrayBrand.push($(this).val());
+            if (brands == "")
+                brands = $(this).val();
+            else
+                brands = brands + "," + $(this).val();
+        })
+        $.ajax({
+            type: 'POST',
+            url: '/Home/PartialProductFilter',
+            cache: false,
+            data: { categoryId: CategoryId, subCategoryId: subCategoryId, brand: brands },
+            dataType: 'html',
+            success: function (data) {
+                console.log(data);
+                $('#content').html(data)
+                $.each(arrayCategory, function (index, val) {
+                    $('input:checkbox.subCategoryFilter[value="' + val + '"]').attr('checked', 'checked');
+                });
+
+                $.each(arrayBrand, function (index, val) {
+                    $('input:checkbox.brandFilter[value="' + val + '"]').attr('checked', 'checked');
+                });
+            }
+
+        });
+    }
+
+    $('#categoryLink').click(function (e) {       
+        e.preventDefault();
+        var ID = $('#CategoryID').val();       
+            $.ajax({
+                type: 'POST',
+                url: '/Home/NavPartialProduct',
+                cache: false,
+                data: { categoryId: ID, subCategoryId: 0 },
+                dataType: 'html',
+                success: function (data) {
+                    console.log(data);
+                    $('#content').html(data)    
+                    $('input:checkbox.subCategoryFilter').attr('checked', 'checked');
+                }
+            });
+    });
+      
+    $('.subCategoryFilter').change(function (e) {
+        e.preventDefault();
+        FillProducts();
+    });
+
+    $('.brandFilter').change(function (e) {
+        e.preventDefault();
+        FillProducts();
+    });
+
+    //Add to cart
+    $('.btnAddToCart').click(function () {
+
+        var productId = $(this).attr('item');
+        var CategoryId = $('#CategoryID').val();
+        $.ajax({
+            type: 'POST',
+            url: '/Order/AddToCart',
+            data: "{ 'Product_ID': '" + productId + "' }",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function () {
+                var subCategoryId = "";
+                var brands = "";
+                var arrayCategory = [];
+                $('input:checked.subCategoryFilter').each(function () {
+                    arrayCategory.push($(this).val());
+                    if (subCategoryId == "")
+                        subCategoryId = $(this).val();
+                    else
+                        subCategoryId = subCategoryId + "," + $(this).val();
+                })
+
+                var arrayBrand = [];
+                $('input:checked.brandFilter').each(function () {
+                    arrayBrand.push($(this).val());
+                    if (brands == "")
+                        brands = $(this).val();
+                    else
+                        brands = brands + "," + $(this).val();
+                })
+                window.location.href = "../Home/ProductsList?categoryId=" + CategoryId + "&SubCategory=" + subCategoryId + "&brand=" + brands + "";
+            },
+            error: function () {
+                console.log('failed');
+            }
+        });
+    });
+    
+</script>
