@@ -75,7 +75,8 @@ namespace EcommerceAdmin.Models.Dal
                             cmd.Parameters.Add(new SqlParameter("@Log_Action", "Update Product"));
                         else
                             cmd.Parameters.Add(new SqlParameter("@Log_Action", "Insert Product"));
-                        
+                        cmd.Parameters.Add(new SqlParameter("@Log_Status", "Admin"));
+
                         try
                         {
                             dataresult1 = Convert.ToInt32(cmd.ExecuteScalar());
@@ -297,6 +298,7 @@ namespace EcommerceAdmin.Models.Dal
                         cmd.Parameters.Add(new SqlParameter("@Created_Date", ent.Modified_Date));
                         cmd.Parameters.Add(new SqlParameter("@Primary_Id", ent.Product_ID));
                         cmd.Parameters.Add(new SqlParameter("@Log_Action", "Delete Product"));
+                        cmd.Parameters.Add(new SqlParameter("@Log_Status", "Admin"));
 
                         try
                         {

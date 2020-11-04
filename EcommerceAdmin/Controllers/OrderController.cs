@@ -1,4 +1,5 @@
 ﻿using EcommerceAdmin.Models.Bal;
+using EcommerceAdmin.Models.Common;
 using EcommerceAdmin.Models.Entity;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace EcommerceAdmin.Controllers
         Bal_Category balCategory = new Bal_Category();
         Bal_Master balMaster = new Bal_Master();
         Bal_Product balProduct = new Bal_Product();
+        Bal_Guest balguest = new Bal_Guest();
         #endregion
 
         // GET: Order
@@ -22,6 +24,11 @@ namespace EcommerceAdmin.Controllers
         {
             Ent_Product ent = new Ent_Product();
             ent = balProduct.SelectProduct(Product_ID);
+            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+
+            int qty = 1;
+            int cartid = 0;
             if (Session["Cart"] == null)
             {
                 List<Ent_Product> item = new List<Ent_Product>();
@@ -36,7 +43,7 @@ namespace EcommerceAdmin.Controllers
                 });
                 Session["Cart"] = item;
                 Session["SubTotal"] = ent.Product_Price;
-                Session["Total"] = ent.Product_Price;
+                Session["Total"] = ent.Product_Price;              
             }
             else
             {
@@ -53,16 +60,66 @@ namespace EcommerceAdmin.Controllers
                         Product_Image = ent.Product_Image,
                         Product_Total = ent.Product_Price,
                     });
+
+                    Ent_Product entP = new Ent_Product();
+                    entP.Product_ID = Product_ID;
+                    entP.Quantity = 1;                  
+                    SafeTransaction trans = new SafeTransaction();
+                    int result = balguest.InsertCart(entP, trans);
+                    if (result > 0)
+                    {
+                        trans.Commit();
+                    }
+                    else
+                    {
+                        trans.Rollback();
+                    }                 
                 }
                 else
                 {
                     item.Where(w => w.Product_ID == Product_ID).ToList().ForEach(i => { i.Quantity = i.Quantity + 1; i.Product_Total = ((i.Quantity) * i.Product_Price); });
-                   
+                    qty = item.Where(l => l.Product_ID == Product_ID).FirstOrDefault().Quantity;
+                    cartid = 1;
+
+                    Ent_Product entP = new Ent_Product();
+                    entP.Cart_ID = 1;
+                    entP.Product_ID = Product_ID;
+                    entP.Quantity = qty;
+                    SafeTransaction trans = new SafeTransaction();
+                    int result = balguest.InsertCart(entP, trans);
+                    if (result > 0)
+                    {
+                        trans.Commit();
+                    }
+                    else
+                    {
+                        trans.Rollback();
+                   }
                 }
                 Session["Cart"] = item;
                 Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) + ent.Product_Price;
-                Session["Total"] = Convert.ToInt32(Session["Total"]) + ent.Product_Price;
+                Session["Total"] = Convert.ToInt32(Session["Total"]) + ent.Product_Price;              
             }
+            if (!string.IsNullOrEmpty(GuestID))
+            {
+                Ent_Product entP = new Ent_Product();
+                entP.Cart_ID = cartid;
+                entP.Product_ID = Product_ID;
+                entP.Quantity = qty;
+                entP.Guest_ID = Convert.ToInt32(GuestID);
+                SafeTransaction trans = new SafeTransaction();
+                int result = balguest.InsertCart(entP, trans);
+                if (result > 0)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }
+            }
+
+
             return 1;
         }
 

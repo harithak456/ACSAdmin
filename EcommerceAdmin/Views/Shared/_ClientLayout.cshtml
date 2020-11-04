@@ -1,51 +1,54 @@
-﻿
+﻿@{
+    HttpCookie Guest_Name = Request.Cookies["Guest_Name"];
+    string Name = Guest_Name != null ? Guest_Name.Value.Split('=')[1] : "";
+}
 <!doctype html>
 <html class="no-js" lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>ACSPareparts.com</title>   
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="../../assetsclient/img/favicon.ico">
+    <title>ACSPareparts.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../../assetsclient/img/favicon.ico">
 
-        <!-- CSS
-        ========================= -->
-        <!--bootstrap min css-->
-        <link rel="stylesheet" href="../../assetsclient/css/bootstrap.min.css">
-        <!--owl carousel min css-->
-        <link rel="stylesheet" href="../../assetsclient/css/owl.carousel.min.css">
-        <!--slick min css-->
-        <link rel="stylesheet" href="../../assetsclient/css/slick.css">
-        <!--magnific popup min css-->
-        <link rel="stylesheet" href="../../assetsclient/css/magnific-popup.css">
-        <!--font awesome css-->
-        <link rel="stylesheet" href="../../assetsclient/css/font.awesome.css">
-        <!--ionicons min css-->
-        <link rel="stylesheet" href="../../assetsclient/css/ionicons.min.css">
-        <!--animate css-->
-        <link rel="stylesheet" href="../../assetsclient/css/animate.css">
-        <!--jquery ui min css-->
-        <link rel="stylesheet" href="../../assetsclient/css/jquery-ui.min.css">
-        <!--slinky menu css-->
-        <link rel="stylesheet" href="../../assetsclient/css/slinky.menu.css">
-        <!-- Plugins CSS -->
-        <link rel="stylesheet" href="../../assetsclient/css/plugins.css">
+    <!-- CSS
+    ========================= -->
+    <!--bootstrap min css-->
+    <link rel="stylesheet" href="../../assetsclient/css/bootstrap.min.css">
+    <!--owl carousel min css-->
+    <link rel="stylesheet" href="../../assetsclient/css/owl.carousel.min.css">
+    <!--slick min css-->
+    <link rel="stylesheet" href="../../assetsclient/css/slick.css">
+    <!--magnific popup min css-->
+    <link rel="stylesheet" href="../../assetsclient/css/magnific-popup.css">
+    <!--font awesome css-->
+    <link rel="stylesheet" href="../../assetsclient/css/font.awesome.css">
+    <!--ionicons min css-->
+    <link rel="stylesheet" href="../../assetsclient/css/ionicons.min.css">
+    <!--animate css-->
+    <link rel="stylesheet" href="../../assetsclient/css/animate.css">
+    <!--jquery ui min css-->
+    <link rel="stylesheet" href="../../assetsclient/css/jquery-ui.min.css">
+    <!--slinky menu css-->
+    <link rel="stylesheet" href="../../assetsclient/css/slinky.menu.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="../../assetsclient/css/plugins.css">
 
-        <!-- Main Style CSS -->
-        <link rel="stylesheet" href="../../assetsclient/css/style.css">
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="../../assetsclient/css/style.css">
 
-        <!--modernizr min js here-->
-        <script src="../../assetsclient/js/vendor/modernizr-3.7.1.min.js"></script>
-        <!--jquery min js-->
-        <script src="../../assetsclient/js/vendor/jquery-3.4.1.min.js"></script>
+    <!--modernizr min js here-->
+    <script src="../../assetsclient/js/vendor/modernizr-3.7.1.min.js"></script>
+    <!--jquery min js-->
+    <script src="../../assetsclient/js/vendor/jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
-   
-       
+
+
     <!-- Main Wrapper Start -->
     <!--header area start-->
     <header class="header_area header_padding">
@@ -69,7 +72,14 @@
                             <div class="top_right text-right">
                                 <ul>
                                     <li class="top_links">
-                                        <a href="#"><i class="ion-android-person"></i> My Account<i class="ion-ios-arrow-down"></i></a>
+                                        @if (Name != "")
+                                        {
+                                        <a href="#"><i class="ion-android-person"></i>@Name<i class="ion-ios-arrow-down"></i></a>
+                                        }
+                                        else
+                                        {
+                                        <a href="#"><i class="ion-android-person"></i>My Account<i class="ion-ios-arrow-down"></i></a>}
+                                        
                                         <ul class="dropdown_links">
                                             <li><a href="/login/Register">Login/Register </a></li>
                                             <li><a href="my-account.html">My Account </a></li>
@@ -96,7 +106,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3">
-                        <div class="logo" >
+                        <div class="logo">
                             @*<a href="/Hom/Index"><img src="../../assetsclient/img/logo/logo.png" alt=""></a>*@
                             <a href="index.html" style="font-weight:bold; font-size:28px;">ACSpareparts.com</a>
                         </div>
@@ -140,10 +150,10 @@
                     <h3>cart</h3>
                 </div>
                 <div class="mini_cart_close">
-                    <a href="javascript:void(0)" ><i class="ion-android-close"></i></a>
+                    <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
                 </div>
             </div>
-            
+
             @if (Session["Cart"] != null)
             {
                 foreach (var items in (List<EcommerceAdmin.Models.Entity.Ent_Product>)Session["Cart"])
@@ -164,11 +174,11 @@
                         </div>
                     </div>
                 }
-            }      
+            }
             <div class="mini_cart_table">
                 <div class="cart_total">
                     <span>Sub total:</span>
-                    <span class="price">AED   @(Session["SubTotal"] != null?@Session["SubTotal"]:"0.00")</span>
+                    <span class="price">AED   @(Session["SubTotal"] != null ? @Session["SubTotal"] : "0.00")</span>
                 </div>
                 <div class="cart_total mt-10">
                     <span>total:</span>
@@ -189,7 +199,7 @@
         </div>
         <!--mini cart end-->
         <!--header bottom satrt-->
-        @Html.Action("NavPartialMenu", "Home")    
+        @Html.Action("NavPartialMenu", "Home")
         <!--header bottom end-->
 
     </header>
@@ -328,8 +338,8 @@
                             <h3>Information</h3>
                             <div class="footer_menu">
                                 <ul>
-                                    <li><a href="about.html" >About Us</a></li>
-                                    <li><a href="#" >Delivery Information</a></li>
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="#">Delivery Information</a></li>
                                     <li><a href="privacy-policy.html">privacy policy</a></li>
                                     <li><a href="coming-soon.html">Coming Soon</a></li>
                                     <li><a href="#">Terms & Conditions</a></li>
@@ -536,29 +546,29 @@
 
     <script>
         $(document).ready(function () {
-          
-            $('.subCategory').click(function (e) {                   
-                var path = window.location.pathname;                
-                if (path == "/") {                  
-                    var subCategoryId = $(this).attr('id');                 
-                    window.location.href = "../Home/ProductsList?categoryId=0&SubCategory=" + subCategoryId +"";
-                    return false;                 
+
+            $('.subCategory').click(function (e) {
+                var path = window.location.pathname;
+                if (path == "/") {
+                    var subCategoryId = $(this).attr('id');
+                    window.location.href = "../Home/ProductsList?categoryId=0&SubCategory=" + subCategoryId + "";
+                    return false;
                 }
                 else {
-                e.preventDefault();
-                var subCategoryId = $(this).attr('id');
-                $.ajax({
-                    type: 'POST',
-                    url: '/Home/NavPartialProduct',
-                    cache: false,
-                    data: { categoryId: 0, subCategoryId: subCategoryId },
-                    dataType: 'html',
-                    success: function (data) {
-                        $('.categories_title').trigger('click');
-                        $('#content').html(data)
+                    e.preventDefault();
+                    var subCategoryId = $(this).attr('id');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Home/NavPartialProduct',
+                        cache: false,
+                        data: { categoryId: 0, subCategoryId: subCategoryId },
+                        dataType: 'html',
+                        success: function (data) {
+                            $('.categories_title').trigger('click');
+                            $('#content').html(data)
 
-                    }
-                });
+                        }
+                    });
                 }
             });
 
@@ -579,10 +589,10 @@
 
             $('.btnRemoveItem').click(function (e) {
                 e.preventDefault();
-                var CartID = $(this).attr('id');             
+                var CartID = $(this).attr('id');
                 $.ajax({
                     type: 'POST',
-                    url: '/Order/DeleteCart',     
+                    url: '/Order/DeleteCart',
                     data: "{ 'CartID': '" + CartID + "' }",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
@@ -592,7 +602,7 @@
                         $('.cart_quantity').html(data);
                     }
                 });
-            });                             
+            });
         });
     </script>
 </body>

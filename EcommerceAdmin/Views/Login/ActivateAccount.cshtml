@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "ActivateAccount";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<div style="height:300px;padding-left:500px;padding-top:100px;">
+    @if (ViewBag.Result > 0)
+    {
+    <h2>Your email has been confirmed</h2>
+    }
+    else
+    {
+    <h2>Your email not confirmed</h2>
+    }
+</div>

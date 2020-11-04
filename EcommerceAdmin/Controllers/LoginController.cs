@@ -1,6 +1,11 @@
-﻿using System;
+﻿using EcommerceAdmin.Models.Bal;
+using EcommerceAdmin.Models.Common;
+using EcommerceAdmin.Models.Entity;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,10 +13,183 @@ namespace EcommerceAdmin.Controllers
 {
     public class LoginController : Controller
     {
+        #region Declaration
+        private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        Bal_Guest balGuest = new Bal_Guest();
+        #endregion
+
         // GET: Login
         public ActionResult Register()
         {
             return View();
+        }
+      
+        public ActionResult ActivateAccount(string id)
+        {
+            SafeTransaction trans = new SafeTransaction();
+            int result = 0;
+            if (id != null)
+            {
+                Ent_Guest ent = new Ent_Guest();
+                DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+                DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
+                ent.Created_Date = indiTime;               
+                result = balGuest.ActivateGuest(ent,id, trans);
+                if (result > 0)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    result = 0;
+                    trans.Rollback();
+                }
+            }
+            ViewBag.Result = result;
+            return View();
+
+        }
+
+        public int RegisterGuest(Ent_Guest model)
+        {
+            int result = 0;
+            SafeTransaction trans = new SafeTransaction();
+            DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+            DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
+            model.Created_Date = indiTime;
+            model.Guest_Name = "";
+            string uniqueId = Guid.NewGuid().ToString();
+            model.Unique_ID = uniqueId;
+            result = balGuest.SaveGuest(model, trans);
+            if (result > 0)
+            {
+                trans.Commit();
+
+                //var lnkHref = "href='https://acsadmin.atintellilabs.live/" + @Url.Action("ActivateAccount", "Login", new { id = uniqueId }) + "'  target='_blank'";
+
+                var lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("ActivateAccount", "Login", new { id = uniqueId }) + "' target='_blank' style='display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;'>Confirm Your Mail</a>";
+                // var lnkHref = uniqueId;
+
+                string body = string.Empty;
+                using (StreamReader reader = new StreamReader(Server.MapPath("~/confirm.html")))
+                {
+                    body = reader.ReadToEnd();
+                }
+                body = body.Replace("{Url}", lnkHref);
+                SendMail(body,uniqueId, model.Guest_Username);
+            }
+            else
+            {
+                trans.Rollback();
+            }
+            return result;
+        }
+
+        public int SendMail(string Mailbody,string uniqueId, string MailTo)
+        {
+            try
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    int port = 587;
+                    string host = "smtp.yandex.com.tr";
+                    string sendmail = "mailsupport@intellilabs.co.in";
+                    string password = "admin@123";
+
+                    mail.From = new MailAddress(sendmail, "ACSpareparts.com");
+                    mail.To.Add(MailTo);
+                    mail.Subject = "Account Activation";
+                    mail.IsBodyHtml = true;
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Mailbody, null, "text/html");
+                    mail.AlternateViews.Add(htmlView);                  
+                    using (SmtpClient emailClient = new SmtpClient(host, port))
+                    {
+                        System.Net.NetworkCredential userInfo = new System.Net.NetworkCredential(sendmail, password);
+                        emailClient.UseDefaultCredentials = false;
+                        emailClient.EnableSsl = true;
+                        emailClient.DeliveryFormat = SmtpDeliveryFormat.International;
+                        emailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        if (!string.IsNullOrEmpty(userInfo.UserName.Trim()) && !string.IsNullOrEmpty(userInfo.Password.Trim()))
+                        {
+                            emailClient.Credentials = userInfo;
+                        }
+                        emailClient.Send(mail);
+                    }
+
+                }
+                return 1;
+
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
+        //Login      
+        public int CreateLogin(string Username,string Password)
+        {           
+            int i = 0;
+            if (Username != "" && Password != "")
+            {                                   
+                    Ent_Guest entu = new Ent_Guest();
+                Ent_Guest result = new Ent_Guest();
+                    entu.Guest_Username = Username;
+                    entu.Guest_Password = Password;
+                    result = balGuest.SelectLogin(entu);
+                    if (result!=null)
+                    {
+                        if (result.Guest_ID > 0)
+                        {                          
+
+                            //Login User ID
+                            HttpCookie Guest_ID = new HttpCookie("Guest_ID");
+                            Guest_ID.Values["Guest_ID"] = Convert.ToString(result.Guest_ID);
+                            Guest_ID.Expires = DateTime.Now.AddMinutes(20);
+                            Response.Cookies.Add(Guest_ID);
+
+                            //Login User Name
+                            HttpCookie Guest_Name = new HttpCookie("Guest_Name");
+                        if(result.Guest_Name!="")
+                            Guest_Name.Values["Guest_Name"] = Convert.ToString(result.Guest_Name);
+                        else
+                            Guest_Name.Values["Guest_Name"] = Convert.ToString(result.Guest_Username);
+                        Guest_Name.Expires = DateTime.Now.AddMinutes(20);
+                            Response.Cookies.Add(Guest_Name);                        
+
+                            i = 1;
+                        }
+                        else
+                        {
+                            //  Global.glbUserID = 0;
+                            HttpCookie User_ID = new HttpCookie("User_ID");
+                            User_ID.Values["User_ID"] = "";
+                            User_ID.Expires = DateTime.Now.AddMinutes(20);
+                            Response.Cookies.Add(User_ID);
+
+                            i = -1;
+                        }
+                    }
+                    else { i = -1; }                
+            }
+            else
+            {
+                i = 0;
+            }
+            return 1;
+            //if (i > 0)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //else if (i == -1)
+            //{
+            //    TempData["Message"] = "Incorrect Username Or Password";
+            //}
+            //else if (i == 0)
+            //{
+            //    TempData["Message"] = "Please Fill Details";
+            //}
+            //return RedirectToAction("Register");
         }
     }
 }

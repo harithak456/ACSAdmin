@@ -71,7 +71,7 @@ namespace EcommerceAdmin.Models.Dal
                             cmd.Parameters.Add(new SqlParameter("@Log_Action", "Update Organization"));
                         else
                             cmd.Parameters.Add(new SqlParameter("@Log_Action", "Insert Organization"));
-                        
+                        cmd.Parameters.Add(new SqlParameter("@Log_Status", "Admin"));
                         try
                         {
                             dataresult1 = Convert.ToInt32(cmd.ExecuteScalar());
@@ -181,7 +181,7 @@ namespace EcommerceAdmin.Models.Dal
                             cmd.Parameters.Add(new SqlParameter("@Log_Action", "Update Brand"));
                         else
                             cmd.Parameters.Add(new SqlParameter("@Log_Action", "Insert Brand"));
-                        
+                        cmd.Parameters.Add(new SqlParameter("@Log_Status", "Admin"));
                         try
                         {
                             dataresult1 = Convert.ToInt32(cmd.ExecuteScalar());
@@ -279,7 +279,7 @@ namespace EcommerceAdmin.Models.Dal
                         cmd.Parameters.Add(new SqlParameter("@Created_Date", ent.Modified_Date));
                         cmd.Parameters.Add(new SqlParameter("@Primary_Id", ent.Brand_ID));
                         cmd.Parameters.Add(new SqlParameter("@Log_Action", "Delete Brand"));
-
+                        cmd.Parameters.Add(new SqlParameter("@Log_Status", "Admin"));
                         try
                         {
                             dataresult1 = Convert.ToInt32(cmd.ExecuteScalar());
@@ -360,6 +360,7 @@ namespace EcommerceAdmin.Models.Dal
                             cmd.Parameters.Add(new SqlParameter("@Log_Action", "Update User"));
                         else
                             cmd.Parameters.Add(new SqlParameter("@Log_Action", "Insert User"));
+                        cmd.Parameters.Add(new SqlParameter("@Log_Status", "Admin"));
                         try
                         {
                             dataresult1 = Convert.ToInt32(cmd.ExecuteScalar());
@@ -503,7 +504,7 @@ namespace EcommerceAdmin.Models.Dal
                         cmd.Parameters.Add(new SqlParameter("@Created_Date", ent.Modified_Date));
                         cmd.Parameters.Add(new SqlParameter("@Primary_Id", ent.User_ID));
                         cmd.Parameters.Add(new SqlParameter("@Log_Action", "Delete User"));
-
+                        cmd.Parameters.Add(new SqlParameter("@Log_Status", "Admin"));
                         try
                         {
                             dataresult1 = Convert.ToInt32(cmd.ExecuteScalar());

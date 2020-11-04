@@ -3,7 +3,7 @@
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
-
+<script src="~/Scripts/ajax/register.js"></script>
   <!--breadcrumbs area start-->
 <div class="breadcrumbs_area">
     <div class="container">
@@ -39,7 +39,7 @@
                         </p>
                         <div class="login_submit">
                             <a href="#">Lost your password?</a>
-                            <button type="submit">login</button>
+                            <button type="submit" id="btnLogin">login</button>
                             <!--once logged in -> go to my-account.html-->
                         </div>
 
@@ -61,7 +61,7 @@
                             <input type="password" autocomplete="off" id="RPassword">
                         </p>
                         <div class="login_submit">
-                            <button type="submit">Register</button>
+                            <button type="submit" id="btnRegister">Register</button>
                         </div>
                     </form>
                 </div>
