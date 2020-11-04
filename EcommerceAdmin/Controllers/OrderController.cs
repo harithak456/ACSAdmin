@@ -60,20 +60,6 @@ namespace EcommerceAdmin.Controllers
                         Product_Image = ent.Product_Image,
                         Product_Total = ent.Product_Price,
                     });
-
-                    Ent_Product entP = new Ent_Product();
-                    entP.Product_ID = Product_ID;
-                    entP.Quantity = 1;                  
-                    SafeTransaction trans = new SafeTransaction();
-                    int result = balguest.InsertCart(entP, trans);
-                    if (result > 0)
-                    {
-                        trans.Commit();
-                    }
-                    else
-                    {
-                        trans.Rollback();
-                    }                 
                 }
                 else
                 {
@@ -81,20 +67,6 @@ namespace EcommerceAdmin.Controllers
                     qty = item.Where(l => l.Product_ID == Product_ID).FirstOrDefault().Quantity;
                     cartid = 1;
 
-                    Ent_Product entP = new Ent_Product();
-                    entP.Cart_ID = 1;
-                    entP.Product_ID = Product_ID;
-                    entP.Quantity = qty;
-                    SafeTransaction trans = new SafeTransaction();
-                    int result = balguest.InsertCart(entP, trans);
-                    if (result > 0)
-                    {
-                        trans.Commit();
-                    }
-                    else
-                    {
-                        trans.Rollback();
-                   }
                 }
                 Session["Cart"] = item;
                 Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) + ent.Product_Price;
@@ -165,5 +137,6 @@ namespace EcommerceAdmin.Controllers
            
             return 1;
         }
+
     }
 }

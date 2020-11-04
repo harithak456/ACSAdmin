@@ -69,5 +69,34 @@ namespace EcommerceAdmin.Models.Bal
                 return 0;
             }
         }
+        public int InsertCartList(List<Ent_Product> entGuest, int guestID,SafeTransaction trans)
+        {
+            int dataResult = 0;
+            try
+            {
+                Dal_Guest dal = new Dal_Guest();
+                dataResult = dal.InsertCartList(entGuest,guestID, trans);
+                return dataResult;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public List<Ent_Product> SelectCart(int guestID)
+        {
+            List<Ent_Product> ent = new List<Ent_Product>();
+            try
+            {
+                Dal_Guest dal = new Dal_Guest();
+                ent = dal.SelectCart(guestID);
+                return ent;
+            }
+            catch
+            {
+                return ent;
+            }
+        }
     }
 }

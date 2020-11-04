@@ -16,6 +16,7 @@ namespace EcommerceAdmin.Controllers
         #region Declaration
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         Bal_Guest balGuest = new Bal_Guest();
+        
         #endregion
 
         // GET: Login
@@ -23,7 +24,9 @@ namespace EcommerceAdmin.Controllers
         {
             return View();
         }
-      
+
+
+        
         public ActionResult ActivateAccount(string id)
         {
             SafeTransaction trans = new SafeTransaction();
@@ -139,36 +142,64 @@ namespace EcommerceAdmin.Controllers
                     result = balGuest.SelectLogin(entu);
                     if (result!=null)
                     {
-                        if (result.Guest_ID > 0)
-                        {                          
+                    if (result.Guest_ID > 0)
+                    {
 
-                            //Login User ID
-                            HttpCookie Guest_ID = new HttpCookie("Guest_ID");
-                            Guest_ID.Values["Guest_ID"] = Convert.ToString(result.Guest_ID);
-                            Guest_ID.Expires = DateTime.Now.AddMinutes(20);
-                            Response.Cookies.Add(Guest_ID);
+                        //Login User ID
+                        HttpCookie Guest_ID = new HttpCookie("Guest_ID");
+                        Guest_ID.Values["Guest_ID"] = Convert.ToString(result.Guest_ID);
+                        Guest_ID.Expires = DateTime.Now.AddMinutes(20);
+                        Response.Cookies.Add(Guest_ID);
 
-                            //Login User Name
-                            HttpCookie Guest_Name = new HttpCookie("Guest_Name");
-                        if(result.Guest_Name!="")
+                        //Login User Name
+                        HttpCookie Guest_Name = new HttpCookie("Guest_Name");
+                        if (result.Guest_Name != "")
                             Guest_Name.Values["Guest_Name"] = Convert.ToString(result.Guest_Name);
                         else
                             Guest_Name.Values["Guest_Name"] = Convert.ToString(result.Guest_Username);
                         Guest_Name.Expires = DateTime.Now.AddMinutes(20);
-                            Response.Cookies.Add(Guest_Name);                        
+                        Response.Cookies.Add(Guest_Name);
 
-                            i = 1;
-                        }
-                        else
+                        List<Ent_Product> list = new List<Ent_Product>();
+                        list = balGuest.SelectCart(result.Guest_ID);
+                        if (list.Count == 0 && Session["Cart"] != null)
                         {
-                            //  Global.glbUserID = 0;
-                            HttpCookie User_ID = new HttpCookie("User_ID");
-                            User_ID.Values["User_ID"] = "";
-                            User_ID.Expires = DateTime.Now.AddMinutes(20);
-                            Response.Cookies.Add(User_ID);
-
-                            i = -1;
+                            List<Ent_Product> item = (List<Ent_Product>)Session["Cart"];
+                            SafeTransaction trans = new SafeTransaction();
+                            int r = balGuest.InsertCartList(item, result.Guest_ID, trans);
+                            if (r > 0)
+                            {
+                                trans.Commit();
+                            }
+                            else
+                            {
+                                trans.Rollback();
+                            }
                         }
+                        else {
+                            Session["Cart"] = list;
+                            Session["Total"] = Session["SubTotal"] =list.Sum(y=>y.Product_Total);
+                        }
+                        i = 1;
+                    }
+                    else
+                    {
+                        if (Request.Cookies["Guest_ID"] != null)
+                        {
+                            HttpCookie myCookie = new HttpCookie("Guest_ID");
+                            myCookie.Expires = DateTime.Now.AddDays(-1d);
+                            Response.Cookies.Add(myCookie);
+                        }
+
+                        if (Request.Cookies["Guest_Name"] != null)
+                        {
+                            HttpCookie myCookie = new HttpCookie("Guest_Name");
+                            myCookie.Expires = DateTime.Now.AddDays(-1d);
+                            Response.Cookies.Add(myCookie);
+                        }
+
+                        i = -1;
+                    }
                     }
                     else { i = -1; }                
             }
@@ -176,20 +207,29 @@ namespace EcommerceAdmin.Controllers
             {
                 i = 0;
             }
-            return 1;
-            //if (i > 0)
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
-            //else if (i == -1)
-            //{
-            //    TempData["Message"] = "Incorrect Username Or Password";
-            //}
-            //else if (i == 0)
-            //{
-            //    TempData["Message"] = "Please Fill Details";
-            //}
-            //return RedirectToAction("Register");
+            return i;
         }
+
+        public ActionResult Logout()
+        {
+            if (Request.Cookies["Guest_ID"] != null)
+            {
+                HttpCookie myCookie = new HttpCookie("Guest_ID");
+                myCookie.Expires = DateTime.Now.AddDays(-1d);
+                Response.Cookies.Add(myCookie);
+            }
+
+            if (Request.Cookies["Guest_Name"] != null)
+            {
+                HttpCookie myCookie = new HttpCookie("Guest_Name");
+                myCookie.Expires = DateTime.Now.AddDays(-1d);
+                Response.Cookies.Add(myCookie);
+            }
+            Session["Cart"] = null;
+            Session["Total"] = null;
+            Session["SubTotal"] = null;
+            return RedirectToAction("Index","Home");
+        }
+
     }
 }
