@@ -138,5 +138,9 @@ namespace EcommerceAdmin.Controllers
             return 1;
         }
 
+        public ActionResult Checkout()
+        {
+            return View();
+        }
     }
 }
