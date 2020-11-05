@@ -12,7 +12,7 @@ namespace EcommerceAdmin.Models.Entity
 
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_Name { get; set; }
+        public string Guest_FirstName { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Guest_Username { get; set; }

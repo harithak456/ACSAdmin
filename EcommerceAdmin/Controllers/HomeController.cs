@@ -1,4 +1,5 @@
 ﻿using EcommerceAdmin.Models.Bal;
+using EcommerceAdmin.Models.Common;
 using EcommerceAdmin.Models.Entity;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace EcommerceAdmin.Controllers
         Bal_Category balCategory = new Bal_Category();
         Bal_Product balProduct = new Bal_Product();
         Bal_Master balMaster = new Bal_Master();
+        Bal_Order balOrder = new Bal_Order();
         #endregion
 
         [ChildActionOnly]
@@ -34,7 +36,16 @@ namespace EcommerceAdmin.Controllers
 
         // GET: Home
         public ActionResult Index()
-        {          
+        {
+            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+            if (GuestID != "" && Session["Cart"]==null)
+            {
+                List<Ent_Product> list = new List<Ent_Product>();
+                list = balOrder.SelectCart(Convert.ToInt32( GuestID));              
+                    Session["Cart"] = list;
+                    Session["Total"] = Session["SubTotal"] = list.Sum(y => y.Product_Total);                
+            }
             return View();
         }     
 
@@ -53,9 +64,7 @@ namespace EcommerceAdmin.Controllers
             List<Ent_Category> listCategory = new List<Ent_Category>();
             List<Ent_SubCategory> listSubCategory = new List<Ent_SubCategory>();
             listCategory = balCategory.SelectCategoryList(0, "all");
-            
-       
-
+                   
             if (subCategoryId != 0)
             {
                 ViewBag.SubCategoryName = listCategory.Where(c => c.Category_ID == subCategoryId).FirstOrDefault().Category_Name;

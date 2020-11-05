@@ -133,6 +133,7 @@
     <Compile Include="Models\Bal\Bal_Guest.cs" />
     <Compile Include="Models\Bal\Bal_Master.cs" />
     <Compile Include="Models\Bal\Bal_Category.cs" />
+    <Compile Include="Models\Bal\Bal_Order.cs" />
     <Compile Include="Models\Bal\Bal_Product.cs" />
     <Compile Include="Models\Common\DBConnection.cs" />
     <Compile Include="Models\Common\Global.cs" />
@@ -140,9 +141,11 @@
     <Compile Include="Models\Dal\Dal_Guest.cs" />
     <Compile Include="Models\Dal\Dal_Master.cs" />
     <Compile Include="Models\Dal\Dal_Category.cs" />
+    <Compile Include="Models\Dal\Dal_Order.cs" />
     <Compile Include="Models\Dal\Dal_Product.cs" />
     <Compile Include="Models\Entity\Ent_Category.cs" />
     <Compile Include="Models\Entity\Ent_Guest.cs" />
+    <Compile Include="Models\Entity\Ent_Order.cs" />
     <Compile Include="Models\Entity\Ent_Organization.cs" />
     <Compile Include="Models\Entity\Ent_Product.cs" />
     <Compile Include="Models\Entity\Ent_User.cs" />
@@ -241,6 +244,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\ajax\brand.js" />
     <Content Include="Scripts\ajax\category.js" />
+    <Content Include="Scripts\ajax\checkout.js" />
     <Content Include="Scripts\ajax\login.js" />
     <Content Include="Scripts\ajax\organization.js" />
     <Content Include="Scripts\ajax\product.js" />

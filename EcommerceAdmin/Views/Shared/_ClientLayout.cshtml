@@ -1,6 +1,6 @@
 ﻿@{
-    HttpCookie Guest_Name = Request.Cookies["Guest_Name"];
-    string Name = Guest_Name != null ? Guest_Name.Value.Split('=')[1] : "";
+    HttpCookie Guest_FirstName = Request.Cookies["Guest_FirstName"];
+    string Name = Guest_FirstName != null ? Guest_FirstName.Value.Split('=')[1] : "";
 }
 <!doctype html>
 <html class="no-js" lang="en">
@@ -191,7 +191,7 @@
                     <a href="/Order/ViewCart">View cart</a>
                 </div>
                 <div class="cart_button">
-                    <a class="active" href="checkout.html">Checkout</a>
+                    <a class="active" href="/Order/Checkout">Checkout</a>
                 </div>
 
             </div>

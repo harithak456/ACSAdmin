@@ -17,6 +17,7 @@ namespace EcommerceAdmin.Controllers
         Bal_Master balMaster = new Bal_Master();
         Bal_Product balProduct = new Bal_Product();
         Bal_Guest balguest = new Bal_Guest();
+        Bal_Order balOrder = new Bal_Order();
         #endregion
 
         // GET: Order
@@ -80,7 +81,7 @@ namespace EcommerceAdmin.Controllers
                 entP.Quantity = qty;
                 entP.Guest_ID = Convert.ToInt32(GuestID);
                 SafeTransaction trans = new SafeTransaction();
-                int result = balguest.InsertCart(entP, trans);
+                int result = balOrder.InsertCart(entP, trans);
                 if (result > 0)
                 {
                     trans.Commit();
@@ -106,6 +107,23 @@ namespace EcommerceAdmin.Controllers
             int count = list.Count - 1;
             Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) - (ent.Product_Price*qty);
             Session["Total"] = Convert.ToInt32(Session["Total"]) - (ent.Product_Price * qty);
+
+            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+            if (!string.IsNullOrEmpty(GuestID))
+            {              
+                SafeTransaction trans = new SafeTransaction();
+                int result = balOrder.DeleteCart(CartID,Convert.ToInt32( GuestID), trans);
+                if (result > 0)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }
+            }
+
             return count;
         }
 
@@ -129,6 +147,28 @@ namespace EcommerceAdmin.Controllers
                     Product_Image = CartList[i].Product_Image,
                     Product_Total = CartList[i].Quantity * CartList[i].Product_Price,                 
                 });
+
+                HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+                string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+                if (!string.IsNullOrEmpty(GuestID))
+                {
+                    Ent_Product entP = new Ent_Product();
+                    entP.Cart_ID = 1;
+                    entP.Product_ID = CartList[i].Product_ID;
+                    entP.Quantity = CartList[i].Quantity;
+                    entP.Guest_ID = Convert.ToInt32(GuestID);
+                    SafeTransaction trans = new SafeTransaction();
+                    int result = balOrder.InsertCart(entP, trans);
+                    if (result > 0)
+                    {
+                        trans.Commit();
+                    }
+                    else
+                    {
+                        trans.Rollback();
+                    }
+                }
+
                 total = total + (CartList[i].Quantity * CartList[i].Product_Price);
                 Session["Cart"] = item;
                 item = (List<Ent_Product>)Session["Cart"];             
@@ -141,6 +181,35 @@ namespace EcommerceAdmin.Controllers
         public ActionResult Checkout()
         {
             return View();
+        }
+
+
+           public int SaveOrder(Ent_Order model)
+        {
+            SafeTransaction trans = new SafeTransaction();
+            DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+            DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
+            model.Created_Date = indiTime;
+
+            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+            model.Guest_ID = Convert.ToInt32(GuestID);
+
+            model.Order_SubTotal = Convert.ToDouble(Session["SubTotal"]);
+            model.Order_Shipping = 0;
+            model.Order_Total = Convert.ToDouble(Session["Total"]);
+            model.OrderDetailsList = (List<Ent_OrderDetail>)Session["Cart"]; 
+            int i = balOrder.SaveOrder(model, trans);
+            if (i > 0)
+            {
+                trans.Commit();
+            }
+            else
+            {
+                trans.Rollback();
+            }
+
+            return i;
         }
     }
 }

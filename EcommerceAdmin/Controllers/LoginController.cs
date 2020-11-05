@@ -16,7 +16,7 @@ namespace EcommerceAdmin.Controllers
         #region Declaration
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         Bal_Guest balGuest = new Bal_Guest();
-        
+        Bal_Order balOrder = new Bal_Order();
         #endregion
 
         // GET: Login
@@ -60,7 +60,7 @@ namespace EcommerceAdmin.Controllers
             DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
             DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
             model.Created_Date = indiTime;
-            model.Guest_Name = "";
+            model.Guest_FirstName = "";
             string uniqueId = Guid.NewGuid().ToString();
             model.Unique_ID = uniqueId;
             result = balGuest.SaveGuest(model, trans);
@@ -148,25 +148,25 @@ namespace EcommerceAdmin.Controllers
                         //Login User ID
                         HttpCookie Guest_ID = new HttpCookie("Guest_ID");
                         Guest_ID.Values["Guest_ID"] = Convert.ToString(result.Guest_ID);
-                        Guest_ID.Expires = DateTime.Now.AddMinutes(20);
+                        Guest_ID.Expires = DateTime.Now.AddMinutes(10);
                         Response.Cookies.Add(Guest_ID);
 
                         //Login User Name
-                        HttpCookie Guest_Name = new HttpCookie("Guest_Name");
-                        if (result.Guest_Name != "")
-                            Guest_Name.Values["Guest_Name"] = Convert.ToString(result.Guest_Name);
+                        HttpCookie Guest_FirstName = new HttpCookie("Guest_FirstName");
+                        if (result.Guest_FirstName != "")
+                            Guest_FirstName.Values["Guest_FirstName"] = Convert.ToString(result.Guest_FirstName);
                         else
-                            Guest_Name.Values["Guest_Name"] = Convert.ToString(result.Guest_Username);
-                        Guest_Name.Expires = DateTime.Now.AddMinutes(20);
-                        Response.Cookies.Add(Guest_Name);
+                            Guest_FirstName.Values["Guest_FirstName"] = Convert.ToString(result.Guest_Username);
+                        Guest_FirstName.Expires = DateTime.Now.AddMinutes(10);
+                        Response.Cookies.Add(Guest_FirstName);
 
                         List<Ent_Product> list = new List<Ent_Product>();
-                        list = balGuest.SelectCart(result.Guest_ID);
+                        list = balOrder.SelectCart(result.Guest_ID);
                         if (list.Count == 0 && Session["Cart"] != null)
                         {
                             List<Ent_Product> item = (List<Ent_Product>)Session["Cart"];
                             SafeTransaction trans = new SafeTransaction();
-                            int r = balGuest.InsertCartList(item, result.Guest_ID, trans);
+                            int r = balOrder.InsertCartList(item, result.Guest_ID, trans);
                             if (r > 0)
                             {
                                 trans.Commit();
@@ -191,9 +191,9 @@ namespace EcommerceAdmin.Controllers
                             Response.Cookies.Add(myCookie);
                         }
 
-                        if (Request.Cookies["Guest_Name"] != null)
+                        if (Request.Cookies["Guest_FirstName"] != null)
                         {
-                            HttpCookie myCookie = new HttpCookie("Guest_Name");
+                            HttpCookie myCookie = new HttpCookie("Guest_FirstName");
                             myCookie.Expires = DateTime.Now.AddDays(-1d);
                             Response.Cookies.Add(myCookie);
                         }
@@ -219,9 +219,9 @@ namespace EcommerceAdmin.Controllers
                 Response.Cookies.Add(myCookie);
             }
 
-            if (Request.Cookies["Guest_Name"] != null)
+            if (Request.Cookies["Guest_FirstName"] != null)
             {
-                HttpCookie myCookie = new HttpCookie("Guest_Name");
+                HttpCookie myCookie = new HttpCookie("Guest_FirstName");
                 myCookie.Expires = DateTime.Now.AddDays(-1d);
                 Response.Cookies.Add(myCookie);
             }

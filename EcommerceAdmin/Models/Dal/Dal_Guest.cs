@@ -33,7 +33,7 @@ namespace EcommerceAdmin.Models.Dal
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@Guest_ID", ent.Guest_ID));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_Name", ent.Guest_Name));
+                    cmd.Parameters.Add(new SqlParameter("@Guest_FirstName", ent.Guest_FirstName));
                     cmd.Parameters.Add(new SqlParameter("@Guest_Username", ent.Guest_Username));
                     cmd.Parameters.Add(new SqlParameter("@Guest_Password", ent.Guest_Password));
                     cmd.Parameters.Add(new SqlParameter("@Created_Date", ent.Created_Date));
@@ -143,7 +143,7 @@ namespace EcommerceAdmin.Models.Dal
                     while (dr.Read())
                     {
                         ent.Guest_ID = Convert.ToInt32(dr["Guest_ID"]);
-                        ent.Guest_Name = Convert.ToString(dr["Guest_Name"]);
+                        ent.Guest_FirstName = Convert.ToString(dr["Guest_FirstName"]);
                         ent.Guest_Username = Convert.ToString(dr["Guest_Username"]);
                         ent.Guest_Password = Convert.ToString(dr["Guest_Password"]);
                     }
@@ -160,126 +160,7 @@ namespace EcommerceAdmin.Models.Dal
             return ent;
         }
 
-        public int InsertCart(Ent_Product ent, SafeTransaction trans)
-        {
-            int dataresult = 0;         
-            try
-            {
-                if (con.State == ConnectionState.Closed)
-                {
-                    con.Open();
-                }
-
-                using (SqlCommand cmd = new SqlCommand("EC_InsertCart", trans.DatabaseConnection, trans.Transaction))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@Cart_ID", ent.Cart_ID));
-                    cmd.Parameters.Add(new SqlParameter("@Product_ID", ent.Product_ID));
-                    cmd.Parameters.Add(new SqlParameter("@Quantity", ent.Quantity));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_ID", ent.Guest_ID));
-                    try
-                    {
-                        dataresult = Convert.ToInt32(cmd.ExecuteScalar());
-                        if (dataresult > 0)
-                        {
-                            cmd.Dispose();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        dataresult = -2;
-                    }
-                }               
-            }
-            catch (Exception e)
-            {
-                dataresult = -2;
-            }
-            finally { con.Close(); }
-            return dataresult;
-        }
-
-        public int InsertCartList(List<Ent_Product> ent, int guestID, SafeTransaction trans)
-        {
-            int dataresult = 0;
-           
-            try
-            {
-                if (con.State == ConnectionState.Closed)
-                {
-                    con.Open();
-                }
-                for (int k = 0; k < ent.Count; k++)
-                {
-                    using (SqlCommand cmd = new SqlCommand("EC_InsertCart", trans.DatabaseConnection, trans.Transaction))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add(new SqlParameter("@Cart_ID", ent[k].Cart_ID));
-                        cmd.Parameters.Add(new SqlParameter("@Product_ID", ent[k].Product_ID));
-                        cmd.Parameters.Add(new SqlParameter("@Quantity", ent[k].Quantity));
-                        cmd.Parameters.Add(new SqlParameter("@Guest_ID", guestID));
-                        try
-                        {
-                            dataresult = Convert.ToInt32(cmd.ExecuteScalar());
-                            if (dataresult > 0)
-                            {
-                                cmd.Dispose();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            dataresult = -2;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                dataresult = -2;
-            }
-            finally { con.Close(); }
-            return dataresult;
-        }
-
-        public List<Ent_Product> SelectCart(int guestID)
-        {
-            List<Ent_Product> result = new List<Ent_Product>();
-            Ent_Product ent = new Ent_Product();
-            try
-            {
-                using (SqlCommand cmd = new SqlCommand("EC_SelectCart", con))
-                {
-                    if (con.State == ConnectionState.Closed)
-                    {
-                        con.Open();
-                    }
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@Guest_ID", guestID));
-                    IDataReader dr = cmd.ExecuteReader();
-                    while (dr.Read())
-                    {
-                        ent = new Ent_Product();
-                        ent.Product_ID = Convert.ToInt32(dr["Product_ID"]);
-                        ent.Product_Name = Convert.ToString(dr["Product_Name"]);
-                        ent.Quantity = Convert.ToInt32(dr["Quantity"]);                     
-                        ent.Product_Price = float.Parse(dr["Product_Price"].ToString());
-                        ent.Product_Total = float.Parse(dr["Product_Total"].ToString());
-                        ent.Product_Image = Convert.ToString(dr["Product_Image"]);
-                        result.Add(ent);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                InsertException(ex.Message, "SelectCart", guestID);
-            }
-            finally
-            {
-                con.Close();
-            }
-            return result;
-        }
-
+      
         public void InsertException(string exception, string from, int id)
         {
             using (SqlCommand cmd = new SqlCommand("EC_InsertException", con))

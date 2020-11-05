@@ -45,6 +45,7 @@ namespace EcommerceAdmin.Models.Entity
 
         public int Cart_ID { get; set; }
         public int Guest_ID { get; set; }
+        public int OrderDetail_ID { get; set; }
     }
    
 }
