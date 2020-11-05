@@ -10,7 +10,7 @@ namespace EcommerceAdmin.Models.Bal
 {
     public class Bal_Order
     {
-        public int InsertCart(Ent_Product entGuest, SafeTransaction trans)
+        public int InsertCart(Ent_OrderDetail entGuest, SafeTransaction trans)
         {
             int dataResult = 0;
             try
@@ -40,7 +40,7 @@ namespace EcommerceAdmin.Models.Bal
             }
         }
 
-        public int InsertCartList(List<Ent_Product> entGuest, int guestID, SafeTransaction trans)
+        public int InsertCartList(List<Ent_OrderDetail> entGuest, int guestID, SafeTransaction trans)
         {
             int dataResult = 0;
             try
@@ -55,9 +55,9 @@ namespace EcommerceAdmin.Models.Bal
             }
         }
 
-        public List<Ent_Product> SelectCart(int guestID)
+        public List<Ent_OrderDetail> SelectCart(int guestID)
         {
-            List<Ent_Product> ent = new List<Ent_Product>();
+            List<Ent_OrderDetail> ent = new List<Ent_OrderDetail>();
             try
             {
                 Dal_Order dal = new Dal_Order();
@@ -82,6 +82,21 @@ namespace EcommerceAdmin.Models.Bal
             catch
             {
                 return 0;
+            }
+        }
+
+        public List<Ent_Order> SelectGuestOrder(int guestID)
+        {
+            List<Ent_Order> ent = new List<Ent_Order>();
+            try
+            {
+                Dal_Order dal = new Dal_Order();
+                ent = dal.SelectGuestOrder(guestID);
+                return ent;
+            }
+            catch
+            {
+                return ent;
             }
         }
     }

@@ -216,7 +216,7 @@
                                 <tbody>
                                     @if (Session["Cart"] != null)
                                     {
-                                        foreach (var items in (List<EcommerceAdmin.Models.Entity.Ent_Product>)Session["Cart"])
+                                        foreach (var items in (List<EcommerceAdmin.Models.Entity.Ent_OrderDetail>)Session["Cart"])
                                         {
                                             <tr>
                                                 <td> @items.Product_Name <strong> × @items.Quantity</strong></td>

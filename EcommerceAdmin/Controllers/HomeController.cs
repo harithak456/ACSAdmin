@@ -41,8 +41,8 @@ namespace EcommerceAdmin.Controllers
             string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
             if (GuestID != "" && Session["Cart"]==null)
             {
-                List<Ent_Product> list = new List<Ent_Product>();
-                list = balOrder.SelectCart(Convert.ToInt32( GuestID));              
+                List<Ent_OrderDetail> list = new List<Ent_OrderDetail>();
+                list = balOrder.SelectCart(Convert.ToInt32(GuestID));              
                     Session["Cart"] = list;
                     Session["Total"] = Session["SubTotal"] = list.Sum(y => y.Product_Total);                
             }

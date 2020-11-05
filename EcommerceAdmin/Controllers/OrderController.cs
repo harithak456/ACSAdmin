@@ -75,7 +75,7 @@ namespace EcommerceAdmin.Controllers
             }
             if (!string.IsNullOrEmpty(GuestID))
             {
-                Ent_Product entP = new Ent_Product();
+                Ent_OrderDetail entP = new Ent_OrderDetail();
                 entP.Cart_ID = cartid;
                 entP.Product_ID = Product_ID;
                 entP.Quantity = qty;
@@ -152,7 +152,7 @@ namespace EcommerceAdmin.Controllers
                 string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
                 if (!string.IsNullOrEmpty(GuestID))
                 {
-                    Ent_Product entP = new Ent_Product();
+                    Ent_OrderDetail entP = new Ent_OrderDetail();
                     entP.Cart_ID = 1;
                     entP.Product_ID = CartList[i].Product_ID;
                     entP.Quantity = CartList[i].Quantity;
@@ -202,6 +202,9 @@ namespace EcommerceAdmin.Controllers
             int i = balOrder.SaveOrder(model, trans);
             if (i > 0)
             {
+                Session["Cart"] = null;
+                Session["Total"] = null;
+                Session["SubTotal"] = null;
                 trans.Commit();
             }
             else

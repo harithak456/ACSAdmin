@@ -39,6 +39,7 @@ namespace EcommerceAdmin.Models.Entity
         public double Order_SubTotal { get; set; }  
         public double Order_Shipping { get; set; }  
         public double Order_Total { get; set; }  
+        public int Total_Qty { get; set; }  
 
         public int Is_Active { get; set; }
         public DateTime Created_Date { get; set; }
@@ -51,7 +52,12 @@ namespace EcommerceAdmin.Models.Entity
         public int Order_ID { get; set; }
         public int Product_ID { get; set; }
         public int Quantity { get; set; }
-        public int Product_Price { get; set; }
-        public int Product_Total { get; set; }
+        public float Product_Price { get; set; }
+        public float Product_Total { get; set; }
+        public string Product_Name { get; set; }
+        public string Product_Image { get; set; }
+
+        public int Cart_ID { get; set; }
+        public int Guest_ID { get; set; }
     }
     }

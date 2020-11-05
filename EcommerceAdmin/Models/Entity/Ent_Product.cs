@@ -43,9 +43,9 @@ namespace EcommerceAdmin.Models.Entity
         public Ent_SubCategory entSubCategory = new Ent_SubCategory();
         public Ent_Brand entBrand= new Ent_Brand();
 
-        public int Cart_ID { get; set; }
-        public int Guest_ID { get; set; }
-        public int OrderDetail_ID { get; set; }
+        //public int Cart_ID { get; set; }
+        //public int Guest_ID { get; set; }
+        //public int OrderDetail_ID { get; set; }
     }
    
 }

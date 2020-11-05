@@ -160,11 +160,11 @@ namespace EcommerceAdmin.Controllers
                         Guest_FirstName.Expires = DateTime.Now.AddMinutes(10);
                         Response.Cookies.Add(Guest_FirstName);
 
-                        List<Ent_Product> list = new List<Ent_Product>();
+                        List<Ent_OrderDetail> list = new List<Ent_OrderDetail>();
                         list = balOrder.SelectCart(result.Guest_ID);
                         if (list.Count == 0 && Session["Cart"] != null)
                         {
-                            List<Ent_Product> item = (List<Ent_Product>)Session["Cart"];
+                            List<Ent_OrderDetail> item = (List<Ent_OrderDetail>)Session["Cart"];
                             SafeTransaction trans = new SafeTransaction();
                             int r = balOrder.InsertCartList(item, result.Guest_ID, trans);
                             if (r > 0)
@@ -231,5 +231,17 @@ namespace EcommerceAdmin.Controllers
             return RedirectToAction("Index","Home");
         }
 
+        public ActionResult MyAccount()
+        {
+            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+            List<Ent_Order> list = new List<Ent_Order>();
+            if (!string.IsNullOrEmpty(GuestID))
+            {               
+                list = balOrder.SelectGuestOrder(Convert.ToInt32(GuestID));
+            }
+            ViewBag.OrderList = list;
+                return View();
+        }
     }
 }

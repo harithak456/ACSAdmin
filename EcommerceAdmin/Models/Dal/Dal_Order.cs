@@ -18,7 +18,7 @@ namespace EcommerceAdmin.Models.Dal
             con = dbcon.DatabaseConnection;
         }
 
-        public int InsertCart(Ent_Product ent, SafeTransaction trans)
+        public int InsertCart(Ent_OrderDetail ent, SafeTransaction trans)
         {
             int dataresult = 0;
             try
@@ -57,7 +57,7 @@ namespace EcommerceAdmin.Models.Dal
             return dataresult;
         }
 
-        public int InsertCartList(List<Ent_Product> ent, int guestID, SafeTransaction trans)
+        public int InsertCartList(List<Ent_OrderDetail> ent, int guestID, SafeTransaction trans)
         {
             int dataresult = 0;
 
@@ -136,10 +136,10 @@ namespace EcommerceAdmin.Models.Dal
             return dataResult;
         }
 
-        public List<Ent_Product> SelectCart(int guestID)
+        public List<Ent_OrderDetail> SelectCart(int guestID)
         {
-            List<Ent_Product> result = new List<Ent_Product>();
-            Ent_Product ent = new Ent_Product();
+            List<Ent_OrderDetail> result = new List<Ent_OrderDetail>();
+            Ent_OrderDetail ent = new Ent_OrderDetail();
             try
             {
                 using (SqlCommand cmd = new SqlCommand("EC_SelectCart", con))
@@ -153,7 +153,7 @@ namespace EcommerceAdmin.Models.Dal
                     IDataReader dr = cmd.ExecuteReader();
                     while (dr.Read())
                     {
-                        ent = new Ent_Product();
+                        ent = new Ent_OrderDetail();
                         ent.Product_ID = Convert.ToInt32(dr["Product_ID"]);
                         ent.Product_Name = Convert.ToString(dr["Product_Name"]);
                         ent.Quantity = Convert.ToInt32(dr["Quantity"]);
@@ -223,23 +223,45 @@ namespace EcommerceAdmin.Models.Dal
                                         cmd1.Parameters.Add(new SqlParameter("@Quantity", ent.OrderDetailsList[i].Quantity));
                                         cmd1.Parameters.Add(new SqlParameter("@Product_Price", ent.OrderDetailsList[i].Product_Price));
                                         cmd1.Parameters.Add(new SqlParameter("@Product_Total", ent.OrderDetailsList[i].Product_Total));
-                                        cmd1.Parameters.Add(new SqlParameter("@Created_Date", ent.Created_Date));
                                         try
                                         {
                                             dataresult1 = Convert.ToInt32(cmd1.ExecuteScalar());
                                             cmd1.Dispose();
+                                            
                                         }
                                         catch (Exception ex)
                                         {
-                                            dataresult1 = -1;
+                                            dataresult = 0;
                                             InsertException(ex.Message, "SaveOrderDetail", ent.OrderDetailsList[i].OrderDetail_ID);
                                         }
                                     }
                                 }
+
+                                if (dataresult1 > 0)
+                                {
+                                    if (ent.Guest_ID != 0)
+                                    {
+                                        var query = "delete from EC_Cart where Guest_ID=" + ent.Guest_ID;
+                                        int k = 0;
+                                        using (SqlCommand cmd2 = new SqlCommand(query, trans.DatabaseConnection, trans.Transaction))
+                                        {
+                                            try
+                                            {
+                                                k = cmd2.ExecuteNonQuery();
+                                                cmd2.Dispose();
+
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                dataresult = 0;
+                                            }
+                                        }
+                                    }                                    
+                                }
                             }
                             else
                             {
-                                dataresult1 = 1;
+                                dataresult = 0;
                             }
 
                         }
@@ -256,6 +278,44 @@ namespace EcommerceAdmin.Models.Dal
             }
             finally { con.Close(); }
             return dataresult;
+        }
+
+        public List<Ent_Order> SelectGuestOrder(int guestID)
+        {
+            List<Ent_Order> result = new List<Ent_Order>();
+            Ent_Order ent = new Ent_Order();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("EC_SelectGuestOrder", con))
+                {
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Guest_ID", guestID));
+                    IDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        ent = new Ent_Order();
+                        ent.Order_ID = Convert.ToInt32(dr["Order_ID"]);
+                        ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);
+                        ent.Is_Active = Convert.ToInt32(dr["Is_Active"]);                     
+                        ent.Order_Total = Convert.ToDouble(dr["Order_Total"]);                     
+                        ent.Total_Qty = Convert.ToInt32(dr["Total_Qty"]);                     
+                        result.Add(ent);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                InsertException(ex.Message, "SelectGuestOrder", guestID);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return result;
         }
 
         public void InsertException(string exception, string from, int id)

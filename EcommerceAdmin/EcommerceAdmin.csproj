@@ -302,6 +302,7 @@
     <Content Include="Views\Login\Register.cshtml" />
     <Content Include="Views\Login\ActivateAccount.cshtml" />
     <Content Include="Views\Order\Checkout.cshtml" />
+    <Content Include="Views\Login\MyAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

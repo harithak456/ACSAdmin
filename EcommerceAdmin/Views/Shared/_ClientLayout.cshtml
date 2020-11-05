@@ -82,8 +82,8 @@
                                         
                                         <ul class="dropdown_links">
                                             <li><a href="/login/Register">Login/Register </a></li>
-                                            <li><a href="my-account.html">My Account </a></li>
-                                            <li><a href="/login/Logout">Logout </a></li>
+                                            <li><a href="/Login/MyAccount">My Account </a></li>
+                                            <li><a href="/Login/Logout">Logout </a></li>
                                         </ul>
                                     </li>
 
@@ -125,7 +125,7 @@
                                 <div class="mini_cart_wrapper">
                                     @if (Session["Cart"] != null)
                                     {
-                                        var cartCount = ((List<EcommerceAdmin.Models.Entity.Ent_Product>)Session["Cart"]).Count;
+                                        var cartCount = ((List<EcommerceAdmin.Models.Entity.Ent_OrderDetail>)Session["Cart"]).Count;
                                         <a href="javascript:void(0)"><span class="lnr lnr-cart"></span>My Cart </a>
                                         <span class="cart_quantity">@cartCount</span>
 
@@ -156,7 +156,7 @@
 
             @if (Session["Cart"] != null)
             {
-                foreach (var items in (List<EcommerceAdmin.Models.Entity.Ent_Product>)Session["Cart"])
+                foreach (var items in (List<EcommerceAdmin.Models.Entity.Ent_OrderDetail>)Session["Cart"])
                 {
                     <div id="@items.Product_ID" class="cart_item">
                         <div class="cart_img">
@@ -227,8 +227,8 @@
                                     <a href="#"><i class="ion-android-person"></i> My Account<i class="ion-ios-arrow-down"></i></a>
                                     <ul class="dropdown_links">
                                         <li><a href="Login.html">Login/Register </a></li>
-                                        <li><a href="my-account.html">My Account </a></li>
-                                        <li><a href="#">Logout </a></li>
+                                        <li><a href="/Login/MyAccount">My Account </a></li>
+                                        <li><a href="/Login/Logout">Logout </a></li>
                                     </ul>
                                 </li>
 
