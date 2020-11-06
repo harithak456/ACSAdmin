@@ -55,6 +55,20 @@ namespace EcommerceAdmin.Models.Bal
             }
         }
 
-      
+        public Ent_Guest SelectGuestDetails(int ID)
+        {
+            Ent_Guest ent = new Ent_Guest();
+            try
+            {
+                Dal_Guest dal = new Dal_Guest();
+                ent = dal.SelectGuestDetails(ID);
+                return ent;
+            }
+            catch
+            {
+                return ent;
+            }
+        }
+
     }
 }

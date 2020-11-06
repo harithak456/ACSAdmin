@@ -15,6 +15,30 @@ namespace EcommerceAdmin.Models.Entity
         public string Guest_FirstName { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Guest_LastName { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Guest_Country { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Guest_Address1 { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Guest_Address2 { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Guest_Town { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Guest_State { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Guest_Phone { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Guest_Email { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Guest_Username { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]

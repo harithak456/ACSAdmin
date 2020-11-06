@@ -246,6 +246,7 @@
     <Content Include="Scripts\ajax\category.js" />
     <Content Include="Scripts\ajax\checkout.js" />
     <Content Include="Scripts\ajax\login.js" />
+    <Content Include="Scripts\ajax\myaccount.js" />
     <Content Include="Scripts\ajax\organization.js" />
     <Content Include="Scripts\ajax\product.js" />
     <Content Include="Scripts\ajax\register.js" />
@@ -303,6 +304,7 @@
     <Content Include="Views\Login\ActivateAccount.cshtml" />
     <Content Include="Views\Order\Checkout.cshtml" />
     <Content Include="Views\Login\MyAccount.cshtml" />
+    <Content Include="Views\Order\ViewOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

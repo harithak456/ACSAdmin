@@ -32,8 +32,8 @@ namespace EcommerceAdmin.Controllers
             int cartid = 0;
             if (Session["Cart"] == null)
             {
-                List<Ent_Product> item = new List<Ent_Product>();
-                item.Add(new Ent_Product()
+                List<Ent_OrderDetail> item = new List<Ent_OrderDetail>();
+                item.Add(new Ent_OrderDetail()
                 {
                     Product_ID = Product_ID,
                     Product_Name=ent.Product_Name,
@@ -48,11 +48,11 @@ namespace EcommerceAdmin.Controllers
             }
             else
             {
-                List<Ent_Product> item = (List<Ent_Product>)Session["Cart"];
+                List<Ent_OrderDetail> item = (List<Ent_OrderDetail>)Session["Cart"];
                 bool has  = item.Any(x => x.Product_ID == Product_ID);
                 if (has == false)
                 {
-                    item.Add(new Ent_Product()
+                    item.Add(new Ent_OrderDetail()
                     {
                         Product_ID = Product_ID,
                         Product_Name = ent.Product_Name,
@@ -98,11 +98,11 @@ namespace EcommerceAdmin.Controllers
 
         public int DeleteCart(int CartID)
         {
-            List<Ent_Product> list = (List<Ent_Product>)Session["Cart"];
+            List<Ent_OrderDetail> list = (List<Ent_OrderDetail>)Session["Cart"];
             Ent_Product ent = new Ent_Product();
             ent = balProduct.SelectProduct(CartID);
             var qty = list.Where(l => l.Product_ID == CartID).FirstOrDefault().Quantity;
-            Session["Cart"] = list.Where(l => l.Product_ID != CartID).ToList<Ent_Product>();
+            Session["Cart"] = list.Where(l => l.Product_ID != CartID).ToList<Ent_OrderDetail>();
           
             int count = list.Count - 1;
             Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) - (ent.Product_Price*qty);
@@ -135,10 +135,10 @@ namespace EcommerceAdmin.Controllers
         public int UpdateCart(List<Ent_Product> CartList)
         {
             float total = 0;
-           List <Ent_Product> item = new List<Ent_Product>();
+           List <Ent_OrderDetail> item = new List<Ent_OrderDetail>();
             for (int i = 0; i < CartList.Count; i++)
             {
-                item.Add(new Ent_Product()
+                item.Add(new Ent_OrderDetail()
                 {
                     Product_ID = CartList[i].Product_ID,
                     Product_Name = CartList[i].Product_Name,
@@ -171,20 +171,24 @@ namespace EcommerceAdmin.Controllers
 
                 total = total + (CartList[i].Quantity * CartList[i].Product_Price);
                 Session["Cart"] = item;
-                item = (List<Ent_Product>)Session["Cart"];             
+                item = (List<Ent_OrderDetail>)Session["Cart"];             
             }
-            Session["SubTotal"] = Session["Total"] =  total;
+            Session["SubTotal"] = Session["Total"] =  total; 
            
             return 1;
         }
 
         public ActionResult Checkout()
         {
-            return View();
+            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            int GuestID = Guest_ID != null ? Convert.ToInt32(Guest_ID.Value.Split('=')[1]) : 0;
+            Ent_Guest ent = new Ent_Guest();
+            ent = balguest.SelectGuestDetails(GuestID);
+            return View(ent);
         }
 
 
-           public int SaveOrder(Ent_Order model)
+        public int SaveOrder(Ent_Order model)
         {
             SafeTransaction trans = new SafeTransaction();
             DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
@@ -203,8 +207,9 @@ namespace EcommerceAdmin.Controllers
             if (i > 0)
             {
                 Session["Cart"] = null;
-                Session["Total"] = null;
-                Session["SubTotal"] = null;
+                Session["Total"] = "0.00";
+                Session["SubTotal"] = "0.00";
+                Session["Shipping"] = "0.00";
                 trans.Commit();
             }
             else
@@ -213,6 +218,21 @@ namespace EcommerceAdmin.Controllers
             }
 
             return i;
+        }
+
+        public ActionResult ViewOrder()
+        {
+            int Order_ID = Request.QueryString["Id"] != null ? Convert.ToInt32(Request.QueryString["Id"]) : 0;
+            List<Ent_OrderDetail> list = new List<Ent_OrderDetail>();
+            if (Order_ID != 0)
+            {
+                list = balOrder.SelectOrderDetails(Order_ID);
+                ViewBag.OrderDetails = list;
+                ViewBag.SubTotal = list[0].entOrder.Order_SubTotal;
+                ViewBag.Shipping = list[0].entOrder.Order_Shipping;
+                ViewBag.Total = list[0].entOrder.Order_Total;
+            }
+            return View();
         }
     }
 }

@@ -236,12 +236,15 @@ namespace EcommerceAdmin.Controllers
             HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
             string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
             List<Ent_Order> list = new List<Ent_Order>();
+            Ent_Guest entGuest = new Ent_Guest();
             if (!string.IsNullOrEmpty(GuestID))
-            {               
+            {
                 list = balOrder.SelectGuestOrder(Convert.ToInt32(GuestID));
+
+                entGuest = list[0].entGuest;
             }
             ViewBag.OrderList = list;
-                return View();
+                return View(entGuest);
         }
     }
 }

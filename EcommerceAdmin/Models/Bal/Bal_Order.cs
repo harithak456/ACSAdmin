@@ -99,5 +99,20 @@ namespace EcommerceAdmin.Models.Bal
                 return ent;
             }
         }
+
+        public List<Ent_OrderDetail> SelectOrderDetails(int OrderId)
+        {
+            List<Ent_OrderDetail> ent = new List<Ent_OrderDetail>();
+            try
+            {
+                Dal_Order dal = new Dal_Order();
+                ent = dal.SelectOrderDetails(OrderId);
+                return ent;
+            }
+            catch
+            {
+                return ent;
+            }
+        }
     }
 }

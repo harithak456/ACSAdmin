@@ -45,6 +45,7 @@ namespace EcommerceAdmin.Models.Entity
         public DateTime Created_Date { get; set; }
         public DateTime Modified_Date { get; set; }
         public List<Ent_OrderDetail> OrderDetailsList = new List<Ent_OrderDetail>();
+        public Ent_Guest entGuest = new Ent_Guest();
     }
     public class Ent_OrderDetail
     {
@@ -59,5 +60,6 @@ namespace EcommerceAdmin.Models.Entity
 
         public int Cart_ID { get; set; }
         public int Guest_ID { get; set; }
+        public Ent_Order entOrder = new Ent_Order();
     }
     }

@@ -303,6 +303,15 @@ namespace EcommerceAdmin.Models.Dal
                         ent.Is_Active = Convert.ToInt32(dr["Is_Active"]);                     
                         ent.Order_Total = Convert.ToDouble(dr["Order_Total"]);                     
                         ent.Total_Qty = Convert.ToInt32(dr["Total_Qty"]);                     
+                        ent.entGuest.Guest_FirstName = Convert.ToString(dr["Guest_FirstName"]);                     
+                        ent.entGuest.Guest_LastName = Convert.ToString(dr["Guest_LastName"]);                     
+                        ent.entGuest.Guest_Address1 = Convert.ToString(dr["Guest_Address1"]);                     
+                        ent.entGuest.Guest_Address2 = Convert.ToString(dr["Guest_Address2"]);                     
+                        ent.entGuest.Guest_Town = Convert.ToString(dr["Guest_Town"]);                     
+                        ent.entGuest.Guest_State = Convert.ToString(dr["Guest_State"]);                     
+                        ent.entGuest.Guest_Country = Convert.ToString(dr["Guest_Country"]);                     
+                        ent.entGuest.Guest_Email = Convert.ToString(dr["Guest_Email"]);                     
+                        ent.entGuest.Guest_Phone = Convert.ToString(dr["Guest_Phone"]);                     
                         result.Add(ent);
                     }
                 }
@@ -310,6 +319,50 @@ namespace EcommerceAdmin.Models.Dal
             catch (Exception ex)
             {
                 InsertException(ex.Message, "SelectGuestOrder", guestID);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return result;
+        }
+
+        public List<Ent_OrderDetail> SelectOrderDetails(int OrderId)
+        {
+            List<Ent_OrderDetail> result = new List<Ent_OrderDetail>();
+            Ent_OrderDetail ent = new Ent_OrderDetail();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("EC_SelectOrderDetails", con))
+                {
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Order_ID", OrderId));
+                    IDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        ent = new Ent_OrderDetail();
+                        ent.OrderDetail_ID = Convert.ToInt32(dr["OrderDetail_ID"]);
+                        ent.Order_ID = Convert.ToInt32(dr["Order_ID"]);
+                        ent.Product_ID = Convert.ToInt32(dr["Product_ID"]);
+                        ent.Product_Total = float.Parse(dr["Product_Total"].ToString());
+                        ent.Product_Price = float.Parse(dr["Product_Price"].ToString());
+                        ent.Quantity = Convert.ToInt32(dr["Quantity"]);
+                        ent.Product_Image = Convert.ToString(dr["Product_Image"]);
+                        ent.Product_Name = Convert.ToString(dr["Product_Name"]);                      
+                        ent.entOrder.Order_Shipping = float.Parse(dr["Order_Shipping"].ToString());
+                        ent.entOrder.Order_Total = float.Parse(dr["Order_Total"].ToString());
+                        ent.entOrder.Order_SubTotal = float.Parse(dr["Order_SubTotal"].ToString());
+                        result.Add(ent);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                InsertException(ex.Message, "SelectOrderDetails", OrderId);
             }
             finally
             {

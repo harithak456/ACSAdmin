@@ -1,7 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "ViewCart";
+    ViewBag.Title = "ViewOrder";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
+    List<EcommerceAdmin.Models.Entity.Ent_OrderDetail> OrderDetails = ViewBag.OrderDetails;
+    var SubTotal = ViewBag.SubTotal;
+    var Shipping = ViewBag.Shipping;
+    var Total = ViewBag.Total;
 }
 
 <!--breadcrumbs area start-->
@@ -12,7 +16,7 @@
                 <div class="breadcrumb_content">
                     <ul>
                         <li><a href="/Home/Index">home</a></li>
-                        <li>Shopping Cart</li>
+                        <li>Order Details</li>
                     </ul>
                 </div>
             </div>
@@ -31,7 +35,6 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th class="product_remove">Delete</th>
                                         <th class="product_thumb">Image</th>
                                         <th class="product_name">Product</th>
                                         <th class="product-price">Price</th>
@@ -40,29 +43,20 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tblCartBody">
-                                    @if (Session["Cart"] != null)
+                                    @foreach (var items in OrderDetails)
                                     {
-                                        foreach (var items in (List<EcommerceAdmin.Models.Entity.Ent_OrderDetail>)Session["Cart"])
-                                        {
-                                            <tr id="@items.Product_ID" class="tblRow">
-                                                <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                                <td class="product_thumb"><a href="#"><img src="../../ProductImages/@items.Product_Image" alt=""></a></td>
-                                                <td class="product_name" productname="@items.Product_Name"><a href="#">@items.Product_Name</a></td>
-                                                <td class="product-price" price="@items.Product_Price">AED @items.Product_Price</td>
-                                                @*<td class="product_quantity"><label>@items.Quantity</label><input min="1" max="100" class="ProductQty" value="@items.Quantity" type="number"></td>*@
-                                                <td class="product_quantity"> <input min="1" max="100" class="ProductQty" value="@items.Quantity" type="number"></td>
-                                                <td class="product_total">AED @items.Product_Total</td>
-                                                <td hidden class="Product_Image">@items.Product_Image</td>
-                                            </tr>
-                                        }
+                                    <tr id="@items.Product_ID" class="tblRow">                                     
+                                        <td class="product_thumb"><a href="#"><img src="../../ProductImages/@items.Product_Image" alt=""></a></td>
+                                        <td class="product_name" productname="@items.Product_Name"><a href="#">@items.Product_Name</a></td>
+                                        <td class="product-price" price="@items.Product_Price">AED @items.Product_Price</td>
+                                        <td class="product_quantity">@items.Quantity</td>
+                                        <td class="product_total">AED @items.Product_Total</td>
+                                    </tr>
                                     }
 
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="cart_submit">
-                            <button type="submit" id="btnUpdateCart">update cart</button>
-                        </div>
+                        </div>                     
                     </div>
                 </div>
             </div>
@@ -70,36 +64,27 @@
             <div class="coupon_area">
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
-                        <div class="coupon_code left">
-                            <h3>Coupon</h3>
-                            <div class="coupon_inner">
-                                <p>Enter your coupon code if you have one.</p>
-                                <input placeholder="Coupon code" type="text">
-                                <button type="submit">Apply coupon</button>
-                            </div>
-                        </div>
+                      
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="coupon_code right">
-                            <h3>Cart Totals</h3>
+                            <h3>Amount</h3>
                             <div class="coupon_inner">
                                 <div class="cart_subtotal">
                                     <p>Subtotal</p>
-                                    <p class="cart_amount">AED @Session["Total"]</p>
+                                    <p class="cart_amount">AED @SubTotal</p>
                                 </div>
                                 <div class="cart_subtotal ">
                                     <p>Shipping</p>
-                                    <p class="cart_amount"><span>Flat Rate:</span> AED 0.00</p>
+                                    <p class="cart_amount">AED @Shipping</p>
                                 </div>
-                                <a href="#">Calculate shipping</a>
+                           
 
                                 <div class="cart_subtotal">
                                     <p>Total</p>
-                                    <p class="cart_amount">AED @Session["Total"]</p>
+                                    <p class="cart_amount">AED @Total</p>
                                 </div>
-                                <div class="checkout_btn">
-                                    <a href="/Order/Checkout">Proceed to Checkout</a>
-                                </div>
+                              
                             </div>
                         </div>
                     </div>
@@ -111,7 +96,7 @@
 </div>
 <!--shopping cart area end -->
 <script>
-    
+
     $(document).ready(function () {
         $('#btnUpdateCart').click(function () {
             var count = $('#tblCartBody tr').length;
@@ -158,16 +143,16 @@
         });
 
 
-        $('.product_remove').click(function () {   
+        $('.product_remove').click(function () {
             var row = $(this).closest('tr');
-            var CartID = row.attr('id');           
+            var CartID = row.attr('id');
             $.ajax({
                 type: 'POST',
                 url: '/Order/DeleteCart',
                 data: "{ 'CartID': '" + CartID + "' }",
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                success: function (data) {               
+                success: function (data) {
                     //$("#" + CartID).fadeOut("slow").remove();
                     location.reload();
                     //var div = document.getElementById(CartID);
@@ -175,7 +160,7 @@
                     //$('.cart_quantity').html(data);
                 }
             });
-        });                         
+        });
     });
-    
+
 </script>

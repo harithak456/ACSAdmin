@@ -1,4 +1,4 @@
-﻿
+﻿@model EcommerceAdmin.Models.Entity.Ent_Guest
 @{
     ViewBag.Title = "Checkout";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
@@ -83,46 +83,44 @@
 
                             <div class="col-lg-6 mb-20">
                                 <label>First Name <span>*</span></label>
-                                <input type="text" id="FName">
+                                <input type="text" id="FName" value="@Model.Guest_FirstName">
                             </div>
                             <div class="col-lg-6 mb-20">
                                 <label>Last Name <span>*</span></label>
-                                <input type="text" id="LName">
+                                <input type="text" id="LName" value="@Model.Guest_LastName">
                             </div>                           
                             <div class="col-12 mb-20">
                                 <label for="country">country <span>*</span></label>
                                 <select class="niceselect_option" name="cuntry" id="Country">
-                                    <option value="2">UNITED ARAB EMIRATES</option>
+                                    <option value="UNITED ARAB EMIRATES">UNITED ARAB EMIRATES</option>
                                 </select>
                             </div>
 
                             <div class="col-12 mb-20">
                                 <label>Street address <span>*</span></label>
-                                <input placeholder="House number and street name" type="text" id="Address1">
+                                <input placeholder="House number and street name" type="text" id="Address1" value="@Model.Guest_Address1">
                             </div>
                             <div class="col-12 mb-20">
-                                <input placeholder="Apartment, suite, unit etc. (optional)" type="text" id="Address2">
+                                <input placeholder="Apartment, suite, unit etc. (optional)" type="text" id="Address2" value="@Model.Guest_Address2">
                             </div>
                             <div class="col-12 mb-20">
                                 <label>Town / City <span>*</span></label>
-                                <input type="text" id="Town">
+                                <input type="text" id="Town" value="@Model.Guest_Town">
                             </div>
                             <div class="col-12 mb-20">
                                 <label>State / County <span>*</span></label>
-                                <input type="text" id="State">
+                                <input type="text" id="State" value="@Model.Guest_State">
                             </div>
                             <div class="col-lg-6 mb-20">
                                 <label>Phone<span>*</span></label>
-                                <input type="text" id="Phone">
+                                <input type="text" id="Phone" value="@Model.Guest_Phone">
 
                             </div>
                             <div class="col-lg-6 mb-20">
                                 <label> Email Address <span>*</span></label>
-                                <input type="text" id="Email">
-
+                                <input type="text" id="Email" value="@Model.Guest_Email">
                             </div>
                             <div class="col-12 mb-20">
-
                                 <div id="collapseOne" class="collapse one" data-parent="#accordion">
                                     <div class="card-body1">
                                         <label> Account password <span>*</span></label>
@@ -130,7 +128,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 mb-20">
+                            @*<div class="col-12 mb-20">
                                 <input id="address" type="checkbox" data-target="createp_account" />
                                 <label class="righ_0" for="address" data-toggle="collapse" data-target="#collapsetwo" aria-controls="collapseOne">Ship to a different address?</label>
 
@@ -192,7 +190,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="col-12">
                                 <div class="order-notes">
                                     <label for="order_note">Order Notes</label>

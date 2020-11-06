@@ -160,7 +160,47 @@ namespace EcommerceAdmin.Models.Dal
             return ent;
         }
 
-      
+        public Ent_Guest SelectGuestDetails(int ID)
+        {
+            Ent_Guest ent = new Ent_Guest();
+            try
+            {
+                string query = "select * from EC_GuestLogin  where Guest_ID=" + ID + "  and Is_Active=1";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
+                    IDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        ent.Guest_ID = Convert.ToInt32(dr["Guest_ID"]);
+                        ent.Guest_Username = Convert.ToString(dr["Guest_Username"]);
+                        ent.Guest_Password = Convert.ToString(dr["Guest_Password"]);
+                        ent.Guest_FirstName = Convert.ToString(dr["Guest_FirstName"]);
+                        ent.Guest_LastName = Convert.ToString(dr["Guest_LastName"]);
+                        ent.Guest_Address1 = Convert.ToString(dr["Guest_Address1"]);
+                        ent.Guest_Address2 = Convert.ToString(dr["Guest_Address2"]);
+                        ent.Guest_Town = Convert.ToString(dr["Guest_Town"]);
+                        ent.Guest_State = Convert.ToString(dr["Guest_State"]);
+                        ent.Guest_Country = Convert.ToString(dr["Guest_Country"]);
+                        ent.Guest_Email = Convert.ToString(dr["Guest_Email"]);
+                        ent.Guest_Phone = Convert.ToString(dr["Guest_Phone"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                InsertException(ex.Message, "SelectLogin", 0);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return ent;
+        }
+
         public void InsertException(string exception, string from, int id)
         {
             using (SqlCommand cmd = new SqlCommand("EC_InsertException", con))
