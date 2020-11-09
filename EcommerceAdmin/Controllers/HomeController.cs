@@ -140,7 +140,7 @@ namespace EcommerceAdmin.Controllers
         }
 
         [HttpPost]
-        public ActionResult PartialProductFilter(int categoryId, string subCategoryId, string brand)
+        public ActionResult PartialProductFilter(int categoryId, string subCategoryId, string brand,int sort)
         {
             List<Ent_Product> listProduct = new List<Ent_Product>();
            
@@ -161,7 +161,14 @@ namespace EcommerceAdmin.Controllers
                 List<Ent_Product> objlt = (List<Ent_Product>)Session["listProduct"];
                 listProduct = objlt.Where(v => brand.Contains(v.Brand_ID.ToString())).ToList<Ent_Product>();
             }
-
+            if(sort==4)
+            {
+                listProduct = listProduct.OrderBy(x => x.Product_Price).ToList<Ent_Product>();
+            }
+            else if (sort == 5)
+            {
+                listProduct = listProduct.OrderByDescending(x => x.Product_Price).ToList<Ent_Product>();
+            }
             ViewBag.listProduct = listProduct;
 
             List<Ent_Brand> listBrand = new List<Ent_Brand>();

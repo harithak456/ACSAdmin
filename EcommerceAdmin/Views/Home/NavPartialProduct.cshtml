@@ -49,11 +49,11 @@
                         <form class="select_option" action="#">
                             <select name="orderby" id="short">
                                 <option selected value="1">Sort by average rating</option>
-                                <option value="2">Sort by popularity</option>
-                                <option value="3">Sort by newness</option>
+                                @*<option value="2">Sort by popularity</option>*@
+                                @*<option value="3">Sort by newness</option>*@
                                 <option value="4">Sort by price: low to high</option>
                                 <option value="5">Sort by price: high to low</option>
-                                <option value="6">Product Name: Z</option>
+                                @*<option value="6">Product Name: Z</option>*@
                             </select>
                         </form>
 
@@ -65,8 +65,7 @@
                 </div>
                 <!--shop toolbar end-->
 
-                <div class="row shop_wrapper grid_list">
-                
+                <div class="row shop_wrapper grid_list">                
                     @foreach (var item in listProduct)
                     {
                         <div class="col-12 ">
@@ -259,11 +258,14 @@
             else
                 brands = brands + "," + $(this).val();
         })
+
+    
+        var sort = $('#short').val();
         $.ajax({
             type: 'POST',
             url: '/Home/PartialProductFilter',
             cache: false,
-            data: { categoryId: CategoryId, subCategoryId: subCategoryId, brand: brands },
+            data: { categoryId: CategoryId, subCategoryId: subCategoryId, brand: brands,sort:sort },
             dataType: 'html',
             success: function (data) {
                 console.log(data);
@@ -280,6 +282,9 @@
         });
     }
 
+    $('#short').change(function (e) {
+        e.preventDefault();
+    });
     $('#categoryLink').click(function (e) {       
         e.preventDefault();
         var ID = $('#CategoryID').val();       

@@ -58,6 +58,7 @@
     }
 
     $('#btnRegister').click(function () {
+      
         //if (Validate() == true) {        
             var Email = $('#REmail').val();
             var Password = $('#RPassword').val();
@@ -79,20 +80,12 @@
                 error: OnErrorSaveCall
             });
 
-            function OnSuccessSaveCall(data) {
-                if (data > "0") {
-                    alert("success");
-                    //$(window).scrollTop(0);
-                    //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Save Successful.</div>');
-                    //$(".msg").delay(8000).fadeOut(800);
-                    //setTimeout(
-                    //    function () {
-                    //        location.href = "/Master/Users";
-                    //    }, 800);
-                    location.href = "/Master/Users";
+        function OnSuccessSaveCall(data) {               
+                if (data > 0) {
+                     $('#spanMsg').html("Registration Successfull..Please Verify Your Mail");
                 }
                 else {
-                    alert("error");
+                    $('#spanMsg').html("Registration Failed !");     
                 }
             }
             function OnErrorSaveCall() {
