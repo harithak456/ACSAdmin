@@ -84,5 +84,10 @@ namespace EcommerceAdmin.Controllers
             Response.Cookies.Add(User_Type);
             return 1;
         }
+
+        public ActionResult Orders()
+        {
+            return View();
+        }
     }
 }
