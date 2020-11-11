@@ -152,6 +152,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="22.html" />
+    <Content Include="333.html" />
     <Content Include="assetsadmin\bootstrap\css\bootstrap.min.css" />
     <Content Include="assetsadmin\bootstrap\js\bootstrap.min.js" />
     <Content Include="assetsadmin\dist\css\AdminLTE.min.css" />
@@ -269,6 +271,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="ssds.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -306,6 +309,7 @@
     <Content Include="Views\Login\MyAccount.cshtml" />
     <Content Include="Views\Order\ViewOrder.cshtml" />
     <Content Include="Views\Admin\Orders.cshtml" />
+    <Content Include="Views\Admin\OrderList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

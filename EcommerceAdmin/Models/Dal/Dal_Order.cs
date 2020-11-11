@@ -280,10 +280,11 @@ namespace EcommerceAdmin.Models.Dal
             return dataresult;
         }
 
-        public List<Ent_Order> SelectGuestOrder(int guestID)
+        public List<Ent_Order> SelectGuestOrder(int guestID )
         {
             List<Ent_Order> result = new List<Ent_Order>();
             Ent_Order ent = new Ent_Order();
+            int orderid = 0;
             try
             {
                 using (SqlCommand cmd = new SqlCommand("EC_SelectGuestOrder", con))
@@ -294,6 +295,7 @@ namespace EcommerceAdmin.Models.Dal
                     }
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@Guest_ID", guestID));
+                    cmd.Parameters.Add(new SqlParameter("@Order_ID", orderid));
                     IDataReader dr = cmd.ExecuteReader();
                     while (dr.Read())
                     {
@@ -301,7 +303,9 @@ namespace EcommerceAdmin.Models.Dal
                         ent.Order_ID = Convert.ToInt32(dr["Order_ID"]);
                         ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);
                         ent.Is_Active = Convert.ToInt32(dr["Is_Active"]);                     
-                        ent.Order_Total = Convert.ToDouble(dr["Order_Total"]);                     
+                        ent.Order_Total = Convert.ToDouble(dr["Order_Total"]);    
+                                    ent.Order_SubTotal = Convert.ToDouble(dr["Order_SubTotal"]);
+                                    ent.Order_Shipping = Convert.ToDouble(dr["Order_Shipping"]);
                         ent.Total_Qty = Convert.ToInt32(dr["Total_Qty"]);                     
                         ent.entGuest.Guest_FirstName = Convert.ToString(dr["Guest_FirstName"]);                     
                         ent.entGuest.Guest_LastName = Convert.ToString(dr["Guest_LastName"]);                     
@@ -312,6 +316,7 @@ namespace EcommerceAdmin.Models.Dal
                         ent.entGuest.Guest_Country = Convert.ToString(dr["Guest_Country"]);                     
                         ent.entGuest.Guest_Email = Convert.ToString(dr["Guest_Email"]);                     
                         ent.entGuest.Guest_Phone = Convert.ToString(dr["Guest_Phone"]);                     
+                        ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);                     
                         result.Add(ent);
                     }
                 }
@@ -325,6 +330,56 @@ namespace EcommerceAdmin.Models.Dal
                 con.Close();
             }
             return result;
+        }
+
+        public Ent_Order SelectOrder( int OrderID)
+        {          
+            Ent_Order ent = new Ent_Order();
+            int guestid = 0;
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("EC_SelectGuestOrder", con))
+                {
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Guest_ID", guestid));
+                    cmd.Parameters.Add(new SqlParameter("@Order_ID", OrderID));
+                    IDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        ent = new Ent_Order();
+                        ent.Order_ID = Convert.ToInt32(dr["Order_ID"]);
+                        ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);
+                        ent.Is_Active = Convert.ToInt32(dr["Is_Active"]);
+                        ent.Order_Total = Convert.ToDouble(dr["Order_Total"]);
+                        ent.Order_SubTotal = Convert.ToDouble(dr["Order_SubTotal"]);
+                        ent.Order_Shipping = Convert.ToDouble(dr["Order_Shipping"]);
+                        ent.Total_Qty = Convert.ToInt32(dr["Total_Qty"]);
+                        ent.entGuest.Guest_FirstName = Convert.ToString(dr["Guest_FirstName"]);
+                        ent.entGuest.Guest_LastName = Convert.ToString(dr["Guest_LastName"]);
+                        ent.entGuest.Guest_Address1 = Convert.ToString(dr["Guest_Address1"]);
+                        ent.entGuest.Guest_Address2 = Convert.ToString(dr["Guest_Address2"]);
+                        ent.entGuest.Guest_Town = Convert.ToString(dr["Guest_Town"]);
+                        ent.entGuest.Guest_State = Convert.ToString(dr["Guest_State"]);
+                        ent.entGuest.Guest_Country = Convert.ToString(dr["Guest_Country"]);
+                        ent.entGuest.Guest_Email = Convert.ToString(dr["Guest_Email"]);
+                        ent.entGuest.Guest_Phone = Convert.ToString(dr["Guest_Phone"]);
+                        ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                InsertException(ex.Message, "SelectOrder", OrderID);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return ent;
         }
 
         public List<Ent_OrderDetail> SelectOrderDetails(int OrderId)

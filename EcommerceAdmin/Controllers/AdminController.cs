@@ -13,6 +13,7 @@ namespace EcommerceAdmin.Controllers
         #region Declaration
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");       
         Bal_Master balMaster = new Bal_Master();
+        Bal_Order balOrder = new Bal_Order();
         #endregion
 
         public ActionResult Dashboard()
@@ -85,9 +86,25 @@ namespace EcommerceAdmin.Controllers
             return 1;
         }
 
+        public ActionResult OrderList()
+        {
+            List<Ent_Order> OrderList = new List<Ent_Order>();
+           
+            OrderList = balOrder.SelectGuestOrder(0);
+            ViewBag.OrderList = OrderList;
+         
+            return View();
+        }
+
         public ActionResult Orders()
         {
-            return View();
+            int OrderID = Request.QueryString["OrderID"] != null ? Convert.ToInt32(Request.QueryString["OrderID"]) : 0;
+            Ent_Order entOrder = new Ent_Order();
+            entOrder = balOrder.SelectOrder(OrderID);
+            List<Ent_OrderDetail> OrderList = new List<Ent_OrderDetail>();
+            OrderList = balOrder.SelectOrderDetails(OrderID);
+            ViewBag.OrderList = OrderList;
+            return View(entOrder);
         }
     }
 }
