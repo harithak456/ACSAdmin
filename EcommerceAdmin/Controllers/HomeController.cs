@@ -38,7 +38,7 @@ namespace EcommerceAdmin.Controllers
         public ActionResult Index()
         {
             HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
-            string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+             string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
             if (GuestID != "" && Session["Cart"]==null)
             {
                 List<Ent_OrderDetail> list = new List<Ent_OrderDetail>();

@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<script type="text/javascript" src="https://goSellJSLib.b-cdn.net/v1.6.0/js/gosell.js"></script>
+
+<!--shop  area start-->
+<div class="shop_area">
+    <div class="container">
+        <p>Payment Succesfull</p>
+        <div id="root"></div>
+
+
+    </div>
+</div>
+<!--shop  area end-->
+<script>
+    goSell.showResult({
+        callback: response => {
+            console.log("callback", response);
+            alert(response);
+        }
+    });
+</script>
+

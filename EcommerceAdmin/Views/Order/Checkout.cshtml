@@ -5,7 +5,7 @@
 }
 
 <script src="~/Scripts/ajax/checkout.js"></script>
-<script src="https://goSellJSLib.b-cdn.net/v1.6.0/js/gosell.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://goSellJSLib.b-cdn.net/v1.6.0/js/gosell.js"></script>
 <!--breadcrumbs area start-->
 <div class="breadcrumbs_area">
     <div class="container">
@@ -129,7 +129,7 @@
                                         <input placeholder="password" type="password">
                                     </div>
                                 </div>
-                            </div>                         
+                            </div>
                             <div class="col-12">
                                 <div class="order-notes">
                                     <label for="order_note">Order Notes</label>
@@ -184,19 +184,19 @@
                             </table>
                         </div>
                         <div class="payment_method">
-                            <div class="panel-default">
-                                <input id="payment" name="check_method" type="radio" data-target="createp_account" />
-                                <label for="payment" data-toggle="collapse" data-target="#method" aria-controls="method">Create an account?</label>
+                            @*<div class="panel-default">
+                                    <input id="payment" name="check_method" type="radio" data-target="createp_account" />
+                                    <label for="payment" data-toggle="collapse" data-target="#method" aria-controls="method">Create an account?</label>
 
-                                <div id="method" class="collapse one" data-parent="#accordion">
-                                    <div class="card-body1">
-                                        <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+                                    <div id="method" class="collapse one" data-parent="#accordion">
+                                        <div class="card-body1">
+                                            <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>*@
                             <div class="panel-default">
-                                <input id="payment_defult" name="check_method" type="radio" data-target="createp_account" />
-                                <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult" aria-controls="collapsedefult">PayPal <img src="../../assetsclient/img/icon/papyel.png" alt=""></label>
+
+                                <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult" aria-controls="collapsedefult">Tap Payment  <img src="../../assetsclient/img/icon/papyel.png" alt=""></label>
 
                                 <div id="collapsedefult" class="collapse one" data-parent="#accordion">
                                     <div class="card-body1">
@@ -205,13 +205,14 @@
                                 </div>
                             </div>
                             <div class="order_button">
-                                @*<button type="submit" id="btnProceed">Proceed to Payment</button>*@
-                                @*<button id="openPage" onclick="goSell.openPaymentPage()">Proceed to Payment</button>*@
-                                <button id="checkoutBtn" onclick="save()">Proceed to Payment</button> 
-                                <input type="number" id="amount" name="amount" value="1" />
-                            </div>
-                            @*<button id="openLightBox" onclick="goSell.openLightBox()">open goSell LightBox</button>*@
+                                <button id="checkoutBtn" onclick="save()">Proceed to Payment</button>
+                                <input type="hidden" id="amount" name="amount" value="@Session["Total"]" />
 
+
+                            </div>
+                            @*<div id="root"></div>
+                            <button id="openLightBox" onclick="goSell.openLightBox()">open goSell LightBox</button>
+                            <button id="openPage" onclick="goSell.openPaymentPage()">open goSell Page</button>*@
                         </div>
                     </form>
                 </div>
@@ -219,117 +220,234 @@
         </div>
     </div>
 </div>
+
+@*<script>
+
+    goSell.config({
+        containerID: "root",
+        gateway: {
+            publicKey: "pk_test_Vlk842B1EA7tDN5QbrfGjYzh",
+            merchantId: null,
+            language: "en",
+            contactInfo: true,
+            supportedCurrencies: "all",
+            supportedPaymentMethods: "all",
+            saveCardOption: false,
+            customerCards: true,
+            notifications: 'standard',
+            callback: (response) => {
+                console.log('response', response);
+            },
+            onClose: () => {
+                console.log("onClose Event");
+            },
+            backgroundImg: {
+                url: 'imgURL',
+                opacity: '0.5'
+            },
+            labels: {
+                cardNumber: "Card Number",
+                expirationDate: "MM/YY",
+                cvv: "CVV",
+                cardHolder: "Name on Card",
+                actionButton: "Pay"
+            },
+            style: {
+                base: {
+                    color: '#535353',
+                    lineHeight: '18px',
+                    fontFamily: 'sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: 'rgba(0, 0, 0, 0.26)',
+                        fontSize: '15px'
+                    }
+                },
+                invalid: {
+                    color: 'red',
+                    iconColor: '#fa755a '
+                }
+            }
+        },
+        customer: {
+            id: null,
+            first_name: "First Name",
+            middle_name: "Middle Name",
+            last_name: "Last Name",
+            email: "demo@email.com",
+            phone: {
+                country_code: "965",
+                number: "99999999"
+            }
+        },
+        order: {
+            amount: 1,
+            currency: "AED",
+            items: [{
+                id: 1,
+                name: 'item1',
+                description: 'item1 desc',
+                quantity: '1',
+                amount_per_unit: '00.000',
+                discount: {
+                    type: 'P',
+                    value: '10%'
+                },
+                total_amount: '000.000'
+            },
+            {
+                id: 2,
+                name: 'item2',
+                description: 'item2 desc',
+                quantity: '2',
+                amount_per_unit: '00.000',
+                discount: {
+                    type: 'P',
+                    value: '10%'
+                },
+                total_amount: '000.000'
+            },
+            {
+                id: 3,
+                name: 'item3',
+                description: 'item3 desc',
+                quantity: '1',
+                amount_per_unit: '00.000',
+                discount: {
+                    type: 'P',
+                    value: '10%'
+                },
+                total_amount: '000.000'
+            }],
+            shipping: null,
+            taxes: null
+        },
+        transaction: {
+            mode: 'charge',
+            charge: {
+                saveCard: false,
+                threeDSecure: true,
+                description: "Test Description",
+                statement_descriptor: "Sample",
+                reference: {
+                    transaction: "txn_0001",
+                    order: "ord_0001"
+                },
+                metadata: {},
+                receipt: {
+                    email: false,
+                    sms: true
+                },
+                redirect: "http://localhost:20196/redirect.html",
+                post: null,
+            }
+        }
+    });
+
+</script>*@
+
 <!--Checkout page section end-->
 <script>
-    function save() {
-     
-        var ItemList = new Array();
-         
-        $("#tblItemsBody .tblRow").each(function () {
-            var itemModel = new Object();
-            itemModel.id = $(this).find(".id").val();
-            itemModel.name = $(this).find(".name").val();
-            itemModel.description = "";
-            itemModel.old_quantity = 0;
-            itemModel.quantity = $(this).find(".quantity").val();
-            itemModel.amount_per_unit = $(this).find(".price").val();
-            itemModel.old_total_amount =0;
-            itemModel.total_amount = $(this).find(".total").val();
-            ItemList.push(itemModel);
-              });
-        console.log(ItemList);
-              const button = document.getElementById('checkoutBtn');
-              button.disabled = true;
-              goSell.config({
-              gateway: {
-                  publicKey: "pk_test_Vlk842B1EA7tDN5QbrfGjYzh",
-                merchant_id: "1124340",
-                merchant_id: null,
-                language: "en",
-                contactInfo: false,
-                supportedCurrencies: "all",
-                supportedPaymentMethods: "all",
-                saveCardOption: true,
-                customerCards: true,
-                notifications: "standard",
-                callback: (response) => {
-                    console.log("callback", response);
-                },
-                onClose: () => {
-                    console.log("onclose hey");
-                },
-                onLoad: () => {
-                    console.log("onLoad");
-                    goSell.openLightBox();
-                },
-                style: {
-                          base: {
-                          color: "red",
-                        lineHeight: "10px",
-                        fontFamily: "sans-serif",
-                        fontSmoothing: "antialiased",
-                        fontSize: "10px",
-                        "::placeholder": {
-                              color: "rgba(0, 0, 0, 0.26)",
+        function save() {
+
+            var ItemList = new Array();
+            $("#tblItemsBody .tblRow").each(function () {
+                var itemModel = new Object();
+                itemModel.id = $(this).find(".id").html();
+                itemModel.name = $(this).find(".name").html();
+                itemModel.description = "";
+                itemModel.old_quantity = 0;
+                itemModel.quantity = $(this).find(".quantity").html();
+                itemModel.amount_per_unit = $(this).find(".price").html();
+                itemModel.old_total_amount =0;
+                itemModel.total_amount = $(this).find(".total").html();
+                ItemList.push(itemModel);
+            });
+
+                  const button = document.getElementById('checkoutBtn');
+                  button.disabled = true;
+                  goSell.config({
+                  gateway: {
+                      //publicKey: "pk_test_Vlk842B1EA7tDN5QbrfGjYzh",
+                      publicKey: "pk_test_mrgWT9Hx0yRsIk5LJNVc478B",
+                    //merchant_id: "1124340",
+                    merchant_id: null,
+                    language: "en",
+                    contactInfo: false,
+                    supportedCurrencies: "all",
+                    supportedPaymentMethods: "all",
+                    saveCardOption: true,
+                    customerCards: true,
+                    notifications: "standard",
+                    callback: (response) => {
+                        console.log("callback", response);
+                    },
+                    onClose: () => {
+                        console.log("onclose hey");
+                    },
+                    onLoad: () => {
+                        console.log("onLoad");
+                        goSell.openLightBox();
+                    },
+                    style: {
+                              base: {
+                              color: "red",
+                            lineHeight: "10px",
+                            fontFamily: "sans-serif",
+                            fontSmoothing: "antialiased",
                             fontSize: "10px",
+                            "::placeholder": {
+                                  color: "rgba(0, 0, 0, 0.26)",
+                                fontSize: "10px",
+                            },
+                        },
+                        invalid: {
+                              color: "red",
+                            iconColor: "#fa755a ",
                         },
                     },
-                    invalid: {
-                          color: "red",
-                        iconColor: "#fa755a ",
-                    },
                 },
-            },
-            customer: {
-                  first_name: @Model.Guest_FirstName,
-                middle_name: "",
-                last_name:@Model.Guest_LastName,
-                email: @Model.Guest_Email,
-                phone: {
-                      country_code: "+971",
-                    number: @Model.Guest_Phone,
+                      customer: {
+                          first_name: document.getElementById('FName').value,
+                          middle_name: "",
+                          last_name: document.getElementById('LName').value,
+                          email: document.getElementById('Email').value,
+                          phone: {
+                              country_code: "+971",
+                              number: document.getElementById('Phone').value,
+                          },
                 },
-            },
-            order: {
-                  amount: document.getElementById('amount').value,
-                currency: "AED",
-                items: [
-                    {
-                          "id": 0,
-                    "name": "Item ",
-                    "description": "Item Desc 0",
-                    "old_quantity": 1,
-                    "quantity": 1,
-                    "amount_per_unit": 0,
-                    "old_total_amount": 0,
-                    "total_amount": 10
-                }
-                ],
-            },
-            transaction: {
-                  mode: "charge",
-                charge: {
-                      auto: {
-                          time: 100,
-                        type: "VOID",
-                    },
-                    saveCard: false,
-                    threeDSecure: true,
-                    description: "description",
-                    statement_descriptor: "statement_descriptor",
-                    reference: {
-                          transaction: "txn_0001",
-                        order: "ord_0001",
-                    },
-                    metadata: {},
-                    receipt: {
-                          email: false,
-                        sms: true,
-                    },
-                    redirect: "http://localhost/redirect.html",
-                    post: null,
-                }
-                  },
-        });
-          }
-</script>
+                order: {
+                      //amount: document.getElementById('amount').value,
+                    amount: 1,
+                    currency: "AED",
+                    items: ItemList,
+                },
+                transaction: {
+                      mode: "charge",
+                      charge: {
+                          auto: {
+                              time: 100,
+                            type: "VOID",
+                        },
+                        saveCard: false,
+                        threeDSecure: true,
+                        description: "description",
+                        statement_descriptor: "statement_descriptor",
+                        reference: {
+                              transaction: "txn_0001",
+                            order: "ord_0001",
+                        },
+                        metadata: {},
+                        receipt: {
+                              email: true,
+                            sms: true,
+                        },
+                        redirect: "http://localhost:20196/Order/Payment",
+                        post: null,
+                    }
+                      },
+            });
+              }
+    </script>
