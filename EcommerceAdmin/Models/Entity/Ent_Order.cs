@@ -44,6 +44,11 @@ namespace EcommerceAdmin.Models.Entity
         public int Is_Active { get; set; }
         public DateTime Created_Date { get; set; }
         public DateTime Modified_Date { get; set; }
+        public DateTime Received_Date { get; set; }
+        public DateTime Shipped_Date { get; set; }
+        public DateTime Cancel_Date { get; set; }
+        public DateTime Return_Date { get; set; }
+        public DateTime Delivered_Date { get; set; }
         public List<Ent_OrderDetail> OrderDetailsList = new List<Ent_OrderDetail>();
         public Ent_Guest entGuest = new Ent_Guest();
     }

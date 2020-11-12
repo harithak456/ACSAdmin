@@ -19,8 +19,15 @@
 <script>
     goSell.showResult({
         callback: response => {
-            console.log("callback", response);
-            alert(response);
+            console.log("callback", response);            
+            var status = response.callback["status"];
+            if (status == "CAPTURED")
+            {
+                 Session["Cart"] = null;
+                Session["Total"] = "0.00";
+                Session["SubTotal"] = "0.00";
+                Session["Shipping"] = "0.00";
+            }
         }
     });
 </script>

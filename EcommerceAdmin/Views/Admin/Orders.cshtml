@@ -37,8 +37,8 @@
             From
             <address>
                 <strong>@Model.entGuest.Guest_Email</strong><br>
-                @Model.entGuest.Guest_Address1<br>
-                @Model.entGuest.Guest_Address2<br>
+                Address1: @Model.entGuest.Guest_Address1<br>
+                Address2: @Model.entGuest.Guest_Address2<br>
                 Phone: @Model.entGuest.Guest_Phone<br>
                 Email: @Model.entGuest.Guest_Email
             </address>
@@ -97,15 +97,24 @@
     <div class="row">
         <!-- accepted payments column -->
         <div class="col-xs-6">
-            <p class="lead">Payment Methods:</p>
-            <img src="../../dist/img/credit/visa.png" alt="Visa">
-            <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-            <img src="../../dist/img/credit/american-express.png" alt="American Express">
-            <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
-            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg
-                dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-            </p>
+            <p class="lead">Order Status:</p>
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th style="width:50%">Order Received:</th>
+                        <td>@Model.Created_Date</td>
+                    </tr>
+                  
+                    <tr>
+                        <th>Order Shipped:</th>
+                        <td>@Model.Order_Shipping</td>
+                    </tr>
+                    <tr>
+                        <th>Order Delivered:</th>
+                        <td>@Model.Order_Total</td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <!-- /.col -->
         <div class="col-xs-6">
@@ -133,18 +142,29 @@
         </div>
         <!-- /.col -->
     </div>
-    <!-- /.row -->
-    <!-- this row will not appear when printing -->
-    <div class="row no-print">
-        <div class="col-xs-12">
-            @*<a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>*@
-            <button type="button" class="btn btn-success pull-right">
-                <i class="fa fa-credit-card"></i> Submit Payment
-            </button>
-            <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                <i class="fa fa-download"></i> Generate PDF
-            </button>
+    <div class="row">
+        <div class="col-xs-6">
+            <label>Update Order Status</label>
+          
+            <select class="form-control pull-right " id="Brand">       
+                <option value="1">RECEIVED</option>
+                <option value="2">SHIPPED</option>
+                <option value="3">DELIVERED</option>
+                <option value="4">RETURNED</option>
+                <option value="5">CANCELLED</option>
+            </select>
         </div>
-    </div>
+        </div>
+        <!-- /.row -->
+        <!-- this row will not appear when printing -->
+        <div class="row no-print">
+            <div class="col-xs-12">
+                @*<a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>*@
+                <button type="button" class="btn btn-success pull-right">
+                    <i class="fa fa-credit-card"></i>  Update
+                </button>
+
+            </div>
+        </div>
 </section>
 <!-- /.content -->

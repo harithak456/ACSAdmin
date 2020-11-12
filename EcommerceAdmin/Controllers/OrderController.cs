@@ -206,10 +206,10 @@ namespace EcommerceAdmin.Controllers
             int i = balOrder.SaveOrder(model, trans);
             if (i > 0)
             {
-                Session["Cart"] = null;
-                Session["Total"] = "0.00";
-                Session["SubTotal"] = "0.00";
-                Session["Shipping"] = "0.00";
+                //Session["Cart"] = null;
+                //Session["Total"] = "0.00";
+                //Session["SubTotal"] = "0.00";
+                //Session["Shipping"] = "0.00";
                 trans.Commit();
             }
             else
