@@ -152,6 +152,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="exp2.html" />
     <Content Include="redirect.html" />
     <Content Include="333.html" />
     <Content Include="assetsadmin\bootstrap\css\bootstrap.min.css" />

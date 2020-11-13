@@ -197,7 +197,10 @@ namespace EcommerceAdmin.Controllers
 
             HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
             string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
-            model.Guest_ID = Convert.ToInt32(GuestID);
+            if (!string.IsNullOrEmpty(GuestID))
+                model.Guest_ID = Convert.ToInt32(GuestID);
+            else
+                model.Guest_ID = 0;
 
             model.Order_SubTotal = Convert.ToDouble(Session["SubTotal"]);
             model.Order_Shipping = 0;
@@ -206,10 +209,6 @@ namespace EcommerceAdmin.Controllers
             int i = balOrder.SaveOrder(model, trans);
             if (i > 0)
             {
-                //Session["Cart"] = null;
-                //Session["Total"] = "0.00";
-                //Session["SubTotal"] = "0.00";
-                //Session["Shipping"] = "0.00";
                 trans.Commit();
             }
             else

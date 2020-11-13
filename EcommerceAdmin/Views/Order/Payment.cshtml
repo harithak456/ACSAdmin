@@ -9,7 +9,7 @@
 <!--shop  area start-->
 <div class="shop_area">
     <div class="container">
-        <p>Payment Succesfull</p>
+        <p id="Result"></p>
         <div id="root"></div>
 
 
@@ -21,12 +21,15 @@
         callback: response => {
             console.log("callback", response);            
             var status = response.callback["status"];
-            if (status == "CAPTURED")
-            {
-                 Session["Cart"] = null;
-                Session["Total"] = "0.00";
-                Session["SubTotal"] = "0.00";
-                Session["Shipping"] = "0.00";
+            if (status == "CAPTURED") {
+                //Session["Cart"] = null;
+                //Session["Total"] = "0.00";
+                //Session["SubTotal"] = "0.00";
+                //Session["Shipping"] = "0.00";
+                $('#Result').html("Payment Successful");
+            }
+            else {
+                $('#Result').html("Payment Failed");
             }
         }
     });
