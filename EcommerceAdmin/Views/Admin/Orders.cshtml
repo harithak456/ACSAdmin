@@ -95,6 +95,7 @@
     </div>
     <!-- /.row -->
     <div class="row">
+        <input type="hidden" id="OrderID" value="@Model.Order_ID"  />
         <!-- accepted payments column -->
         <div class="col-xs-6">
             <p class="lead">Order Status:</p>
@@ -102,16 +103,16 @@
                 <table class="table">
                     <tr>
                         <th style="width:50%">Order Received:</th>
-                        <td>@Model.Created_Date</td>
+                        <td>@(Model.Received_Date == null ? "Pending" : Model.Received_Date)</td>
                     </tr>
                   
                     <tr>
                         <th>Order Shipped:</th>
-                        <td>@Model.Order_Shipping</td>
+                        <td>@(Model.Shipped_Date==null?"Pending":Model.Shipped_Date)</td>
                     </tr>
                     <tr>
                         <th>Order Delivered:</th>
-                        <td>@Model.Order_Total</td>
+                        <td>@(Model.Delivered_Date == null ? "Pending" : Model.Delivered_Date)</td>
                     </tr>
                 </table>
             </div>
@@ -146,12 +147,12 @@
         <div class="col-xs-6">
             <label>Update Order Status</label>
           
-            <select class="form-control pull-right " id="Brand">       
-                <option value="1">RECEIVED</option>
-                <option value="2">SHIPPED</option>
-                <option value="3">DELIVERED</option>
-                <option value="4">RETURNED</option>
-                <option value="5">CANCELLED</option>
+            <select class="form-control pull-right " id="Status">       
+                <option value="1"  @(Model.Is_Active==1?"selected":"")>RECEIVED</option>
+                <option value="2"  @(Model.Is_Active==2?"selected":"")>SHIPPED</option>
+                <option value="3"  @(Model.Is_Active==3?"selected":"")>DELIVERED</option>
+                <option value="4"  @(Model.Is_Active==4?"selected":"")>RETURNED</option>
+                <option value="5"  @(Model.Is_Active==5?"selected":"")>CANCELLED</option>
             </select>
         </div>
         </div>
@@ -160,7 +161,7 @@
         <div class="row no-print">
             <div class="col-xs-12">
                 @*<a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>*@
-                <button type="button" class="btn btn-success pull-right">
+                <button type="button" class="btn btn-success pull-right" id="UpdateStatus">
                     <i class="fa fa-credit-card"></i>  Update
                 </button>
 
@@ -168,3 +169,36 @@
         </div>
 </section>
 <!-- /.content -->
+<script>
+    $('#UpdateStatus').click(function () {
+        var status = $('#Status').val();
+        var OrderID = $('#OrderID').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/UpdateOrderStatus",
+            data: "{'Status':'" + status + "','OrderID':'" + OrderID +"'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            //beforeSend: function () { $("#loader").css("display", "block"); },
+            //complete: function () { $("#loader").css("display", "none"); },
+            success: OnSuccessSaveCall,
+            error: OnErrorSaveCall
+        });
+
+        function OnSuccessSaveCall(data) {
+            if (data > "0") {
+                alert("success");
+              
+            }
+            else {
+                alert("error");
+                
+            }
+        }
+        function OnErrorSaveCall() {
+            alert("error");
+          
+        }
+    });
+</script>

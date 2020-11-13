@@ -3,6 +3,7 @@ using EcommerceAdmin.Models.Dal;
 using EcommerceAdmin.Models.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -168,5 +169,20 @@ namespace EcommerceAdmin.Models.Bal
             }
         }
         #endregion
+
+        public DataTable SelectDashboardData()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                Dal_Master dal = new Dal_Master();
+                dt = dal.SelectDashboardData();
+                return dt;
+            }
+            catch
+            {
+                return dt;
+            }
+        }
     }
 }

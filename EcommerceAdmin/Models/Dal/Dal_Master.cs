@@ -590,5 +590,33 @@ namespace EcommerceAdmin.Models.Dal
             return result;
         }
         #endregion
+
+        public DataTable SelectDashboardData()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("EC_SelectDashboardData", con))
+                {
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                    cmd.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                InsertException(e.Message, "SelectDashboardData", 0);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
     }
 }

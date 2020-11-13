@@ -1,7 +1,9 @@
 ﻿using EcommerceAdmin.Models.Bal;
+using EcommerceAdmin.Models.Common;
 using EcommerceAdmin.Models.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,6 +20,16 @@ namespace EcommerceAdmin.Controllers
 
         public ActionResult Dashboard()
         {
+            DataTable dt = new DataTable();
+            dt = balMaster.SelectDashboardData();
+            if (dt.Rows.Count > 0)
+            {
+                ViewBag.NewOrder = dt.Rows[0]["NewOrder"];
+                ViewBag.ShippedOrder = dt.Rows[0]["ShippedOrder"];
+                ViewBag.DeliveredOrder = dt.Rows[0]["DeliveredOrder"];
+                ViewBag.ReturnOrder = dt.Rows[0]["ReturnOrder"];
+            }
+          
             return View();
         }
 
@@ -105,6 +117,25 @@ namespace EcommerceAdmin.Controllers
             OrderList = balOrder.SelectOrderDetails(OrderID);
             ViewBag.OrderList = OrderList;
             return View(entOrder);
+        }
+
+        public int UpdateOrderStatus(int Status,int OrderID)
+        {
+            int result = 0;
+            SafeTransaction trans = new SafeTransaction();
+            Ent_Order ent = new Ent_Order();
+            ent.Order_ID = OrderID;
+            ent.Is_Active = Status;
+            DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+            DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
+            ent.Created_Date = indiTime;
+            result = balOrder.UpdateOrderStatus(ent, trans);
+            if (result > 0)
+            {
+                trans.Commit();
+            }
+            else { trans.Rollback(); }
+            return result;
         }
     }
 }

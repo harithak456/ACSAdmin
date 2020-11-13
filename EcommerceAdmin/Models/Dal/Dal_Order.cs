@@ -358,6 +358,33 @@ namespace EcommerceAdmin.Models.Dal
                         ent.Order_SubTotal = Convert.ToDouble(dr["Order_SubTotal"]);
                         ent.Order_Shipping = Convert.ToDouble(dr["Order_Shipping"]);
                         ent.Total_Qty = Convert.ToInt32(dr["Total_Qty"]);
+                        ent.Is_Active = Convert.ToInt32(dr["Is_Active"]);
+                        if (dr["Received_Date"].ToString() == "")
+                            ent.Received_Date = null;
+                        else
+                            ent.Received_Date = dr["Received_Date"].ToString();
+
+                        if (dr["Shipped_Date"].ToString() == "")
+                            ent.Shipped_Date = null;
+                        else
+                           ent.Shipped_Date =  dr["Shipped_Date"].ToString();
+
+                        if (dr["Delivered_Date"].ToString() == "")
+                            ent.Delivered_Date = null;
+                        else
+                            ent.Delivered_Date = dr["Delivered_Date"].ToString();
+
+                        if (dr["Cancel_Date"].ToString() == "")
+                            ent.Cancel_Date = null;
+                        else
+                            ent.Cancel_Date = dr["Cancel_Date"].ToString();
+
+                        if (dr["Return_Date"].ToString() == "")
+                            ent.Return_Date = null;
+                        else
+                            ent.Return_Date = dr["Return_Date"].ToString();
+
+                
                         ent.entGuest.Guest_FirstName = Convert.ToString(dr["Guest_FirstName"]);
                         ent.entGuest.Guest_LastName = Convert.ToString(dr["Guest_LastName"]);
                         ent.entGuest.Guest_Address1 = Convert.ToString(dr["Guest_Address1"]);
@@ -411,6 +438,31 @@ namespace EcommerceAdmin.Models.Dal
                         ent.entOrder.Order_Shipping = float.Parse(dr["Order_Shipping"].ToString());
                         ent.entOrder.Order_Total = float.Parse(dr["Order_Total"].ToString());
                         ent.entOrder.Order_SubTotal = float.Parse(dr["Order_SubTotal"].ToString());
+                        ent.entOrder.Is_Active = Convert.ToInt32(dr["Is_Active"]);
+                        if (dr["Received_Date"].ToString() == "")
+                            ent.entOrder.Received_Date = null;
+                        else
+                            ent.entOrder.Received_Date = dr["Received_Date"].ToString();
+
+                        if (dr["Shipped_Date"].ToString() == "")
+                            ent.entOrder.Shipped_Date = null;
+                        else
+                            ent.entOrder.Shipped_Date = dr["Shipped_Date"].ToString();
+
+                        if (dr["Delivered_Date"].ToString() == "")
+                            ent.entOrder.Delivered_Date = null;
+                        else
+                            ent.entOrder.Delivered_Date = dr["Delivered_Date"].ToString();
+
+                        if (dr["Cancel_Date"].ToString() == "")
+                            ent.entOrder.Cancel_Date = null;
+                        else
+                            ent.entOrder.Cancel_Date = dr["Cancel_Date"].ToString();
+
+                        if (dr["Return_Date"].ToString() == "")
+                            ent.entOrder.Return_Date = null;
+                        else
+                            ent.entOrder.Return_Date = dr["Return_Date"].ToString();
                         result.Add(ent);
                     }
                 }
@@ -449,6 +501,44 @@ namespace EcommerceAdmin.Models.Dal
                     cmd.Dispose();
                 }
             }
+        }
+
+        public int UpdateOrderStatus(Ent_Order ent,SafeTransaction trans)
+        {
+            int dataresult = 0;
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+
+                using (SqlCommand cmd = new SqlCommand("EC_UpdateOrderStatus", trans.DatabaseConnection, trans.Transaction))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Created_Date", ent.Created_Date));
+                    cmd.Parameters.Add(new SqlParameter("@status", ent.Is_Active));
+                    cmd.Parameters.Add(new SqlParameter("@Order_ID", ent.Order_ID));
+                    try
+                    {
+                        dataresult = Convert.ToInt32(cmd.ExecuteScalar());
+                        if (dataresult > 0)
+                        {
+                            cmd.Dispose();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dataresult = -2;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                dataresult = -2;
+            }
+            finally { con.Close(); }
+            return dataresult;
         }
     }
 }

@@ -224,15 +224,15 @@ namespace EcommerceAdmin.Controllers
         {
             int Order_ID = Request.QueryString["Id"] != null ? Convert.ToInt32(Request.QueryString["Id"]) : 0;
             List<Ent_OrderDetail> list = new List<Ent_OrderDetail>();
+            Ent_Order ent = new Ent_Order();
             if (Order_ID != 0)
             {
                 list = balOrder.SelectOrderDetails(Order_ID);
                 ViewBag.OrderDetails = list;
-                ViewBag.SubTotal = list[0].entOrder.Order_SubTotal;
-                ViewBag.Shipping = list[0].entOrder.Order_Shipping;
-                ViewBag.Total = list[0].entOrder.Order_Total;
+                if(list.Count>0)
+                ent = list[0].entOrder;             
             }
-            return View();
+            return View(ent);
         }
 
         public ActionResult Payment()

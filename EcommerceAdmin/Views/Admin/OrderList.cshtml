@@ -36,6 +36,7 @@
                                 <th>Order No.</th>
                                 <th>Email ID</th>
                                 <th>Total Amount</th>
+                                <th>Status</th>
                                 <th style="width:80px;">View</th>
                             </tr>
                         </thead>
@@ -47,7 +48,27 @@
                                 <td>@i</td>
                                 <td>@item.Order_ID</td>
                                 <td>@item.entGuest.Guest_Email</td>
-                                <td>@item.Order_Total</td>
+                                <td>AED @item.Order_Total</td>
+                                @if (item.Is_Active == 1)
+                                {
+                                    <td>Received</td>
+                                }
+                                else if (item.Is_Active == 2)
+                                {
+                                    <td>Shipped</td>
+                                }
+                                else if (item.Is_Active == 3)
+                                {
+                                    <td>Delivered</td>
+                                }
+                                else if (item.Is_Active == 4)
+                                {
+                                    <td>Returned</td>
+                                }
+                                else if (item.Is_Active == 5)
+                                {
+                                    <td>Cancelled</td>
+                                }
                                 <td>
                                     <div class="tools">
                                         <a href="/Admin/Orders?OrderID=@item.Order_ID">  <i class="fa fa-edit"></i></a>

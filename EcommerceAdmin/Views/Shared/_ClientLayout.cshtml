@@ -88,13 +88,19 @@
                                         }
                                         else
                                         {
-                                            <a href="#"><i class="ion-android-person"></i>My Account<i class="ion-ios-arrow-down"></i></a>}
+                                            <a href="#"><i class="ion-android-person"></i>Guest<i class="ion-ios-arrow-down"></i></a>}
 
-                                        <ul class="dropdown_links">
-                                            <li><a href="/login/Register">Login/Register </a></li>
-                                            <li><a href="/Login/MyAccount">My Account </a></li>
-                                            <li><a href="/Login/Logout">Logout </a></li>
-                                        </ul>
+                                            <ul class="dropdown_links">
+                                                @if (Name == "")
+                                                {
+                                                    <li><a href="/login/Register">Login/Register </a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a href="/Login/MyAccount">My Account </a></li>
+                                                    <li><a href="/Login/Logout">Logout </a></li>
+                                                }
+                                            </ul>
                                     </li>
 
                                     <li class="currency">

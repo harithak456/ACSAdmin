@@ -64,10 +64,21 @@
                                         <tr id="@items.Order_ID">
                                             <td>@i</td>
                                             <td>@items.Created_Date.ToShortDateString()</td>
-                                            @if(items.Is_Active==1)
-                                            { <td><span class="success">Pending</span></td>}
-                                            else
-                                            {<td><span class="success">Completed</span></td> }                                            
+                                            @if (items.Is_Active == 1)
+                                            {
+                                                <td><span class="success">Received</span></td>}
+                                            else if (items.Is_Active == 2)
+                                            {
+                                                <td><span class="success">Shipped</span></td> }
+                                            else if (items.Is_Active == 3)
+                                            {
+                                                <td><span class="success">Delivered</span></td>}
+                                            else if (items.Is_Active == 4)
+                                            {
+                                                <td><span class="success">Returned</span></td>}
+                                            else if (items.Is_Active == 5)
+                                            {
+                                                <td><span class="success">Cancelled</span></td>}
                                             <td>AED @items.Order_Total for @items.Total_Qty item </td>
                                             <td><a href="/Order/ViewOrder?Id=@items.Order_ID" class="view">view</a></td>
                                         </tr>

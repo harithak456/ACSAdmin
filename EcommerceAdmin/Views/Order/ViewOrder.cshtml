@@ -1,11 +1,8 @@
-﻿
+﻿@model EcommerceAdmin.Models.Entity.Ent_Order
 @{
     ViewBag.Title = "ViewOrder";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
-    List<EcommerceAdmin.Models.Entity.Ent_OrderDetail> OrderDetails = ViewBag.OrderDetails;
-    var SubTotal = ViewBag.SubTotal;
-    var Shipping = ViewBag.Shipping;
-    var Total = ViewBag.Total;
+    List<EcommerceAdmin.Models.Entity.Ent_OrderDetail> OrderDetails = ViewBag.OrderDetails;  
 }
 
 <!--breadcrumbs area start-->
@@ -15,7 +12,8 @@
             <div class="col-12">
                 <div class="breadcrumb_content">
                     <ul>
-                        <li><a href="/Home/Index">home</a></li>
+                        <li><a href="/Home/Index">home</a></li>                        
+                        <li><a href="/Login/MyAccount">My Account</a></li>
                         <li>Order Details</li>
                     </ul>
                 </div>
@@ -64,7 +62,26 @@
             <div class="coupon_area">
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
-                      
+                        <div class="coupon_code right">
+                            <h3>Amount</h3>
+                            <div class="coupon_inner">
+                                <div class="cart_subtotal">
+                                    <p>Received</p>
+                                    <p class="cart_amount">@(Model.Received_Date == null ? "Pending" : @Model.Received_Date)</p>
+                                </div>
+                                <div class="cart_subtotal ">
+                                    <p>Shipped</p>
+                                    <p class="cart_amount">@(Model.Shipped_Date == null ? "Pending" : @Model.Shipped_Date)</p>
+                                </div>
+
+
+                                <div class="cart_subtotal">
+                                    <p>Delivered</p>
+                                    <p class="cart_amount">@(Model.Delivered_Date == null ? "Pending" : @Model.Delivered_Date)</p>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="coupon_code right">
@@ -72,17 +89,17 @@
                             <div class="coupon_inner">
                                 <div class="cart_subtotal">
                                     <p>Subtotal</p>
-                                    <p class="cart_amount">AED @SubTotal</p>
+                                    <p class="cart_amount">AED @Model.Order_SubTotal</p>
                                 </div>
                                 <div class="cart_subtotal ">
                                     <p>Shipping</p>
-                                    <p class="cart_amount">AED @Shipping</p>
+                                    <p class="cart_amount">AED @Model.Shipped_Date</p>
                                 </div>
                            
 
                                 <div class="cart_subtotal">
                                     <p>Total</p>
-                                    <p class="cart_amount">AED @Total</p>
+                                    <p class="cart_amount">AED @Model.Order_Total</p>
                                 </div>
                               
                             </div>

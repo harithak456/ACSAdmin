@@ -129,5 +129,20 @@ namespace EcommerceAdmin.Models.Bal
                 return ent;
             }
         }
+
+        public int UpdateOrderStatus(Ent_Order ent, SafeTransaction trans)
+        {
+            int dataResult = 0;
+            try
+            {
+                Dal_Order dal = new Dal_Order();
+                dataResult = dal.UpdateOrderStatus( ent, trans);
+                return dataResult;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 }
