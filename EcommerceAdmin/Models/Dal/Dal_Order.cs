@@ -237,33 +237,112 @@ namespace EcommerceAdmin.Models.Dal
                                     }
                                 }
 
-                                if (dataresult1 > 0)
-                                {
-                                    if (ent.Guest_ID != 0)
-                                    {
-                                        var query = "delete from EC_Cart where Guest_ID=" + ent.Guest_ID;
-                                        int k = 0;
-                                        using (SqlCommand cmd2 = new SqlCommand(query, trans.DatabaseConnection, trans.Transaction))
-                                        {
-                                            try
-                                            {
-                                                k = cmd2.ExecuteNonQuery();
-                                                cmd2.Dispose();
+                                //if (dataresult1 > 0)
+                                //{
+                                //    if (ent.Guest_ID != 0)
+                                //    {
+                                //        var query = "delete from EC_Cart where Guest_ID=" + ent.Guest_ID;
+                                //        int k = 0;
+                                //        using (SqlCommand cmd2 = new SqlCommand(query, trans.DatabaseConnection, trans.Transaction))
+                                //        {
+                                //            try
+                                //            {
+                                //                k = cmd2.ExecuteNonQuery();
+                                //                cmd2.Dispose();
 
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                dataresult = 0;
-                                            }
-                                        }
-                                    }                                    
-                                }
+                                //            }
+                                //            catch (Exception ex)
+                                //            {
+                                //                dataresult = 0;
+                                //            }
+                                //        }
+                                //    }                                    
+                                //}
                             }
                             else
                             {
                                 dataresult = 0;
                             }
 
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dataresult = -2;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                dataresult = -2;
+            }
+            finally { con.Close(); }
+            return dataresult;
+        }
+
+        public int UpdatePayment(int Order_ID, int Guest_ID,string Payment_Status, SafeTransaction trans)
+        {
+            int dataresult = 0;
+            int dataresult1 = 0;
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+
+                using (SqlCommand cmd = new SqlCommand("EC_UpdateOrder", trans.DatabaseConnection, trans.Transaction))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Order_ID", Order_ID));                  
+                    cmd.Parameters.Add(new SqlParameter("@Payment_Status", Payment_Status));                  
+                    try
+                    {
+                        dataresult = Convert.ToInt32(cmd.ExecuteScalar());
+                        if (dataresult > 0)
+                        {
+                            cmd.Dispose();
+                            dataresult1 = 1;
+
+                                    //using (SqlCommand cmd1 = new SqlCommand("EC_UpdateOrderDetails", trans.DatabaseConnection, trans.Transaction))
+                                    //{
+                                    //    cmd1.CommandType = CommandType.StoredProcedure;
+                                    //    cmd1.Parameters.Add(new SqlParameter("@TempOrder_ID", Order_ID));
+                                    //    cmd1.Parameters.Add(new SqlParameter("@Order_ID", dataresult));
+                                    //    try
+                                    //    {
+                                    //        dataresult1 = Convert.ToInt32(cmd1.ExecuteScalar());
+                                    //        cmd1.Dispose();
+
+                            //    }
+                            //    catch (Exception ex)
+                            //    {
+                            //        dataresult = 0;
+                            //        InsertException(ex.Message, "UpdateOrderDetails", Order_ID);
+                            //    }
+                            //}
+
+                            if (dataresult1 > 0)
+                            {
+                                if (Guest_ID != 0 && Payment_Status == "CAPTURED")
+                                {
+                                    var query = "delete from EC_Cart where Guest_ID=" + Guest_ID;
+                                    int k = 0;
+                                    using (SqlCommand cmd2 = new SqlCommand(query, trans.DatabaseConnection, trans.Transaction))
+                                    {
+                                        try
+                                        {
+                                            k = cmd2.ExecuteNonQuery();
+                                            cmd2.Dispose();
+
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            dataresult = 0;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     catch (Exception ex)

@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="cart_subtotal ">
                                     <p>Shipping</p>
-                                    <p class="cart_amount">AED @Model.Shipped_Date</p>
+                                    <p class="cart_amount">AED @(Convert.ToDouble(Model.Order_Shipping)>0?Model.Order_Shipping:0)</p>
                                 </div>
                            
 

@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Payment";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
+    var Order_ID = ViewBag.Order_ID;
 }
 
 <script type="text/javascript" src="https://goSellJSLib.b-cdn.net/v1.6.0/js/gosell.js"></script>
@@ -17,19 +18,44 @@
 </div>
 <!--shop  area end-->
 <script>
+  
     goSell.showResult({
         callback: response => {
             console.log("callback", response);            
             var status = response.callback["status"];
-            if (status == "CAPTURED") {
-                //Session["Cart"] = null;
-                //Session["Total"] = "0.00";
-                //Session["SubTotal"] = "0.00";
-                //Session["Shipping"] = "0.00";
-                $('#Result').html("Payment Successful");
+            if (status == "CAPTURED") {                
+                $('#Result').html("Payment Successful");      
+
+               
             }
             else {
-                $('#Result').html("Payment Failed");
+                $('#Result').html("Payment Failed");              
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/UpdatePayment",
+                data: "{'Order_ID':'" + @Order_ID + "','Payment_Status':'" + status +"'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () { $("#loader").css("display", "block"); },
+                complete: function () { $("#loader").css("display", "none"); },
+                success: OnSuccessSaveCall,
+                error: OnErrorSaveCall
+            });
+
+            function OnSuccessSaveCall(data) {
+                if (data > "0") {
+                    console.log(data);
+                }
+                else {
+                    return 0;
+                }
+            }
+
+            function OnErrorSaveCall() {
+                return 0;
+
             }
         }
     });

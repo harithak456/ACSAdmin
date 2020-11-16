@@ -26,7 +26,7 @@ namespace EcommerceAdmin.Controllers
             Ent_Product ent = new Ent_Product();
             ent = balProduct.SelectProduct(Product_ID);
             HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
-            string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+            int GuestID = Guest_ID != null ?Convert.ToInt32( Guest_ID.Value.Split('=')[1]) : 0;
 
             int qty = 1;
             int cartid = 0;
@@ -73,7 +73,7 @@ namespace EcommerceAdmin.Controllers
                 Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) + ent.Product_Price;
                 Session["Total"] = Convert.ToInt32(Session["Total"]) + ent.Product_Price;
             }
-            if (!string.IsNullOrEmpty(GuestID))
+            if (GuestID!=0)
             {
                 Ent_OrderDetail entP = new Ent_OrderDetail();
                 entP.Cart_ID = cartid;
@@ -187,9 +187,8 @@ namespace EcommerceAdmin.Controllers
             return View(ent);
         }
 
-
         public int SaveOrder(Ent_Order model)
-        {
+        {          
             SafeTransaction trans = new SafeTransaction();
             DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
             DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
@@ -218,6 +217,30 @@ namespace EcommerceAdmin.Controllers
 
             return i;
         }
+        public int UpdatePayment(int Order_ID,string Payment_Status)
+        {
+            SafeTransaction trans = new SafeTransaction();
+            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            int GuestID = Guest_ID != null ? Convert.ToInt32(Guest_ID.Value.Split('=')[1]) : 0;           
+            int i = balOrder.UpdatePayment(Order_ID, GuestID, Payment_Status, trans);
+            if (i > 0)
+            {
+                trans.Commit();
+                if (Payment_Status == "CAPTURED")
+                {
+                    Session["Cart"] = null;
+                    Session["Total"] = null;
+                    Session["SubTotal"] = null;
+                    Session["Shipping"] = null;
+                }
+            }
+            else
+            {
+                trans.Rollback();
+            }
+
+            return i;
+        }
 
         public ActionResult ViewOrder()
         {
@@ -234,8 +257,9 @@ namespace EcommerceAdmin.Controllers
             return View(ent);
         }
 
-        public ActionResult Payment()
-        {
+        public ActionResult Payment(int id)
+        {           
+            ViewBag.Order_ID = id;
             return View();
         }
     }

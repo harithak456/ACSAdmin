@@ -1,4 +1,12 @@
 ﻿@{
+    HttpCookie C_UserID = Request.Cookies["User_ID"];
+    string User_ID = C_UserID != null ? C_UserID.Value.Split('=')[1] : "";
+
+    if (User_ID == "")
+    {
+        Response.Redirect("/Admin/Login");
+    }
+  
     HttpCookie C_Name = Request.Cookies["User_Name"];
     string Name = C_Name != null ? C_Name.Value.Split('=')[1] : "";
 }
@@ -193,7 +201,7 @@
                                 <li class="header">You have 9 tasks</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">                                    
+                                    <ul class="menu">
                                         <li>
                                             <!-- Task item -->
                                             <a href="#">
@@ -339,12 +347,8 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="active treeview">
-                        <a href="/Admin/Dashboard">
-                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                        </a>
-                    </li>
-             
+                    
+                    <li class="active"><a href="/Admin/Dashboard"><i class="fa fa-dashboard"></i> <span> Dashboard</span></a></li>
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-laptop"></i>
@@ -361,7 +365,7 @@
                             <li><a href="/Master/Brand"><i class="fa fa-edit"></i> <span> Brand Master</span></a></li>
                         </ul>
                     </li>
-
+                    
                     <li><a href="/Admin/OrderList"><i class="fa fa-edit"></i> <span> Order Details</span></a></li>
                 </ul>
             </section>
@@ -562,8 +566,9 @@
     <script src="../../assetsadmin/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="../../assetsadmin/plugins/datatables/dataTables.bootstrap.min.js"></script>
     <!-- Morris.js charts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="../../assetsadmin/plugins/morris/morris.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="../../assetsadmin/plugins/morris/morris.min.js"></script>
+    @*<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>*@
     <!-- Sparkline -->
     <script src="../../assetsadmin/plugins/sparkline/jquery.sparkline.min.js"></script>
     <!-- jvectormap -->
@@ -585,9 +590,9 @@
     <!-- AdminLTE App -->
     <script src="../../assetsadmin/dist/js/app.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    @*<script src="../../assetsadmin/dist/js/pages/dashboard.js"></script>*@
+    <script src="../../assetsadmin/dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../../assetsadmin/dist/js/demo.js"></script>
-  
+
 </body>
 </html>
