@@ -2,7 +2,18 @@
 @{
     ViewBag.Title = "MyAccount";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
-    List<EcommerceAdmin.Models.Entity.Ent_Order> OrderList = ViewBag.OrderList;    
+
+    HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+    string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+
+    if (GuestID == "")
+    {
+        Response.Redirect("/Home/Index");
+    }
+    List<EcommerceAdmin.Models.Entity.Ent_Order> OrderList = ViewBag.OrderList;
+    EcommerceAdmin.Models.Entity.Ent_GuestAddress HomeAddress = ViewBag.HomeAddress;
+    EcommerceAdmin.Models.Entity.Ent_GuestAddress WorkAddress = ViewBag.WorkAddress;
+    EcommerceAdmin.Models.Entity.Ent_GuestAddress OtherAddress = ViewBag.OtherAddress;
     var i = 0;
 }
 
@@ -13,7 +24,7 @@
             <div class="col-12">
                 <div class="breadcrumb_content">
                     <ul>
-                        <li><a href="index.html">home</a></li>
+                        <li><a href="/Home/Index">Home</a></li>
                         <li>My account</li>
                     </ul>
                 </div>
@@ -34,7 +45,7 @@
 
                             <li> <a href="#orders" data-toggle="tab" class="nav-link">Orders</a></li>
 
-                            <li><a href="#address" data-toggle="tab" class="nav-link">Addresses</a></li>
+                            <li id="addressLink"><a href="#address" data-toggle="tab" class="nav-link">Addresses</a></li>
                             <li><a href="#account-details" data-toggle="tab" class="nav-link">Account details</a></li>
                             <li><a href="/Login/Logout" class="nav-link">logout</a></li>
                         </ul>
@@ -61,34 +72,34 @@
                                         @foreach (var items in OrderList)
                                         {
                                             i++;
-                                        <tr id="@items.Order_ID">
-                                            <td>@i</td>
-                                            <td>@items.Created_Date.ToShortDateString()</td>
-                                            @if (items.Is_Active == 1)
-                                            {
-                                                <td><span class="success">Received</span></td>}
-                                            else if (items.Is_Active == 2)
-                                            {
-                                                <td><span class="success">Shipped</span></td> }
-                                            else if (items.Is_Active == 3)
-                                            {
-                                                <td><span class="success">Delivered</span></td>}
-                                            else if (items.Is_Active == 4)
-                                            {
-                                                <td><span class="success">Returned</span></td>}
-                                            else if (items.Is_Active == 5)
-                                            {
-                                                <td><span class="success">Cancelled</span></td>}
-                                            <td>AED @items.Order_Total for @items.Total_Qty item </td>
-                                            <td><a href="/Order/ViewOrder?Id=@items.Order_ID" class="view">view</a></td>
-                                        </tr>
+                                            <tr id="@items.Order_ID">
+                                                <td>@i</td>
+                                                <td>@items.Created_Date.ToShortDateString()</td>
+                                                @if (items.Is_Active == 1)
+                                                {
+                                                    <td><span class="success">Received</span></td>}
+                                                else if (items.Is_Active == 2)
+                                                {
+                                                    <td><span class="success">Shipped</span></td> }
+                                                else if (items.Is_Active == 3)
+                                                {
+                                                    <td><span class="success">Delivered</span></td>}
+                                                else if (items.Is_Active == 4)
+                                                {
+                                                    <td><span class="success">Returned</span></td>}
+                                                else if (items.Is_Active == 5)
+                                                {
+                                                    <td><span class="success">Cancelled</span></td>}
+                                                <td>AED @items.Order_Total for @items.Total_Qty item </td>
+                                                <td><a href="/Order/ViewOrder?Id=@items.Order_ID" class="view">view</a></td>
+                                            </tr>
                                         }
-                                      
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="downloads">
+                        @*<div class="tab-pane fade" id="downloads">
                             <h3>Downloads</h3>
                             <div class="table-responsive">
                                 <table class="table">
@@ -117,49 +128,97 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="tab-pane" id="address">
-                            <p>The following addresses will be used on the checkout page by default.</p>
-                            <h4 class="billing-address">Billing address</h4>
-                            <a href="#" class="view">Edit</a>
-                            <p><strong>@Model.Guest_FirstName @Model.Guest_LastName</strong></p>
-                            <address>
-                                @Model.Guest_Address1<br>
-                                @Model.Guest_Address2<br>
-                            </address>
-                            <p>@Model.Guest_Country</p>
-                        </div>
+                            <div id="AddressDiv">
+                             
+                                <h4 class="billing-address">Billing address</h4>
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <a class="view editHome" id="@HomeAddress.Address_ID" addresstype="Home">Edit</a>
+                                        <p><strong>Home Address</strong><span style="color:firebrick">@(HomeAddress.Address_Default == 1 ? " (Default)" : "")</span></p>
+                                        <address>
+                                            @HomeAddress.First_Name @HomeAddress.Last_Name<br />
+                                            @HomeAddress.Guest_Address1<br>
+                                            @HomeAddress.Guest_Address2<br>
+                                            @HomeAddress.Guest_Country
+                                        </address>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <a class="view editHome" id="@WorkAddress.Address_ID" addresstype="Work">Edit</a>
+                                        <p><strong>Work Address</strong><span style="color:firebrick">@(WorkAddress.Address_Default == 1 ? " (Default)" : "")</span></p>
+                                        <address>
+                                            @WorkAddress.First_Name @WorkAddress.First_Name<br />
+                                            @WorkAddress.Guest_Address1<br>
+                                            @WorkAddress.Guest_Address2<br>
+                                            @WorkAddress.Guest_Country
+                                        </address>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <a class="view editHome" id="@OtherAddress.Address_ID" addresstype="Other">Edit</a>
+                                        <p><strong>Other</strong><span style="color:firebrick">@(OtherAddress.Address_Default == 1 ? " (Default)" : "")</span></p>
+                                        <address>
+                                            @OtherAddress.First_Name @OtherAddress.First_Name<br />
+                                            @OtherAddress.Guest_Address1<br>
+                                            @OtherAddress.Guest_Address2<br>
+                                            @OtherAddress.Guest_Country
+                                        </address>
+                                    </div>
+                                </div>
+                              
+                            </div>
+
+                            <div id="EditAddress" style="display:none">
+                                <h3>Edit Address : <span id="AddressName"></span> </h3> 
+                                <div class="login">
+                                    <div class="login_form_container">
+                                        <div class="account_login_form">
+                                            <form action="#">
+                                                <input type="hidden" id="AddressID" />
+                                                <input type="hidden" id="Address_Type" />
+                                                <span class="custom_checkbox">
+                                                    <input type="checkbox" value="" id="addressdefault">
+                                                    <label>The following address will be used on the checkout page by default.</label>
+                                                </span>
+                                                <label>First Name</label>
+                                                <input type="text" id="firstname" value="">
+                                                <label>Last Name</label>
+                                                <input type="text" id="lastname" value="">
+                                                <label>Address</label>
+                                                <input type="text" id="address1" placeholder="Address Line 1" value="">
+                                                <input type="text" id="address2" placeholder="Address Line 2" value="">
+                                                <label>Town / City </label>
+                                                <input type="text" id="town" value="">
+                                                <label>State</label>
+                                                <input type="text" id="state" value="">
+                                                <br>
+
+                                                <div class="save_button primary_btn default_button">
+                                                    <button type="button" id="UpdateAddress">Update</button>
+                                                    <button type="submit">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
                         <div class="tab-pane fade" id="account-details">
                             <h3>Account details </h3>
                             <div class="login">
                                 <div class="login_form_container">
                                     <div class="account_login_form">
-                                        <form action="#">
-                                            <p>Already have an account? <a href="#">Log in instead!</a></p>
-                                            <div class="input-radio">
-                                                <span class="custom-radio"><input type="radio" value="1" name="id_gender"> Mr.</span>
-                                                <span class="custom-radio"><input type="radio" value="1" name="id_gender"> Mrs.</span>
-                                            </div> <br>
+                                        <form action="#">                                           
                                             <label>First Name</label>
                                             <input type="text" name="first-name" value="@Model.Guest_FirstName">
                                             <label>Last Name</label>
-                                            <input type="text" name="last-name" value="@Model.Guest_LastName">                                
-                                            <label>Username</label>
-                                            <input type="text" name="email-name" value="@Model.Guest_Username">
-                                            <label>Password</label>
-                                            <input type="password" name="user-password" value="@Model.Guest_Password">                                           
-                                            <br>
-                                            <span class="custom_checkbox">
-                                                <input type="checkbox" value="1" name="optin">
-                                                <label>Receive offers from our partners</label>
-                                            </span>
-                                            <br>
-                                            <span class="custom_checkbox">
-                                                <input type="checkbox" value="1" name="newsletter">
-                                                <label>Sign up for our newsletter<br><em>You may unsubscribe at any moment. For that purpose, please find our contact info in the legal notice.</em></label>
-                                            </span>
+                                            <input type="text" name="last-name" value="@Model.Guest_LastName">
+                                            <label>Email/Username</label>
+                                            <input type="text" name="email-name" value="@Model.Guest_Username">                                           
+                                            <br>                                           
                                             <div class="save_button primary_btn default_button">
-                                                <button type="submit">Save</button>
+                                                <button type="submit">Update</button>                                            
                                             </div>
                                         </form>
                                     </div>
@@ -173,3 +232,105 @@
     </div>
 </section>
 <!-- my account end   -->
+<script>
+    $('.editHome').click(function () {
+        var id = $(this).attr('id');
+        var addresstype = $(this).attr('addresstype');          
+        $('#AddressID').val(id);       
+        document.getElementById('EditAddress').style.display = "block";
+        document.getElementById('AddressDiv').style.display = "none";
+        $('#Address_Type').val(addresstype);  
+        $('#AddressName').html(addresstype + ' Address');
+    
+        if (addresstype == 'Home') {
+            $('#firstname').val('@HomeAddress.First_Name');
+            $('#lastname').val('@HomeAddress.Last_Name');
+            $('#address1').val('@HomeAddress.Guest_Address1');
+            $('#address2').val('@HomeAddress.Guest_Address2');
+            $('#town').val('@HomeAddress.Guest_Town');
+            $('#state').val('@HomeAddress.Guest_State');
+            console.log('@HomeAddress.Address_Default');
+               $('#addressdefault').prop('checked',@HomeAddress.Address_Default); 
+        }
+        else if (addresstype == 'Work') {
+            $('#firstname').val('@WorkAddress.First_Name');
+            $('#lastname').val('@WorkAddress.Last_Name');
+            $('#address1').val('@WorkAddress.Guest_Address1');
+            $('#address2').val('@WorkAddress.Guest_Address2');
+            $('#town').val('@WorkAddress.Guest_Town');
+            $('#state').val('@WorkAddress.Guest_State');
+               $('#addressdefault').prop('checked',@WorkAddress.Address_Default);
+        }
+        else if (addresstype == 'Other')
+        {
+            $('#firstname').val('@OtherAddress.First_Name');
+            $('#lastname').val('@OtherAddress.Last_Name');
+            $('#address1').val('@OtherAddress.Guest_Address1');
+            $('#address2').val('@OtherAddress.Guest_Address2');
+            $('#town').val('@OtherAddress.Guest_Town');
+            $('#state').val('@OtherAddress.Guest_State');
+                 $('#addressdefault').prop('checked',@OtherAddress.Address_Default);
+        }
+    });
+
+    $('#addressLink').click(function () {
+        document.getElementById('EditAddress').style.display = "none";
+        document.getElementById('AddressDiv').style.display = "block";
+    });
+
+    $('#UpdateAddress').click(function () {
+        var FName = $('#firstname').val();
+        var LName = $('#lastname').val();
+        var Address1 = $('#address1').val();
+        var Address2 = $('#address2').val();
+        var Town = $('#town').val();
+        var State = $('#state').val();
+       var AddressID = $('#AddressID').val();            
+        var Address_Type = $('#Address_Type').val();
+        var Address_Default = $('#addressdefault').prop('checked')?1:0;   
+        var data = new FormData();
+
+        data.append("Address_ID", AddressID);     
+        data.append("First_Name", FName);
+        data.append("Last_Name", LName);
+        data.append("Guest_Address1", Address1);
+        data.append("Guest_Address2", Address2);
+        data.append("Guest_Town", Town);
+        data.append("Guest_State", State);
+        data.append("Guest_Country","UNITED ARAB EMIRATES");
+        data.append("Address_Type", Address_Type);
+        data.append("Address_Default", Address_Default);
+
+        $.ajax({
+            type: "POST",
+            url: "/Login/UpdateAddress",
+            data: data,
+            contentType: false,
+            processData: false,
+            async: false,
+            dataType: "json",
+            beforeSend: function () { $('#loader').css("display", "block") },
+            complete: function () { $('#loader').css("display", "none") },
+            success: OnSuccessSaveCall,
+            error: OnErrorSaveCall
+        });
+
+        function OnSuccessSaveCall(data) {
+            if (data > "0") {
+                console.log(data);
+                location.reload();
+              
+            }
+            else {
+                alert("An error occured while updating address");
+            }
+
+        }
+
+        function OnErrorSaveCall() {
+            alert("An error occured while updating address");
+
+
+        }
+    });
+</script>

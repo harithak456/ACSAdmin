@@ -10,7 +10,7 @@
 <section class="content-header">
     <h1>
         Order ID:
-        <small>@Model.Order_ID</small>
+        <small># @Model.Order_ID</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Admin/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -33,30 +33,29 @@
     </div>*@
     <!-- info row -->
     <div class="row invoice-info">
-        <div class="col-sm-4 invoice-col">
-            From
+        <div class="col-sm-4 invoice-col">Billing Address<br><br>
             <address>
-                <strong>@Model.entGuest.Guest_Email</strong><br>
-                Address1: @Model.entGuest.Guest_Address1<br>
-                Address2: @Model.entGuest.Guest_Address2<br>
-                Phone: @Model.entGuest.Guest_Phone<br>
-                Email: @Model.entGuest.Guest_Email
+                <strong>@Model.Billing_FirstName @Model.Billing_LastName</strong><br>
+                Address1: @Model.Billing_Address1<br>
+                Address2: @Model.Billing_Address2<br>
+                Phone: @Model.Billing_Phone<br>
+                Email: @Model.Billing_Email
             </address>
         </div>
         <!-- /.col -->
-        @*<div class="col-sm-4 invoice-col">
-            To
+        <div class="col-sm-4 invoice-col">
+            Shipping Address<br><br>
             <address>
-                <strong>John Doe</strong><br>
-                795 Folsom Ave, Suite 600<br>
-                San Francisco, CA 94107<br>
-                Phone: (555) 539-1037<br>
-                Email: john.doe@example.com
+                <strong>@Model.Shipping_FirstName @Model.Shipping_LastName</strong><br>
+                Address1: @Model.Shipping_Address1<br>
+                Address2: @Model.Shipping_Address2<br>
+                Phone: @Model.Shipping_Phone<br>
+                Email: @Model.Shipping_Email
             </address>
-        </div>*@
+        </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
-            <b>Order ID @Model.Order_ID</b><br>
+            <b>Order ID : # @Model.Order_ID</b><br>
             <br>
             <b>Date:</b> @Model.Created_Date<br>
             @*<b>Payment Due:</b> 2/22/2014<br>*@
@@ -96,6 +95,7 @@
     <!-- /.row -->
     <div class="row">
         <input type="hidden" id="OrderID" value="@Model.Order_ID"  />
+        <input type="hidden" id="GuestID" value="@Model.Guest_ID"  />
         <!-- accepted payments column -->
         <div class="col-xs-6">
             <p class="lead">Order Status:</p>
@@ -173,31 +173,39 @@
     $('#UpdateStatus').click(function () {
         var status = $('#Status').val();
         var OrderID = $('#OrderID').val();
+        var GuestID = $('#GuestID').val();    
+        var data = new FormData();
+        data.append("Is_Active",status);
+        data.append("Order_ID", OrderID);
+        data.append("Guest_ID", GuestID);
+        data.append("Shipping_Email", '@Model.Shipping_Email');
 
         $.ajax({
             type: "POST",
             url: "/Admin/UpdateOrderStatus",
-            data: "{'Status':'" + status + "','OrderID':'" + OrderID +"'}",
-            contentType: "application/json; charset=utf-8",
+            data: data,
+            contentType: false,
+            processData:false,
             dataType: "json",
-            //beforeSend: function () { $("#loader").css("display", "block"); },
-            //complete: function () { $("#loader").css("display", "none"); },
+            beforeSend: function () { $("#loader").css("display", "block"); },
+            complete: function () { $("#loader").css("display", "none"); },
             success: OnSuccessSaveCall,
             error: OnErrorSaveCall
         });
 
         function OnSuccessSaveCall(data) {
             if (data > "0") {
-                alert("success");
+                alert("Order Updated Successfully !");
+                location.href = "/Admin/OrderList";
               
             }
             else {
-                alert("error");
+                alert("Failed To Update Order !");
                 
             }
         }
         function OnErrorSaveCall() {
-            alert("error");
+            alert("Failed To Update Order !");
           
         }
     });

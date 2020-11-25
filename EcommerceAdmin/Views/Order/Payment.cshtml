@@ -3,6 +3,9 @@
     ViewBag.Title = "Payment";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
     var Order_ID = ViewBag.Order_ID;
+
+    HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+    int GuestID = Guest_ID != null ?Convert.ToInt32(Guest_ID.Value.Split('=')[1]) : 0;
 }
 
 <script type="text/javascript" src="https://goSellJSLib.b-cdn.net/v1.6.0/js/gosell.js"></script>
@@ -17,26 +20,34 @@
     </div>
 </div>
 <!--shop  area end-->
-<script>
-  
+<script>  
     goSell.showResult({
         callback: response => {
             console.log("callback", response);            
             var status = response.callback["status"];
+            var transactionid = response.callback["id"];
+         
+            var paymentMethod = response.callback["source"].paymentMethod;
+        
             if (status == "CAPTURED") {                
-                $('#Result').html("Payment Successful");      
-
+               $('#Result').html("Payment Successful");      
                
             }
             else {
                 $('#Result').html("Payment Failed");              
             }
 
+            var data = new FormData();
+            data.append("Order_ID", @Order_ID);
+            data.append("Payment_Status", status);
+            data.append("Transaction_Id", transactionid);
+            data.append("Payment_Method", paymentMethod);
             $.ajax({
                 type: "POST",
                 url: "/Order/UpdatePayment",
-                data: "{'Order_ID':'" + @Order_ID + "','Payment_Status':'" + status +"'}",
-                contentType: "application/json; charset=utf-8",
+                data: data,
+                contentType: false,
+                processData: false,
                 dataType: "json",
                 beforeSend: function () { $("#loader").css("display", "block"); },
                 complete: function () { $("#loader").css("display", "none"); },
@@ -46,9 +57,14 @@
 
             function OnSuccessSaveCall(data) {
                 if (data > "0") {
-                    console.log(data);
+           
+                    if (@GuestID > 0)
+                    {
+                        location.href = "/Login/MyAccount";
+                    }
                 }
-                else {
+                else
+                {
                     return 0;
                 }
             }

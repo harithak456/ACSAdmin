@@ -583,9 +583,7 @@ namespace EcommerceAdmin.Models.Dal
             }
             catch (Exception Ex)
             {
-                InsertException(Ex.Message, "SelectLogin", ent.User_ID);             
-                ent.User_ID = -2;
-                result.Add(ent);
+                InsertException(Ex.Message, "SelectLogin", ent.User_ID);         
             }
             return result;
         }

@@ -10,32 +10,62 @@ namespace EcommerceAdmin.Models.Entity
     {
         public int Order_ID { get; set; }
         public int Guest_ID { get; set; }
-        [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_FirstName { get; set; }
+     
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_LastName { get; set; }
+        public string Shipping_FirstName { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_Country { get; set; }
+        public string Shipping_LastName { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_Address1 { get; set; }
+        public string Shipping_Country { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_Address2 { get; set; }
+        public string Shipping_Address1 { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_Town { get; set; }
+        public string Shipping_Address2 { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_State { get; set; }
+        public string Shipping_Town { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_Phone { get; set; }
+        public string Shipping_State { get; set; }
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Guest_Email { get; set; }  
+        public string Shipping_Phone { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Shipping_Email { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_FirstName { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_LastName { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_Country { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_Address1 { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_Address2 { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_Town { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_State { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_Phone { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string Billing_Email { get; set; }
+
         public double Order_SubTotal { get; set; }  
 
         public double Order_Shipping { get; set; }  
@@ -52,6 +82,10 @@ namespace EcommerceAdmin.Models.Entity
         public string Delivered_Date { get; set; }
         public List<Ent_OrderDetail> OrderDetailsList = new List<Ent_OrderDetail>();
         public Ent_Guest entGuest = new Ent_Guest();
+
+        public string Payment_Status { get; set; }
+        public string Transaction_Id { get; set; }
+        public string Payment_Method { get; set; }
     }
     public class Ent_OrderDetail
     {

@@ -34,6 +34,8 @@
                             <tr>
                                 <th>Sl No.</th>
                                 <th>Order No.</th>
+                                <th>Name</th>
+                                <th>Phone</th>
                                 <th>Email ID</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
@@ -46,8 +48,10 @@
                                 i++;
                             <tr id="@item.Order_ID">
                                 <td>@i</td>
-                                <td>@item.Order_ID</td>
-                                <td>@item.entGuest.Guest_Email</td>
+                                <td># @item.Order_ID</td>
+                                <td>@item.Billing_FirstName @item.Billing_LastName</td>
+                                <td>@item.Billing_Phone</td>
+                                <td>@item.Billing_Email</td>
                                 <td>AED @item.Order_Total</td>
                                 @if (item.Is_Active == 1)
                                 {

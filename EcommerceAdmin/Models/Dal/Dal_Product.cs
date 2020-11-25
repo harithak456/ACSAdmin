@@ -151,6 +151,7 @@ namespace EcommerceAdmin.Models.Dal
                         ent.Category_ID = Convert.ToInt32(dr["Category_ID"]);
                         ent.entCategory.Category_Name = Convert.ToString(dr["Category_Name"]);
                         ent.SubCategory_ID = Convert.ToInt32(dr["SubCategory_ID"]);
+                        ent.SubCategory_Name = Convert.ToString(dr["SubCategory_Name"]);
                         ent.Brand_ID = Convert.ToInt32(dr["Brand_ID"]);
                         ent.Product_Description = Convert.ToString(dr["Product_Description"]);
                         ent.Product_Price = float.Parse(dr["Product_Price"].ToString());

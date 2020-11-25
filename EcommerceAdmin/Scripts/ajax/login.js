@@ -19,8 +19,8 @@
                 data: "{'Username':'" + Username + "','Password':'" + Password + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                //beforeSend: function () { $("#loader").css("display", "block"); },
-                //complete: function () { $("#loader").css("display", "none"); },
+                beforeSend: function () { $("#loader").css("display", "block"); },
+                complete: function () { $("#loader").css("display", "none"); },
                 success: OnSuccessCall,
                 error: OnErrorCall
             });
@@ -31,7 +31,7 @@
             } else if (data == "-1") {
                 alert("Please Check Your Username and Password");
             } else if (data == "0") {
-                alert("Please Fill");
+                alert("Please Check Your Username and Password");
             }
         }
         function OnErrorCall() {
@@ -55,11 +55,11 @@
             if (data == "1") {
                 location.href = "/Admin/Login";
             } else {
-                alert("Try Agine");
+                alert("Try Again");
             }
         }
         function OnErrorLogoutCall() {
-            alert("error");
+            alert("Failed to logout");
         }
     });
 });

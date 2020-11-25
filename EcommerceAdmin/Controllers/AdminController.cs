@@ -4,12 +4,14 @@ using EcommerceAdmin.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace EcommerceAdmin.Controllers
 {
+    [HandleError]
     public class AdminController : Controller
     {
         #region Declaration
@@ -28,8 +30,28 @@ namespace EcommerceAdmin.Controllers
                 ViewBag.ShippedOrder = dt.Rows[0]["ShippedOrder"];
                 ViewBag.DeliveredOrder = dt.Rows[0]["DeliveredOrder"];
                 ViewBag.ReturnOrder = dt.Rows[0]["ReturnOrder"];
+                ViewBag.UserRegistration = dt.Rows[0]["UserRegistration"];
+                ViewBag.UniqueVisitors = dt.Rows[0]["UniqueVisitors"];
             }
           
+            return View();
+        }
+
+        public ActionResult NavigationPartial()
+        {
+            DataTable dt = new DataTable();
+            dt = balMaster.SelectDashboardData();
+            if (dt.Rows.Count > 0)
+            {
+                ViewBag.OrderToday = dt.Rows[0]["OrderToday"];
+                ViewBag.RegistrationToday = dt.Rows[0]["RegistrationToday"];
+            }
+            return PartialView();
+
+        }
+
+        public ActionResult NotFound()
+        {
             return View();
         }
 
@@ -119,13 +141,10 @@ namespace EcommerceAdmin.Controllers
             return View(entOrder);
         }
 
-        public int UpdateOrderStatus(int Status,int OrderID)
+        public int UpdateOrderStatus(Ent_Order ent)
         {
             int result = 0;
-            SafeTransaction trans = new SafeTransaction();
-            Ent_Order ent = new Ent_Order();
-            ent.Order_ID = OrderID;
-            ent.Is_Active = Status;
+            SafeTransaction trans = new SafeTransaction();                     
             DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
             DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
             ent.Created_Date = indiTime;
@@ -133,6 +152,48 @@ namespace EcommerceAdmin.Controllers
             if (result > 0)
             {
                 trans.Commit();
+                string body = string.Empty; var lnkHref = "";
+                if (ent.Is_Active == 2)
+                {
+                    if (ent.Guest_ID == 0)
+                    {
+                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("TrackOrder", "Order", new { Order_ID = ent.Order_ID }) + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                    }
+                    else
+                    {
+                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("Register", "Login") + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                    }
+
+                    using (StreamReader reader = new StreamReader(Server.MapPath("~/Shipping.html")))
+                    {
+                        body = reader.ReadToEnd();
+                    }
+                    body = body.Replace("{Url}", lnkHref);
+
+                    Email em = new Email();
+                    em.SendConfirmationMail(ent.Order_ID, body, "Order Shipped");
+                }
+                else if (ent.Is_Active == 3)
+                {
+                    if (ent.Guest_ID == 0)
+                    {
+                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("TrackOrder", "Order", new { Order_ID = ent.Order_ID }) + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                    }
+                    else
+                    {
+                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("Register", "Login") + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                    }
+
+                    using (StreamReader reader = new StreamReader(Server.MapPath("~/Delivered.html")))
+                    {
+                        body = reader.ReadToEnd();
+                    }
+                    body = body.Replace("{Url}", lnkHref);
+
+                    Email eml = new Email();
+                    eml.SendConfirmationMail(ent.Order_ID, body, "Order Delivered");
+                }
+                
             }
             else { trans.Rollback(); }
             return result;

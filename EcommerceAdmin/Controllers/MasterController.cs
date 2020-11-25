@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace EcommerceAdmin.Controllers
 {
+    [HandleError]
     public class MasterController : Controller
     {
         #region Declaration

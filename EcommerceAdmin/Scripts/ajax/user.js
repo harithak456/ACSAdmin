@@ -32,11 +32,14 @@
             $("#validMail").html("Enter a Valid Email Id.");
             flag = false;
         }
-        if (phonenumber(User_Phone) && User_Phone.trim() != "") {
+        //if (phonenumber(User_Phone) && User_Phone.trim() != "") {
+        //    $("#validPhone").html("Enter a Valid Mobile No.");
+        //    flag = false;
+        //}
+        if (User_Phone == null || User_Phone.trim() == "") {
             $("#validPhone").html("Enter a Valid Mobile No.");
             flag = false;
         }
-
         if (User_Name == null || User_Name.trim() == "") {
             $("#validName").html("This field is required.");
             flag = false;

@@ -22,7 +22,11 @@
             $("#validMail").html("Enter a Valid Email Id.");
             flag = false;
         }
-        if (phonenumber(Phone)) {
+        //if (phonenumber(Phone)) {
+        //    $("#validMobile").html("Enter a Valid Mobile No.");
+        //    flag = false;
+        //}
+        if (Phone == null || Phone.trim() == "") {
             $("#validMobile").html("Enter a Valid Mobile No.");
             flag = false;
         }

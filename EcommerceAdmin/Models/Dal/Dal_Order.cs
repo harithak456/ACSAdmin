@@ -191,15 +191,27 @@ namespace EcommerceAdmin.Models.Dal
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@Order_ID", ent.Order_ID));
                     cmd.Parameters.Add(new SqlParameter("@Guest_ID", ent.Guest_ID));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_FirstName", ent.Guest_FirstName));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_LastName", ent.Guest_LastName));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_Address1", ent.Guest_Address1));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_Address2", ent.Guest_Address2));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_Town", ent.Guest_Town));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_State", ent.Guest_State));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_Country", ent.Guest_Country));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_Email", ent.Guest_Email));
-                    cmd.Parameters.Add(new SqlParameter("@Guest_Phone", ent.Guest_Phone));
+
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_FirstName", ent.Shipping_FirstName));
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_LastName", ent.Shipping_LastName));
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_Address1", ent.Shipping_Address1));
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_Address2", ent.Shipping_Address2));
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_Town", ent.Shipping_Town));
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_State", ent.Shipping_State));
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_Country", ent.Shipping_Country));
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_Email", ent.Shipping_Email));
+                    cmd.Parameters.Add(new SqlParameter("@Shipping_Phone", ent.Shipping_Phone));
+
+                    cmd.Parameters.Add(new SqlParameter("@Billing_FirstName", ent.Billing_FirstName));
+                    cmd.Parameters.Add(new SqlParameter("@Billing_LastName", ent.Billing_LastName));
+                    cmd.Parameters.Add(new SqlParameter("@Billing_Address1", ent.Billing_Address1));
+                    cmd.Parameters.Add(new SqlParameter("@Billing_Address2", ent.Billing_Address2));
+                    cmd.Parameters.Add(new SqlParameter("@Billing_Town", ent.Billing_Town));
+                    cmd.Parameters.Add(new SqlParameter("@Billing_State", ent.Billing_State));
+                    cmd.Parameters.Add(new SqlParameter("@Billing_Country", ent.Billing_Country));
+                    cmd.Parameters.Add(new SqlParameter("@Billing_Email", ent.Billing_Email));
+                    cmd.Parameters.Add(new SqlParameter("@Billing_Phone", ent.Billing_Phone));
+
                     cmd.Parameters.Add(new SqlParameter("@Order_SubTotal", ent.Order_SubTotal));
                     cmd.Parameters.Add(new SqlParameter("@Order_Shipping", ent.Order_Shipping));
                     cmd.Parameters.Add(new SqlParameter("@Order_Total", ent.Order_Total));
@@ -280,7 +292,7 @@ namespace EcommerceAdmin.Models.Dal
             return dataresult;
         }
 
-        public int UpdatePayment(int Order_ID, int Guest_ID,string Payment_Status, SafeTransaction trans)
+        public int UpdatePayment(Ent_Order entOrder , SafeTransaction trans)
         {
             int dataresult = 0;
             int dataresult1 = 0;
@@ -294,39 +306,23 @@ namespace EcommerceAdmin.Models.Dal
                 using (SqlCommand cmd = new SqlCommand("EC_UpdateOrder", trans.DatabaseConnection, trans.Transaction))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@Order_ID", Order_ID));                  
-                    cmd.Parameters.Add(new SqlParameter("@Payment_Status", Payment_Status));                  
+                    cmd.Parameters.Add(new SqlParameter("@Order_ID", entOrder.Order_ID));                  
+                    cmd.Parameters.Add(new SqlParameter("@Payment_Status", entOrder.Payment_Status));                  
+                    cmd.Parameters.Add(new SqlParameter("@Transaction_Id", entOrder.Transaction_Id));                  
+                    cmd.Parameters.Add(new SqlParameter("@Payment_Method", entOrder.Payment_Method));                  
                     try
                     {
                         dataresult = Convert.ToInt32(cmd.ExecuteScalar());
                         if (dataresult > 0)
                         {
                             cmd.Dispose();
-                            dataresult1 = 1;
-
-                                    //using (SqlCommand cmd1 = new SqlCommand("EC_UpdateOrderDetails", trans.DatabaseConnection, trans.Transaction))
-                                    //{
-                                    //    cmd1.CommandType = CommandType.StoredProcedure;
-                                    //    cmd1.Parameters.Add(new SqlParameter("@TempOrder_ID", Order_ID));
-                                    //    cmd1.Parameters.Add(new SqlParameter("@Order_ID", dataresult));
-                                    //    try
-                                    //    {
-                                    //        dataresult1 = Convert.ToInt32(cmd1.ExecuteScalar());
-                                    //        cmd1.Dispose();
-
-                            //    }
-                            //    catch (Exception ex)
-                            //    {
-                            //        dataresult = 0;
-                            //        InsertException(ex.Message, "UpdateOrderDetails", Order_ID);
-                            //    }
-                            //}
+                            dataresult1 = 1;                                    
 
                             if (dataresult1 > 0)
                             {
-                                if (Guest_ID != 0 && Payment_Status == "CAPTURED")
+                                if (entOrder.Guest_ID != 0 && entOrder.Payment_Status == "CAPTURED")
                                 {
-                                    var query = "delete from EC_Cart where Guest_ID=" + Guest_ID;
+                                    var query = "delete from EC_Cart where Guest_ID=" + entOrder.Guest_ID;
                                     int k = 0;
                                     using (SqlCommand cmd2 = new SqlCommand(query, trans.DatabaseConnection, trans.Transaction))
                                     {
@@ -385,16 +381,28 @@ namespace EcommerceAdmin.Models.Dal
                         ent.Order_Total = Convert.ToDouble(dr["Order_Total"]);    
                                     ent.Order_SubTotal = Convert.ToDouble(dr["Order_SubTotal"]);
                                     ent.Order_Shipping = Convert.ToDouble(dr["Order_Shipping"]);
-                        ent.Total_Qty = Convert.ToInt32(dr["Total_Qty"]);                     
-                        ent.entGuest.Guest_FirstName = Convert.ToString(dr["Guest_FirstName"]);                     
-                        ent.entGuest.Guest_LastName = Convert.ToString(dr["Guest_LastName"]);                     
-                        ent.entGuest.Guest_Address1 = Convert.ToString(dr["Guest_Address1"]);                     
-                        ent.entGuest.Guest_Address2 = Convert.ToString(dr["Guest_Address2"]);                     
-                        ent.entGuest.Guest_Town = Convert.ToString(dr["Guest_Town"]);                     
-                        ent.entGuest.Guest_State = Convert.ToString(dr["Guest_State"]);                     
-                        ent.entGuest.Guest_Country = Convert.ToString(dr["Guest_Country"]);                     
-                        ent.entGuest.Guest_Email = Convert.ToString(dr["Guest_Email"]);                     
-                        ent.entGuest.Guest_Phone = Convert.ToString(dr["Guest_Phone"]);                     
+                        ent.Total_Qty = Convert.ToInt32(dr["Total_Qty"]);          
+                        
+                        ent.Billing_FirstName = Convert.ToString(dr["Billing_FirstName"]);                     
+                        ent.Billing_LastName = Convert.ToString(dr["Billing_LastName"]);
+                        ent.Billing_Address1 = Convert.ToString(dr["Billing_Address1"]);
+                        ent.Billing_Address2 = Convert.ToString(dr["Billing_Address2"]);
+                        ent.Billing_Town = Convert.ToString(dr["Billing_Town"]);
+                        ent.Billing_State = Convert.ToString(dr["Billing_State"]);
+                        ent.Billing_Country = Convert.ToString(dr["Billing_Country"]);
+                        ent.Billing_Email = Convert.ToString(dr["Billing_Email"]);                     
+                        ent.Billing_Phone = Convert.ToString(dr["Billing_Phone"]);
+
+                        ent.Shipping_FirstName = Convert.ToString(dr["Shipping_FirstName"]);
+                        ent.Shipping_LastName = Convert.ToString(dr["Shipping_LastName"]);
+                        ent.Shipping_Address1 = Convert.ToString(dr["Shipping_Address1"]);
+                        ent.Shipping_Address2 = Convert.ToString(dr["Shipping_Address2"]);
+                        ent.Shipping_Town = Convert.ToString(dr["Shipping_Town"]);
+                        ent.Shipping_State = Convert.ToString(dr["Shipping_State"]);
+                        ent.Shipping_Country = Convert.ToString(dr["Shipping_Country"]);
+                        ent.Shipping_Email = Convert.ToString(dr["Shipping_Email"]);
+                        ent.Shipping_Phone = Convert.ToString(dr["Shipping_Phone"]);
+
                         ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);                     
                         result.Add(ent);
                     }
@@ -431,6 +439,7 @@ namespace EcommerceAdmin.Models.Dal
                     {
                         ent = new Ent_Order();
                         ent.Order_ID = Convert.ToInt32(dr["Order_ID"]);
+                        ent.Guest_ID = Convert.ToInt32(dr["Guest_ID"]);
                         ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);
                         ent.Is_Active = Convert.ToInt32(dr["Is_Active"]);
                         ent.Order_Total = Convert.ToDouble(dr["Order_Total"]);
@@ -461,18 +470,28 @@ namespace EcommerceAdmin.Models.Dal
                         if (dr["Return_Date"].ToString() == "")
                             ent.Return_Date = null;
                         else
-                            ent.Return_Date = dr["Return_Date"].ToString();
+                            ent.Return_Date = dr["Return_Date"].ToString();                                      
 
-                
-                        ent.entGuest.Guest_FirstName = Convert.ToString(dr["Guest_FirstName"]);
-                        ent.entGuest.Guest_LastName = Convert.ToString(dr["Guest_LastName"]);
-                        ent.entGuest.Guest_Address1 = Convert.ToString(dr["Guest_Address1"]);
-                        ent.entGuest.Guest_Address2 = Convert.ToString(dr["Guest_Address2"]);
-                        ent.entGuest.Guest_Town = Convert.ToString(dr["Guest_Town"]);
-                        ent.entGuest.Guest_State = Convert.ToString(dr["Guest_State"]);
-                        ent.entGuest.Guest_Country = Convert.ToString(dr["Guest_Country"]);
-                        ent.entGuest.Guest_Email = Convert.ToString(dr["Guest_Email"]);
-                        ent.entGuest.Guest_Phone = Convert.ToString(dr["Guest_Phone"]);
+                        ent.Billing_FirstName = Convert.ToString(dr["Billing_FirstName"]);
+                        ent.Billing_LastName = Convert.ToString(dr["Billing_LastName"]);
+                        ent.Billing_Address1 = Convert.ToString(dr["Billing_Address1"]);
+                        ent.Billing_Address2 = Convert.ToString(dr["Billing_Address2"]);
+                        ent.Billing_Town = Convert.ToString(dr["Billing_Town"]);
+                        ent.Billing_State = Convert.ToString(dr["Billing_State"]);
+                        ent.Billing_Country = Convert.ToString(dr["Billing_Country"]);
+                        ent.Billing_Email = Convert.ToString(dr["Billing_Email"]);
+                        ent.Billing_Phone = Convert.ToString(dr["Billing_Phone"]);
+
+                        ent.Shipping_FirstName = Convert.ToString(dr["Shipping_FirstName"]);
+                        ent.Shipping_LastName = Convert.ToString(dr["Shipping_LastName"]);
+                        ent.Shipping_Address1 = Convert.ToString(dr["Shipping_Address1"]);
+                        ent.Shipping_Address2 = Convert.ToString(dr["Shipping_Address2"]);
+                        ent.Shipping_Town = Convert.ToString(dr["Shipping_Town"]);
+                        ent.Shipping_State = Convert.ToString(dr["Shipping_State"]);
+                        ent.Shipping_Country = Convert.ToString(dr["Shipping_Country"]);
+                        ent.Shipping_Email = Convert.ToString(dr["Shipping_Email"]);
+                        ent.Shipping_Phone = Convert.ToString(dr["Shipping_Phone"]);
+                        
                         ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);
                     }
                 }

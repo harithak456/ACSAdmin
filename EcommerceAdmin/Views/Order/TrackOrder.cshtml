@@ -1,9 +1,10 @@
 ﻿@model EcommerceAdmin.Models.Entity.Ent_Order
 @{
-    ViewBag.Title = "ViewOrder";
+    ViewBag.Title = "TrackOrder";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
-    List<EcommerceAdmin.Models.Entity.Ent_OrderDetail> OrderDetails = ViewBag.OrderDetails;  
+    List<EcommerceAdmin.Models.Entity.Ent_OrderDetail> OrderDetails = ViewBag.OrderDetails;
 }
+
 
 <!--breadcrumbs area start-->
 <div class="breadcrumbs_area">
@@ -12,9 +13,8 @@
             <div class="col-12">
                 <div class="breadcrumb_content">
                     <ul>
-                        <li><a href="/Home/Index">home</a></li>                        
-                        <li><a href="/Login/MyAccount">My Account</a></li>
-                        <li>Order Details</li>
+                        <li><a href="/Home/Index">home</a></li>
+                        <li>Track Order</li>
                     </ul>
                 </div>
             </div>
@@ -43,18 +43,18 @@
                                 <tbody id="tblCartBody">
                                     @foreach (var items in OrderDetails)
                                     {
-                                    <tr id="@items.Product_ID" class="tblRow">                                     
-                                        <td class="product_thumb"><a href="#"><img src="../../ProductImages/@items.Product_Image" alt=""></a></td>
-                                        <td class="product_name" productname="@items.Product_Name"><a href="#">@items.Product_Name</a></td>
-                                        <td class="product-price" price="@items.Product_Price">AED @items.Product_Price</td>
-                                        <td class="product_quantity">@items.Quantity</td>
-                                        <td class="product_total">AED @items.Product_Total</td>
-                                    </tr>
+                                        <tr id="@items.Product_ID" class="tblRow">
+                                            <td class="product_thumb"><a href="#"><img src="../../ProductImages/@items.Product_Image" alt=""></a></td>
+                                            <td class="product_name" productname="@items.Product_Name"><a href="#">@items.Product_Name</a></td>
+                                            <td class="product-price" price="@items.Product_Price">AED @items.Product_Price</td>
+                                            <td class="product_quantity">@items.Quantity</td>
+                                            <td class="product_total">AED @items.Product_Total</td>
+                                        </tr>
                                     }
 
                                 </tbody>
                             </table>
-                        </div>                     
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,15 +93,15 @@
                                 </div>
                                 <div class="cart_subtotal ">
                                     <p>Shipping</p>
-                                    <p class="cart_amount">AED @(Convert.ToDouble(Model.Order_Shipping)>0?Model.Order_Shipping:0)</p>
+                                    <p class="cart_amount">AED @(Convert.ToDouble(Model.Order_Shipping) > 0 ? Model.Order_Shipping : 0)</p>
                                 </div>
-                           
+
 
                                 <div class="cart_subtotal">
                                     <p>Total</p>
                                     <p class="cart_amount">AED @Model.Order_Total</p>
                                 </div>
-                              
+
                             </div>
                         </div>
                     </div>
@@ -112,4 +112,3 @@
     </div>
 </div>
 <!--shopping cart area end -->
-

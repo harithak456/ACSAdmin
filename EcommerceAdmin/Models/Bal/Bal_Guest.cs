@@ -70,5 +70,49 @@ namespace EcommerceAdmin.Models.Bal
             }
         }
 
+        public Ent_GuestAddress SelectGuestAddress(int ID)
+        {
+            Ent_GuestAddress ent = new Ent_GuestAddress();
+            try
+            {
+                Dal_Guest dal = new Dal_Guest();
+                ent = dal.SelectGuestAddress(ID);
+                return ent;
+            }
+            catch
+            {
+                return ent;
+            }
+        }
+        public List<Ent_GuestAddress> SelectGuestAddressList(int ID)
+        {
+            List<Ent_GuestAddress> ent = new List<Ent_GuestAddress>();
+            try
+            {
+                Dal_Guest dal = new Dal_Guest();
+                ent = dal.SelectGuestAddressList(ID);
+                return ent;
+            }
+            catch
+            {
+                return ent;
+            }
+        }
+
+        public int UpdateAddress(Ent_GuestAddress entGuest, SafeTransaction trans)
+        {
+            int dataResult = 0;
+            try
+            {
+                Dal_Guest dal = new Dal_Guest();
+                dataResult = dal.UpdateAddress(entGuest, trans);
+                return dataResult;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
     }
 }

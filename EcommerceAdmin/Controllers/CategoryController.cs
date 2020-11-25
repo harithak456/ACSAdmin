@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace EcommerceAdmin.Controllers
 {
+    [HandleError]
     public class CategoryController : Controller
     {
 
@@ -45,10 +46,9 @@ namespace EcommerceAdmin.Controllers
             DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
             DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
             model.Created_Date = indiTime;
-            //HttpCookie C_UserID = Request.Cookies["User_ID"];
-            //string User_ID = C_UserID != null ? C_UserID.Value.Split('=')[1] : "";
-            //model.Created_By = Convert.ToInt32(User_ID);
-            model.Created_By = 1;
+            HttpCookie C_UserID = Request.Cookies["User_ID"];
+            string User_ID = C_UserID != null ? C_UserID.Value.Split('=')[1] : "";
+            model.Created_By = Convert.ToInt32(User_ID);
             int i = balCategory.SaveCategory(model, trans);
             if (i > 0)
             {              
@@ -76,10 +76,9 @@ namespace EcommerceAdmin.Controllers
             DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
             DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
             model.Created_Date = indiTime;
-            //HttpCookie C_UserID = Request.Cookies["User_ID"];
-            //string User_ID = C_UserID != null ? C_UserID.Value.Split('=')[1] : "";
-            //model.Created_By = Convert.ToInt32(User_ID);
-            model.Created_By = 1;
+            HttpCookie C_UserID = Request.Cookies["User_ID"];
+            string User_ID = C_UserID != null ? C_UserID.Value.Split('=')[1] : "";
+            model.Created_By = Convert.ToInt32(User_ID);       
             int i = balMaster.SaveBrand(model, trans);
             if (i > 0)
             {
@@ -99,10 +98,10 @@ namespace EcommerceAdmin.Controllers
 
             ent.Category_ID = Category_ID;
 
-            //HttpCookie UserID = Request.Cookies["User_ID"];
-            //var UserId = UserID != null ? UserID.Value.Split('=')[1] : "";
-            //ent.Modified_By = Convert.ToInt32(UserId);
-            ent.Modified_By = 1;
+            HttpCookie UserID = Request.Cookies["User_ID"];
+            var UserId = UserID != null ? UserID.Value.Split('=')[1] : "";
+
+            ent.Modified_By = Convert.ToInt32(UserId);
             DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
             DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
             ent.Modified_Date = indiTime;

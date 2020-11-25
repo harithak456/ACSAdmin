@@ -3,12 +3,15 @@ using EcommerceAdmin.Models.Common;
 using EcommerceAdmin.Models.Entity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
 namespace EcommerceAdmin.Controllers
 {
+    [HandleError]
     public class OrderController : Controller
     {
         #region Declaration
@@ -197,9 +200,45 @@ namespace EcommerceAdmin.Controllers
             HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
             string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
             if (!string.IsNullOrEmpty(GuestID))
+            {
                 model.Guest_ID = Convert.ToInt32(GuestID);
+                Ent_GuestAddress entAddress = new Ent_GuestAddress();
+                entAddress = balguest.SelectGuestAddress(Convert.ToInt32(GuestID));
+                if (entAddress.Guest_Address1 != "")
+                {
+                    model.Billing_FirstName = entAddress.First_Name;
+                    model.Billing_LastName = entAddress.Last_Name;
+                    model.Billing_Address1 = entAddress.Guest_Address1;
+                    model.Billing_Address2 = entAddress.Guest_Address2;
+                    model.Billing_State = entAddress.Guest_State;
+                    model.Billing_Town = entAddress.Guest_Town;
+                    model.Billing_Country = entAddress.Guest_Country;
+                }
+                else
+                {                   
+                    model.Billing_FirstName = model.Shipping_FirstName;
+                    model.Billing_LastName = model.Shipping_LastName;
+                    model.Billing_Address1 = model.Shipping_Address1;
+                    model.Billing_Address2 = model.Shipping_Address2;
+                    model.Billing_State = model.Shipping_State;
+                    model.Billing_Town = model.Shipping_Town;
+                    model.Billing_Country = model.Shipping_Country;
+                }
+            }
             else
+            {
                 model.Guest_ID = 0;
+                model.Billing_FirstName = model.Shipping_FirstName;
+                model.Billing_LastName = model.Shipping_LastName;              
+                model.Billing_Address1 = model.Shipping_Address1;
+                model.Billing_Address2 = model.Shipping_Address2;
+                model.Billing_State = model.Shipping_State;
+                model.Billing_Town= model.Shipping_Town;
+                model.Billing_Country = model.Shipping_Country;               
+            }
+
+            model.Billing_Email = model.Shipping_Email;
+            model.Billing_Phone = model.Shipping_Phone;
 
             model.Order_SubTotal = Convert.ToDouble(Session["SubTotal"]);
             model.Order_Shipping = 0;
@@ -217,17 +256,36 @@ namespace EcommerceAdmin.Controllers
 
             return i;
         }
-        public int UpdatePayment(int Order_ID,string Payment_Status)
+        public int UpdatePayment(Ent_Order entOrder)
         {
             SafeTransaction trans = new SafeTransaction();
             HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
-            int GuestID = Guest_ID != null ? Convert.ToInt32(Guest_ID.Value.Split('=')[1]) : 0;           
-            int i = balOrder.UpdatePayment(Order_ID, GuestID, Payment_Status, trans);
+            int ID = Guest_ID != null ? Convert.ToInt32(Guest_ID.Value.Split('=')[1]) : 0;
+            entOrder.Guest_ID = ID;
+            int i = balOrder.UpdatePayment(entOrder,   trans);
             if (i > 0)
             {
                 trans.Commit();
-                if (Payment_Status == "CAPTURED")
+                if (entOrder.Payment_Status == "CAPTURED")
                 {
+                    string body = string.Empty; var lnkHref = "";
+                    if (ID == 0)
+                    {
+                         lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("TrackOrder", "Order", new { Order_ID = entOrder.Order_ID }) + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                    }
+                    else
+                    {
+                         lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("Register", "Login") + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                    }
+
+                    using (StreamReader reader = new StreamReader(Server.MapPath("~/OrderConfirmation.html")))
+                    {
+                        body = reader.ReadToEnd();
+                    }
+                    body = body.Replace("{Url}", lnkHref);
+
+                    Email em = new Email();
+                    em.SendConfirmationMail(entOrder.Order_ID, body, "Order Confirmation");
                     Session["Cart"] = null;
                     Session["Total"] = null;
                     Session["SubTotal"] = null;
@@ -238,9 +296,10 @@ namespace EcommerceAdmin.Controllers
             {
                 trans.Rollback();
             }
-
+            
             return i;
         }
+    
 
         public ActionResult ViewOrder()
         {
@@ -261,6 +320,20 @@ namespace EcommerceAdmin.Controllers
         {           
             ViewBag.Order_ID = id;
             return View();
+        }
+
+        public ActionResult TrackOrder(int Order_ID)
+        {
+            List<Ent_OrderDetail> list = new List<Ent_OrderDetail>();
+            Ent_Order ent = new Ent_Order();
+            if (Order_ID != 0)
+            {
+                list = balOrder.SelectOrderDetails(Order_ID);
+                ViewBag.OrderDetails = list;
+                if (list.Count > 0)
+                    ent = list[0].entOrder;
+            }
+            return View(ent);           
         }
     }
 }

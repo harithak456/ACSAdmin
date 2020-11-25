@@ -136,6 +136,7 @@
     <Compile Include="Models\Bal\Bal_Order.cs" />
     <Compile Include="Models\Bal\Bal_Product.cs" />
     <Compile Include="Models\Common\DBConnection.cs" />
+    <Compile Include="Models\Common\Email.cs" />
     <Compile Include="Models\Common\Global.cs" />
     <Compile Include="Models\Common\SafeTransaction.cs" />
     <Compile Include="Models\Dal\Dal_Guest.cs" />
@@ -152,9 +153,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="exp2.html" />
-    <Content Include="redirect.html" />
-    <Content Include="333.html" />
+    <Content Include="assetsclient\loader.gif" />
+    <Content Include="Delivered.html" />
+    <Content Include="OrderConfirmation.html" />
     <Content Include="assetsadmin\bootstrap\css\bootstrap.min.css" />
     <Content Include="assetsadmin\bootstrap\js\bootstrap.min.js" />
     <Content Include="assetsadmin\dist\css\AdminLTE.min.css" />
@@ -261,6 +262,7 @@
     <Content Include="assetsclient\fonts\ionicons.ttf" />
     <Content Include="assetsclient\fonts\Linearicons-Free.woff2" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -272,7 +274,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="ssds.html" />
+    <Content Include="Shipping.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -312,6 +314,9 @@
     <Content Include="Views\Admin\Orders.cshtml" />
     <Content Include="Views\Admin\OrderList.cshtml" />
     <Content Include="Views\Order\Payment.cshtml" />
+    <Content Include="Views\Order\TrackOrder.cshtml" />
+    <Content Include="Views\Admin\NavigationPartial.cshtml" />
+    <Content Include="Views\Admin\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

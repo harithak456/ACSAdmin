@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace EcommerceAdmin.Controllers
 {
+    [HandleError]
     public class ProductController : Controller
     {
         #region Declaration

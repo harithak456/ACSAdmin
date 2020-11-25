@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace EcommerceAdmin.Controllers
 {
+    [HandleError]
     public class LoginController : Controller
     {
         #region Declaration
@@ -20,13 +21,14 @@ namespace EcommerceAdmin.Controllers
         #endregion
 
         // GET: Login
-        public ActionResult Register()
+        public ActionResult Register(string msg="")
         {
+            ViewBag.Msg =msg;
             return View();
         }
 
 
-        
+
         public ActionResult ActivateAccount(string id)
         {
             SafeTransaction trans = new SafeTransaction();
@@ -36,20 +38,32 @@ namespace EcommerceAdmin.Controllers
                 Ent_Guest ent = new Ent_Guest();
                 DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
                 DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
-                ent.Created_Date = indiTime;               
-                result = balGuest.ActivateGuest(ent,id, trans);
+                ent.Created_Date = indiTime;
+                result = balGuest.ActivateGuest(ent, id, trans);
                 if (result > 0)
                 {
                     trans.Commit();
                 }
-                else
+                else 
                 {
-                    result = 0;
+                  
                     trans.Rollback();
                 }
             }
-            ViewBag.Result = result;
-            return View();
+          
+            string message = "";
+            if (result > 0)
+            {
+                message = "Your Email Has Been Confirmed ! Please Login.";
+
+            }
+            else if(result!=-2)
+            {
+                message = "Your Email Not Confirmed.";
+            }
+            return RedirectToAction("Register", new { msg = message });
+            //ViewBag.Result = result;
+            //return View();
 
         }
 
@@ -60,26 +74,22 @@ namespace EcommerceAdmin.Controllers
             DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
             DateTime indiTime = Convert.ToDateTime(indianTime.ToString("yyyy-MM-dd h:m:s"));
             model.Created_Date = indiTime;
-            model.Guest_FirstName = "";
             string uniqueId = Guid.NewGuid().ToString();
             model.Unique_ID = uniqueId;
             result = balGuest.SaveGuest(model, trans);
             if (result > 0)
             {
-                trans.Commit();
-
-                //var lnkHref = "href='https://acsadmin.atintellilabs.live/" + @Url.Action("ActivateAccount", "Login", new { id = uniqueId }) + "'  target='_blank'";
-
+                trans.Commit();                
                 var lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("ActivateAccount", "Login", new { id = uniqueId }) + "' target='_blank' style='display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;'>Confirm Your Mail</a>";
-                // var lnkHref = uniqueId;
-
+               
                 string body = string.Empty;
                 using (StreamReader reader = new StreamReader(Server.MapPath("~/confirm.html")))
                 {
                     body = reader.ReadToEnd();
                 }
                 body = body.Replace("{Url}", lnkHref);
-                SendMail(body,uniqueId, model.Guest_Username);
+                Email email = new Email();
+                email.SendMail(body, model.Guest_Username, "Account Activation");
             }
             else
             {
@@ -88,46 +98,7 @@ namespace EcommerceAdmin.Controllers
             return result;
         }
 
-        public int SendMail(string Mailbody,string uniqueId, string MailTo)
-        {
-            try
-            {
-                using (MailMessage mail = new MailMessage())
-                {
-                    int port = 587;
-                    string host = "smtp.yandex.com.tr";
-                    string sendmail = "mailsupport@intellilabs.co.in";
-                    string password = "admin@123";
-
-                    mail.From = new MailAddress(sendmail, "ACSpareparts.com");
-                    mail.To.Add(MailTo);
-                    mail.Subject = "Account Activation";
-                    mail.IsBodyHtml = true;
-                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Mailbody, null, "text/html");
-                    mail.AlternateViews.Add(htmlView);                  
-                    using (SmtpClient emailClient = new SmtpClient(host, port))
-                    {
-                        System.Net.NetworkCredential userInfo = new System.Net.NetworkCredential(sendmail, password);
-                        emailClient.UseDefaultCredentials = false;
-                        emailClient.EnableSsl = true;
-                        emailClient.DeliveryFormat = SmtpDeliveryFormat.International;
-                        emailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        if (!string.IsNullOrEmpty(userInfo.UserName.Trim()) && !string.IsNullOrEmpty(userInfo.Password.Trim()))
-                        {
-                            emailClient.Credentials = userInfo;
-                        }
-                        emailClient.Send(mail);
-                    }
-
-                }
-                return 1;
-
-            }
-            catch (Exception e)
-            {
-                return 0;
-            }
-        }
+   
 
         //Login      
         public int CreateLogin(string Username,string Password)
@@ -187,14 +158,14 @@ namespace EcommerceAdmin.Controllers
                         if (Request.Cookies["Guest_ID"] != null)
                         {
                             HttpCookie myCookie = new HttpCookie("Guest_ID");
-                            myCookie.Expires = DateTime.Now.AddDays(-1d);
+                            myCookie.Expires = DateTime.Now.AddDays(-1);
                             Response.Cookies.Add(myCookie);
                         }
 
                         if (Request.Cookies["Guest_FirstName"] != null)
                         {
                             HttpCookie myCookie = new HttpCookie("Guest_FirstName");
-                            myCookie.Expires = DateTime.Now.AddDays(-1d);
+                            myCookie.Expires = DateTime.Now.AddDays(-1);
                             Response.Cookies.Add(myCookie);
                         }
 
@@ -215,14 +186,14 @@ namespace EcommerceAdmin.Controllers
             if (Request.Cookies["Guest_ID"] != null)
             {
                 HttpCookie myCookie = new HttpCookie("Guest_ID");
-                myCookie.Expires = DateTime.Now.AddDays(-1d);
+                myCookie.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(myCookie);
             }
 
             if (Request.Cookies["Guest_FirstName"] != null)
             {
                 HttpCookie myCookie = new HttpCookie("Guest_FirstName");
-                myCookie.Expires = DateTime.Now.AddDays(-1d);
+                myCookie.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(myCookie);
             }
             Session["Cart"] = null;
@@ -234,17 +205,59 @@ namespace EcommerceAdmin.Controllers
         public ActionResult MyAccount()
         {
             HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
-            string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
+            int GuestID = Guest_ID != null ? Convert.ToInt32( Guest_ID.Value.Split('=')[1]) : 0;
             List<Ent_Order> list = new List<Ent_Order>();
-            Ent_Guest entGuest = new Ent_Guest();
-            if (!string.IsNullOrEmpty(GuestID))
-            {
-                list = balOrder.SelectGuestOrder(Convert.ToInt32(GuestID));
+            List<Ent_GuestAddress> AddressList = new List<Ent_GuestAddress>();
+             Ent_Guest entGuest = new Ent_Guest();
 
-                entGuest = list[0].entGuest;
+            if (GuestID!=0)
+            {
+                list = balOrder.SelectGuestOrder(GuestID);
+                entGuest = balGuest.SelectGuestDetails(GuestID);               
+                AddressList = balGuest.SelectGuestAddressList(GuestID);
             }
+
             ViewBag.OrderList = list;
+            Ent_GuestAddress entHome = new Ent_GuestAddress();
+            Ent_GuestAddress entWork = new Ent_GuestAddress();
+            Ent_GuestAddress entOther = new Ent_GuestAddress();
+            var home= AddressList.Where(x => x.Address_Type == "Home").FirstOrDefault();
+            var work = AddressList.Where(x => x.Address_Type == "Work").FirstOrDefault();
+            var other = AddressList.Where(x => x.Address_Type == "Other").FirstOrDefault();
+
+            if (home != null)
+                entHome = home;
+            if (work != null)
+                entWork = work;
+            if (other != null)
+                entOther = other;
+
+
+            ViewBag.HomeAddress = entHome;
+            ViewBag.WorkAddress = entWork;
+            ViewBag.OtherAddress = entOther;
                 return View(entGuest);
         }
+
+        public int UpdateAddress(Ent_GuestAddress model)
+        {
+            int result = 0;
+            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            int GuestID = Guest_ID != null ? Convert.ToInt32(Guest_ID.Value.Split('=')[1]) : 0;
+            model.Guest_ID = GuestID;
+            SafeTransaction trans = new SafeTransaction();        
+            result = balGuest.UpdateAddress(model, trans);
+            if (result > 0)
+            {
+                trans.Commit();
+
+            }
+            else
+            {
+                trans.Rollback();
+            }
+            return result;
+        }
+
     }
 }

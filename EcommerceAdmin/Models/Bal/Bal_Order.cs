@@ -85,13 +85,13 @@ namespace EcommerceAdmin.Models.Bal
             }
         }
 
-        public int UpdatePayment(int Order_ID,int Guest_ID,string Payment_Status, SafeTransaction trans)
+        public int UpdatePayment(Ent_Order entOrder, SafeTransaction trans)
         {
             int dataResult = 0;
             try
             {
                 Dal_Order dal = new Dal_Order();
-                dataResult = dal.UpdatePayment(Order_ID, Guest_ID, Payment_Status, trans);
+                dataResult = dal.UpdatePayment(entOrder, trans);
                 return dataResult;
             }
             catch

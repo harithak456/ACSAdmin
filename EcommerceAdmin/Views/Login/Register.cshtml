@@ -4,6 +4,11 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 <script src="~/Scripts/ajax/register.js"></script>
+<style>
+    .inputValid {
+        color: #dd4b39;
+    }
+</style>
   <!--breadcrumbs area start-->
 <div class="breadcrumbs_area">
     <div class="container">
@@ -11,11 +16,14 @@
             <div class="col-12">
                 <div class="breadcrumb_content">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="/Home/Index">Home</a></li>
                         <li>Login</li>
-                    </ul>                   
+                    </ul>
                     <span style="margin:auto; display:table;color:red" id="spanMsg">
-                        
+                      
+                    </span>
+                    <span style="margin:auto; display:table;color:deeppink;font-size:large" >
+                        @ViewBag.Msg
                     </span>
                 </div>
             </div>
@@ -33,12 +41,14 @@
                     <h2>login</h2>
                     <form action="#">
                         <p>
-                            <label>Username or email <span>*</span></label>
+                            <label>Username or Email <span>*</span></label>
                             <input type="text" id="Username">
+                            <span class="help-block inputValid" id="validUsername"></span>
                         </p>
                         <p>
-                            <label>Passwords <span>*</span></label>
-                            <input type="password" id="Password" >
+                            <label>Password <span>*</span></label>
+                            <input type="password" id="Password">
+                            <span class="help-block inputValid" id="validPass"></span>
                         </p>
                         <div class="login_submit">
                             <a href="#">Lost your password?</a>
@@ -56,12 +66,30 @@
                     <h2>Register</h2>
                     <form action="#">
                         <p>
-                            <label>Email address <span>*</span></label>
-                            <input type="text" autocomplete="off" id="REmail">
+                            <label>First Name <span>*</span></label>
+                            <input type="text" autocomplete="off" id="FName">
+                            <span class="help-block inputValid" id="validFName"></span>
                         </p>
                         <p>
-                            <label>Passwords <span>*</span></label>
+                            <label>Last Name <span>*</span></label>
+                            <input type="text" autocomplete="off" id="LName">
+                            <span class="help-block inputValid" id="validLName"></span>
+                        </p>
+
+                        <p>
+                            <label>Email address <span>*</span></label>
+                            <input type="text" autocomplete="off" id="REmail">
+                            <span class="help-block inputValid" id="validEmail"></span>
+                        </p>
+                        <p>
+                            <label>Password <span>*</span></label>
                             <input type="password" autocomplete="off" id="RPassword">
+                            <span class="help-block inputValid" id="validPassword"></span>
+                        </p>
+                        <p>
+                            <label>Phone <span>*</span></label>
+                            <input type="text" autocomplete="off" id="Phone">
+                            <span class="help-block inputValid" id="validPhone"></span>
                         </p>
                         <div class="login_submit">
                             <button type="button" id="btnRegister">Register</button>

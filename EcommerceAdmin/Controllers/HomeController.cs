@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace EcommerceAdmin.Controllers
 {
+    [HandleError]
     public class HomeController : Controller
     {
         #region Declaration
@@ -195,10 +196,8 @@ namespace EcommerceAdmin.Controllers
         public ActionResult SearchProducts(string SearchText)
         {
             List<Ent_Product> listProduct = new List<Ent_Product>();
-
             listProduct = balProduct.SelectProductFilter(0, 0, SearchText);
             Session["listProduct"] = listProduct;         
-
             ViewBag.listProduct = listProduct;
 
             List<Ent_Brand> listBrand = new List<Ent_Brand>();

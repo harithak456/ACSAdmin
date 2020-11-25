@@ -37,6 +37,8 @@
                                 <th>Sl No.</th>
                                 <th>Product Name</th>
                                 <th>Category</th>
+                                <th>Sub Category</th>
+                                <th>Brand</th>
                                 <th style="width:80px;">Action</th>
                             </tr>
                         </thead>
@@ -48,6 +50,8 @@
                                     <td>@i</td>
                                     <td>@item.Product_Name</td>
                                     <td>@item.entCategory.Category_Name</td>
+                                    <td>@item.entCategory</td>
+                                    <td>@item.</td>
                                     <td>
                                         <div class="tools">
                                             <a href="/Product/AddProduct?ProductId=@item.Product_ID">  <i class="fa fa-edit"></i></a>
