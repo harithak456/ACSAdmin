@@ -186,12 +186,12 @@
                                                                             <tr>
                                                                                 <td><img src="https://assets.mailcharts.com/emails/images/4ca15fc5f185d684bbbc6461b88ae5c7a1a23e30.jpeg" width="64" height="325" border="0" style="display: block;" data-mc-image-bytes="18131" data-mc-width="64" data-mc-height="325" data-mc-natural-width="64" data-mc-natural-height="325" /></td>
                                                                                 <td width="511" style="font-family: Verdana; font-size: 21.47px; color: #223628; letter-spacing: 0.4px; text-align: center; line-height: 32.21px; background-color: #fceff3; vertical-align: top;">
-                                                                                   your order successfully delivered<br />and will soon let you know<br />when it's on its way.<br />(you can also track it {{Url}}.)
+                                                                                   your order successfully delivered<br />                                                                                    
                                                                                                                                                                                <span style="font-family: Verdana; font-size: 17.18px; color: #223628; letter-spacing: 1.72px; text-align: center; line-height: 22.54px; text-transform:uppercase;">
                                                                                                                                                                                    <br />
                                                                                                                                                                                    <br />
-                                                                                                                                                                                   <br />Delivered: {{DeliveredDate}}<br /><br />
-                                                                                                                                                                                   order number: {{OrderID}}
+                                                                                                                                                                                   <br />Delivered: {DeliveredDate}<br /><br />
+                                                                                                                                                                                   order number: {OrderID}
                                                                                                                                                                                </span>
                                                                                 </td>
                                                                                 <td><img src="https://assets.mailcharts.com/emails/images/56c93516f992279303aa6c15a4e8a6f179b06dc1.jpeg" width="64" height="325" border="0" style="display: block;" data-mc-image-bytes="18109" data-mc-width="64" data-mc-height="325" data-mc-natural-width="64" data-mc-natural-height="325" /></td>
@@ -253,62 +253,22 @@
                                                                                                                         </tbody>
                                                                                                                     </table>
                                                                                                                 </td>
-                                                                                                                <td colspan="2" valign="top" style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left; padding: 20px 10px; padding-right: 30px;">
+                                                                                                                <td colspan="2" valign="top" style="color: #223628; font-family: Arial; font-weight: normal; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left; padding: 20px 10px; padding-right: 30px;">
                                                                                                                     <div style="color:#223628; font-size:11px; font-family:Arial; line-height:1.38; text-align:left; text-transform:uppercase; letter-spacing: 1.1px; padding-bottom: 20px;">
                                                                                                                         Payment Method:
                                                                                                                     </div>
-                                                                                                                    <div style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">
+                                                                                                                    <div style="color: #223628; font-family: Arial; font-weight: normal; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">
                                                                                                                         <div class="cc-type">
                                                                                                                             <img style="margin-bottom: 9px;" width="35" height="20" src="https://assets.mailcharts.com/emails/images/fb295cab9b40ed0123c9b05ab35144b448e90c99.png" alt="Visa" data-mc-image-bytes="2647" data-mc-width="35" data-mc-height="20" data-mc-natural-width="194" data-mc-natural-height="100" />
                                                                                                                         </div>
                                                                                                                        
-                                                                                                                        Amount
-                                                                                                                        AED {{Total}}
+                                                                                                                        amount
+                                                                                                                        AED {Total}
                                                                                                                     </div>
                                                                                                                     <!-- END: payment-amount -->
                                                                                                                 </td>
                                                                                                             </tr>
-                                                                                                          
-                                                                                                            <tr>
-                                                                                                                <td colspan="3" valign="top" style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left; padding: 20px 10px; padding-left: 30px; border-top: 1px solid #223628; padding-top: 40px; padding-bottom: 40px; padding-right: 40px;">
-                                                                                                                    <div class="content-asset">
-                                                                                                                        <!-- dwMarker="content" dwContentID="a4afea2d3b6d3835c1e51c9b95" -->
-                                                                                                                        All amounts labeled in US Dollars and foreign currency is subject to currency exchange rates
-                                                                                                                    </div>
-                                                                                                                    <!-- End content-asset -->
-                                                                                                                </td>
-                                                                                                                <td style="border-top: 1px solid #223628;"></td>
-                                                                                                                <td valign="top" colspan="2" style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left; padding: 20px 10px; padding-right: 30px; border-top: 1px solid #223628; padding-top: 40px; padding-bottom: 40px;">
-                                                                                                                    <div>
-                                                                                                                        <span style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">Subtotal:</span>
-                                                                                                                        <span style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">$9.00</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <span style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">
-                                                                                                                            Shipping:
-                                                                                                                        </span>
-                                                                                                                        <span style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">
-                                                                                                                            $0.00
-                                                                                                                        </span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <span style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">
-                                                                                                                            Sales Tax:
-                                                                                                                        </span>
-                                                                                                                        <span style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">
-                                                                                                                            $0.80
-                                                                                                                        </span>
-                                                                                                                    </div>
-                                                                                                                    <div style="padding-top: 20px;">
-                                                                                                                        <span style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">
-                                                                                                                            Total:
-                                                                                                                        </span>
-                                                                                                                        <span style="color: #223628; font-family: Arial; font-weight: normal; text-transform: lowercase; font-size: 13px; line-height: 1.38; letter-spacing: 0.2px; text-align:left;">
-                                                                                                                            $9.80
-                                                                                                                        </span>
-                                                                                                                    </div>
-                                                                                                                </td>
-                                                                                                            </tr>
+                                                                                                                                                                                                                  
                                                                                                         </tbody>
                                                                                                     </table>
                                                                                                 </td>

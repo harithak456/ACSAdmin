@@ -76,11 +76,11 @@
                         <div class="col-12 ">
                             <div class="single_product">
                                 <div class="product_name grid_name">
-                                    <h3><a href="product-details.html">@item.Product_Name</a></h3>
-                                    <p class="manufacture_product"><a href="#">Accessories</a></p>
+                                    <h3>@item.Product_Name</h3>
+                                    <p class="manufacture_product"><a href="#">@item.entCategory.Category_Name</a></p>
                                 </div>
                                 <div class="product_thumb">
-                                    <a class="primary_img" href="product-details.html">
+                                    <a class="primary_img">
                                         @if (item.Product_Image != "" && item.Product_Image != null && File.Exists(Server.MapPath("~/ProductImages/" + item.Product_Image)))
                                         {<img src="../../ProductImages/@item.Product_Image" alt=""> }
                                         else
@@ -93,9 +93,17 @@
                                         </div>*@
                                     <div class="action_links">
                                         <ul>
-                                            <li class="quick_button"><a href="#" data-toggle="modal" data-target="#modal_box" title="quick view"> <span class="lnr lnr-magnifier"></span></a></li>
-                                            <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><span class="lnr lnr-heart"></span></a></li>
-                                            <li class="compare"><a href="compare.html" title="compare"><span class="lnr lnr-sync"></span></a></li>
+                                            @if (item.Product_Image != "" && item.Product_Image != null && File.Exists(Server.MapPath("~/ProductImages/" + item.Product_Image)))
+                                            {
+                                                <li class="quick_button" productname="@item.Product_Name" productimage="../../ProductImages/@item.Product_Image" searchDesc="@item.Product_Description" productid="@item.Product_ID" categoryid="@item.Category_ID" oldprice="@item.Product_Price" newprice="@(item.Product_Price-item.Product_Discount)"><a href="#" data-toggle="modal" data-target="#modal_box" title="quick view"> <span class="lnr lnr-magnifier"></span></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="quick_button" productname="@item.Product_Name" productimage="../../assetsclient/img/noimage.png" searchDesc="@item.Product_Description" productid="@item.Product_ID" categoryid="@item.Category_ID" oldprice="@item.Product_Price" newprice="@(item.Product_Price-item.Product_Discount)"><a href="#" data-toggle="modal" data-target="#modal_box" title="quick view"> <span class="lnr lnr-magnifier"></span></a></li>
+
+                                            }
+                                            <li class="wishlist"><a href="" title="Add to Wishlist"><span class="lnr lnr-heart"></span></a></li>
+                                            <li class="compare"><a href="" title="compare"><span class="lnr lnr-sync"></span></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -112,8 +120,16 @@
                                         </div>
                                         <div class="product_footer d-flex align-items-center">
                                             <div class="price_box">
-                                                <span class="current_price">$160.00</span>
-                                                <span class="old_price">$3200.00</span>
+                                                @if (item.Product_Discount == 0)
+                                                {
+                                                    <span class="current_price">AED @item.Product_Price</span>
+                                                    @*<span class="old_price">$420.00</span>*@
+                                                }
+                                                else
+                                                {
+                                                    <span class="current_price">AED @(item.Product_Price-item.Product_Discount)</span>
+                                                    <span class="old_price">AED @item.Product_Price</span>
+                                                }
                                             </div>
                                             <div class="add_to_cart">
                                                 <a href="cart.html" title="add to cart" item="@item.Product_ID"><span class="lnr lnr-cart"></span></a>
@@ -124,7 +140,7 @@
                                 <div class="product_content list_content">
                                     <div class="left_caption">
                                         <div class="product_name">
-                                            <h3><a href="product-details.html">@item.Product_Name</a></h3>
+                                            <h3>@item.Product_Name</h3>
                                         </div>
                                         <div class="product_ratings">
                                             <ul>
@@ -157,8 +173,8 @@
                                                 @*<span class="old_price">$420.00</span>*@
                                             }
                                             else
-                                            {
-                                                <span class="current_price">AED @item.Product_Discount</span>
+                                            {                                                
+                                                <span class="current_price">AED @(item.Product_Price-item.Product_Discount)</span>
                                                 <span class="old_price">AED @item.Product_Price</span>
                                             }
 
@@ -168,9 +184,17 @@
                                         </div>
                                         <div class="action_links_btn">
                                             <ul>
-                                                <li class="quick_button"><a href="#" data-toggle="modal" data-target="#modal_box" title="quick view"> <span class="lnr lnr-magnifier"></span></a></li>
-                                                <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><span class="lnr lnr-heart"></span></a></li>
-                                                <li class="compare"><a href="compare.html" title="compare"><span class="lnr lnr-sync"></span></a></li>
+                                                @if (item.Product_Image != "" && item.Product_Image != null && File.Exists(Server.MapPath("~/ProductImages/" + item.Product_Image)))
+                                                {
+                                                    <li class="quick_button" productname="@item.Product_Name" productimage="../../ProductImages/@item.Product_Image" searchDesc="@item.Product_Description" productid="@item.Product_ID" categoryid="@item.Category_ID" oldprice="@item.Product_Price" newprice="@(item.Product_Price-item.Product_Discount)"><a href="#" data-toggle="modal" data-target="#modal_box" title="quick view"> <span class="lnr lnr-magnifier"></span></a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="quick_button" productname="@item.Product_Name" productimage="../../assetsclient/img/noimage.png" searchDesc="@item.Product_Description" productid="@item.Product_ID" categoryid="@item.Category_ID" oldprice="@item.Product_Price" newprice="@(item.Product_Price-item.Product_Discount)"><a href="#" data-toggle="modal" data-target="#modal_box" title="quick view"> <span class="lnr lnr-magnifier"></span></a></li>
+
+                                                }
+                                                <li class="wishlist"><a href="" title="Add to Wishlist"><span class="lnr lnr-heart"></span></a></li>
+                                                <li class="compare"><a href="" title="compare"><span class="lnr lnr-sync"></span></a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -241,7 +265,29 @@
 <!--shop  area end-->
 
 <script>
+    
     $(document).ready(function () {
+
+        $('.quick_button').click(function () {    
+            var name = $(this).attr('productname');
+            var newprice = $(this).attr('newprice');
+            var oldprice = $(this).attr('oldprice');
+            var searchDesc = $(this).attr('searchDesc');
+            var productimage = $(this).attr('productimage');
+            var productid = $(this).attr('productid');
+            var categoryid = $(this).attr('categoryid');
+
+            $('#searchPName').html(name);
+            $('#searchnewPrice').html("AED " + newprice);
+            if (newprice != oldprice) {
+                $('#searcholdPrice').html("AED " + oldprice);
+            }            
+            $('#searchDesc').html(searchDesc);
+            $('#productid').val(productid);
+            $('#categoryid').val(categoryid);
+            $('#productimage').attr('src',productimage);
+        });
+
 
         var array = @Html.Raw(Json.Encode(@ViewBag.SubCategoryIDArray));
         if (array != null) {

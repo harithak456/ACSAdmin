@@ -4,8 +4,7 @@
         $('#BrandID').val("")
         $('#BrandName').val("");      
     });
-    $('#btnSave').click(function () {
-        //  FillTable(); 
+    $('#btnSave').click(function () {        
         $(".inputValid").html("");
         var BrandName = $('#BrandName').val();     
         if (BrandName != null && BrandName.trim() != "") {          
@@ -29,7 +28,7 @@
 
             function OnSuccessSaveCall(data) {
                 if (data > "0") {
-                    alert("success");
+                    alert("Details have been submitted successfully.");
                     //$(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Save Successful.</div>');
                     //$(".msg").delay(8000).fadeOut(800);
@@ -38,14 +37,14 @@
                     location.reload();
                 }
                 else {
-                    alert("error");
+                    alert("Failed to submit details !");
                     //$(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                     //$(".msg").delay(4000).fadeOut(800);  
                 }
             }
             function OnErrorSaveCall() {
-                alert("error");
+                alert("Failed to submit details !");
                 //$(window).scrollTop(0);
                 //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                 //$(".msg").delay(4000).fadeOut(800);

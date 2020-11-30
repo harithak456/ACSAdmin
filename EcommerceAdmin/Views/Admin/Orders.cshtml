@@ -14,7 +14,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Admin/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="/Admin/OrderList">Orders</a></li>
+        <li><a href="/Admin/OrderList?flag=0">Orders</a></li>
         <li class="active">Order Details</li>
     </ol>
 </section>
@@ -161,6 +161,7 @@
         <div class="row no-print">
             <div class="col-xs-12">
                 @*<a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>*@
+             
                 <button type="button" class="btn btn-success pull-right" id="UpdateStatus">
                     <i class="fa fa-credit-card"></i>  Update
                 </button>
@@ -196,7 +197,7 @@
         function OnSuccessSaveCall(data) {
             if (data > "0") {
                 alert("Order Updated Successfully !");
-                location.href = "/Admin/OrderList";
+                location.href = "/Admin/OrderList?flag=0";
               
             }
             else {

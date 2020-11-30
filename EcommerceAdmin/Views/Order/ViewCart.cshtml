@@ -97,10 +97,13 @@
                                     <p>Total</p>
                                     <p class="cart_amount">AED @Session["Total"]</p>
                                 </div>
-                                <div class="checkout_btn">
-                                    <a href="/Order/Checkout">Proceed to Checkout</a>
+                                @if (Session["Cart"] != null)
+                                {
+                                    <div class="checkout_btn">
+                                        <a href="/Order/Checkout">Proceed to Checkout</a>
+                                    </div>
+                                }
                                 </div>
-                            </div>
                         </div>
                     </div>
                 </div>

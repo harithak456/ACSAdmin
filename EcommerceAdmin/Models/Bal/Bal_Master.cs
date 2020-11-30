@@ -184,5 +184,21 @@ namespace EcommerceAdmin.Models.Bal
                 return dt;
             }
         }
+
+        public DataTable SelectYesterdayCount()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                Dal_Master dal = new Dal_Master();
+                dt = dal.SelectYesterdayCount();
+                return dt;
+            }
+            catch
+            {
+                dt.Clear();
+            }
+            return dt;
+        }
     }
 }

@@ -41,13 +41,13 @@ namespace EcommerceAdmin.Controllers
                     Product_ID = Product_ID,
                     Product_Name = ent.Product_Name,
                     Quantity = 1,
-                    Product_Price = ent.Product_Price,
+                    Product_Price =ent.Product_Price-ent.Product_Discount,
                     Product_Image = ent.Product_Image,
-                    Product_Total = ent.Product_Price,
+                    Product_Total = ent.Product_Price - ent.Product_Discount,
                 });
                 Session["Cart"] = item;
-                Session["SubTotal"] = ent.Product_Price;
-                Session["Total"] = ent.Product_Price;
+                Session["SubTotal"] = ent.Product_Price - ent.Product_Discount;
+                Session["Total"] = ent.Product_Price - ent.Product_Discount;
             }
             else
             {
@@ -60,9 +60,9 @@ namespace EcommerceAdmin.Controllers
                         Product_ID = Product_ID,
                         Product_Name = ent.Product_Name,
                         Quantity = 1,
-                        Product_Price = ent.Product_Price,
+                        Product_Price = ent.Product_Price - ent.Product_Discount,
                         Product_Image = ent.Product_Image,
-                        Product_Total = ent.Product_Price,
+                        Product_Total = ent.Product_Price - ent.Product_Discount,
                     });
                 }
                 else
@@ -73,8 +73,8 @@ namespace EcommerceAdmin.Controllers
 
                 }
                 Session["Cart"] = item;
-                Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) + ent.Product_Price;
-                Session["Total"] = Convert.ToInt32(Session["Total"]) + ent.Product_Price;
+                Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) + (ent.Product_Price - ent.Product_Discount);
+                Session["Total"] = Convert.ToInt32(Session["Total"]) +( ent.Product_Price - ent.Product_Discount);
             }
             if (GuestID!=0)
             {
@@ -99,19 +99,27 @@ namespace EcommerceAdmin.Controllers
             return 1;
         }
 
-        public int DeleteCart(int CartID)
+        public ActionResult DeleteCart(int CartID)
         {
             List<Ent_OrderDetail> list = (List<Ent_OrderDetail>)Session["Cart"];
             Ent_Product ent = new Ent_Product();
             ent = balProduct.SelectProduct(CartID);
             var qty = list.Where(l => l.Product_ID == CartID).FirstOrDefault().Quantity;
+
             Session["Cart"] = list.Where(l => l.Product_ID != CartID).ToList<Ent_OrderDetail>();
 
             int count = list.Count - 1;
-            Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) - (ent.Product_Price * qty);
-            Session["Total"] = Convert.ToInt32(Session["Total"]) - (ent.Product_Price * qty);
-
-            HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
+            Session["SubTotal"] = Convert.ToInt32(Session["SubTotal"]) - ((ent.Product_Price - ent.Product_Discount) * qty);
+            Session["Total"] = Convert.ToInt32(Session["Total"]) - ((ent.Product_Price - ent.Product_Discount) * qty);
+            if (list.Count == 1)
+            {
+                Session["Cart"] = null;
+                Session["Total"] = "0.00";
+                Session["SubTotal"] = "0.00";
+                Session["Shipping"] = "0.00";
+            }
+                
+                HttpCookie Guest_ID = Request.Cookies["Guest_ID"];
             string GuestID = Guest_ID != null ? Guest_ID.Value.Split('=')[1] : "";
             if (!string.IsNullOrEmpty(GuestID))
             {
@@ -126,8 +134,9 @@ namespace EcommerceAdmin.Controllers
                     trans.Rollback();
                 }
             }
-
-            return count;
+            string[] Result = { count.ToString() , Session["Total"].ToString(), Session["SubTotal"].ToString() };
+        
+            return Json(Result,JsonRequestBehavior.AllowGet) ;
         }
 
         public ActionResult ViewCart()

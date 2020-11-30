@@ -19,6 +19,7 @@ namespace EcommerceAdmin.Models.Entity
         public int Category_ID { get; set; }
         public int SubCategory_ID { get; set; }
         public int Brand_ID { get; set; }
+        public string Brand_Name { get; set; }
         public int Quantity { get; set; }
         public string SubCategory_Name { get; set; }
         public float Product_Price { get; set; }

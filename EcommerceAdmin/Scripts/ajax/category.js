@@ -70,7 +70,7 @@
          
             function OnSuccessSaveCall(data) {
                 if (data > 0) {
-                   alert("Success");
+                    alert("Details have been submitted successfully.");
                     //$(".messagebox").append('<div class="alert alert-success msg"><strong> Success!</strong> Save successful.</div>');
                     //$(".msg").delay(4000).fadeOut(800);
                     //if (DietID > 0) {
@@ -82,12 +82,12 @@
                     //location.href = "/Master/Category";
                 }
                 else if (data == 0) {
-                    alert("Failed");
+                    alert("Failed to submit details !");
                     //$(".messagebox").append('<div class="alert alert-danger msg"><strong> Error!</strong> Same record already exists.</div>');
                     //$(".msg").delay(4000).fadeOut(800);
                 }
                 else {
-                    alert("Failed");
+                    alert("Failed to submit details !");
                     //$(".messagebox").append('<div class="alert alert-danger msg"><strong> Error!</strong> Please try again.</div>');
                     //$(".msg").delay(4000).fadeOut(800);
                 }

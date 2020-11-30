@@ -507,6 +507,45 @@ namespace EcommerceAdmin.Models.Dal
             return ent;
         }
 
+        public int UpdateNotification(int flag)
+        {
+            int dataResult = 0;
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+                string query = "";
+                if (flag==0)
+                 query = "update EC_GuestLogin set Notification_Status=0 ";
+                else
+                    query = "update EC_Order set Notification_Status=0 ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    try
+                    {
+                        dataResult = cmd.ExecuteNonQuery();
+                        if (dataResult > 0)
+                        {
+                            cmd.Dispose();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dataResult = 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dataResult = 0;
+            }
+            finally
+            { con.Close(); }
+            return dataResult;
+        }
+
         public List<Ent_OrderDetail> SelectOrderDetails(int OrderId)
         {
             List<Ent_OrderDetail> result = new List<Ent_OrderDetail>();

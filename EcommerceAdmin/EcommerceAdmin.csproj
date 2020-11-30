@@ -153,6 +153,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assetsadmin\plugins\chartjs\Chart.js" />
+    <Content Include="assetsadmin\plugins\chartjs\Chart.min.js" />
+    <Content Include="assetsclient\img\logo\logo1.png" />
+    <Content Include="assetsclient\img\slider\slider4.jpg" />
     <Content Include="assetsclient\loader.gif" />
     <Content Include="Delivered.html" />
     <Content Include="OrderConfirmation.html" />
@@ -220,7 +224,7 @@
     <Content Include="assetsclient\img\icon\papyel.png" />
     <Content Include="assetsclient\img\logo\logo.png" />
     <Content Include="assetsclient\img\noimage.png" />
-    <Content Include="assetsclient\img\slider\slider4.jpg" />
+    <Content Include="assetsclient\img\slider\slider41.jpg" />
     <Content Include="assetsclient\img\slider\slider5.jpg" />
     <Content Include="assetsclient\img\slider\slider6.jpg" />
     <Content Include="assetsclient\js\bootstrap.min.js" />

@@ -102,7 +102,7 @@
 
             function OnSuccessSaveCall(data) {
                 if (data > "0") {
-                    alert("success");
+                    alert("Details have been submitted successfully.");
                     //$(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Save Successful.</div>');
                     //$(".msg").delay(8000).fadeOut(800);
@@ -113,14 +113,14 @@
                     location.href = "/Master/Users";
                 }
                 else {
-                    alert("error");
+                    alert("Failed to submit details !");
                     //$(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                     //$(".msg").delay(4000).fadeOut(800);  
                 }
             }
             function OnErrorSaveCall() {
-                alert("error");
+                alert("Failed to submit details");
                 //$(window).scrollTop(0);
                 //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                 //$(".msg").delay(4000).fadeOut(800);
@@ -145,20 +145,21 @@
             });
             function OnSuccessSaveCall(data) {
                 if (data > 0) {
-                    $("#" + userid).fadeOut("slow").remove(); alert("success");
+                    $("#" + userid).fadeOut("slow").remove();
+                    alert("User deleted successfully.");
                     //$(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Delete Successful.</div>');
                     //$(".msg").delay(4000).fadeOut(800);
                 }
                 else {
-                    alert("error");
+                    alert("Failed to delete");
                     //$(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
                     //$(".msg").delay(4000).fadeOut(800);
                 }
             }
             function OnErrorSaveCall() {
-                alert("error");
+                alert("Failed to delete");
                 //$(window).scrollTop(0);
                 //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
                 //$(".msg").delay(4000).fadeOut(800);

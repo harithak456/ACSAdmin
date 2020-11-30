@@ -130,6 +130,22 @@ namespace EcommerceAdmin.Models.Bal
             }
         }
 
+        public int UpdateNotification(int flag)
+        {
+            int dataResult;
+            try
+            {
+                Dal_Order dal = new Dal_Order();
+                dataResult = dal.UpdateNotification(flag);
+                return dataResult;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+
         public List<Ent_OrderDetail> SelectOrderDetails(int OrderId)
         {
             List<Ent_OrderDetail> ent = new List<Ent_OrderDetail>();

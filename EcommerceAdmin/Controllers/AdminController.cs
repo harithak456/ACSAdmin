@@ -33,7 +33,15 @@ namespace EcommerceAdmin.Controllers
                 ViewBag.UserRegistration = dt.Rows[0]["UserRegistration"];
                 ViewBag.UniqueVisitors = dt.Rows[0]["UniqueVisitors"];
             }
-          
+
+            DataTable dtD = balMaster.SelectYesterdayCount();
+            if (dtD.Rows.Count > 0)
+            {
+                ViewBag.RegisteredGuest = dtD.Rows[0]["RegisteredGuest"];
+                ViewBag.UniqueGuest = dtD.Rows[0]["UniqueGuest"];
+            }
+
+
             return View();
         }
 
@@ -77,17 +85,17 @@ namespace EcommerceAdmin.Controllers
                     {
                         HttpCookie User_ID = new HttpCookie("User_ID");
                         User_ID.Values["User_ID"] = Convert.ToString(result[0].User_ID);
-                        User_ID.Expires = DateTime.Now.AddDays(30);
+                        User_ID.Expires = DateTime.Now.AddMinutes(10);
                         Response.Cookies.Add(User_ID);                  
 
                         HttpCookie User_Name = new HttpCookie("User_Name");
                         User_Name.Values["User_Name"] = Convert.ToString(result[0].User_Name);
-                        User_Name.Expires = DateTime.Now.AddDays(30);
+                        User_Name.Expires = DateTime.Now.AddMinutes(10);
                         Response.Cookies.Add(User_Name);
 
                         HttpCookie User_Type = new HttpCookie("User_Type");
                         User_Type.Values["User_Type"] = Convert.ToString(result[0].User_Type);
-                        User_Type.Expires = DateTime.Now.AddDays(30);
+                        User_Type.Expires = DateTime.Now.AddMinutes(10);
                         Response.Cookies.Add(User_Type);
                     
                         i = 1;
@@ -120,13 +128,13 @@ namespace EcommerceAdmin.Controllers
             return 1;
         }
 
-        public ActionResult OrderList()
+        public ActionResult OrderList(string flag)
         {
             List<Ent_Order> OrderList = new List<Ent_Order>();
            
             OrderList = balOrder.SelectGuestOrder(0);
             ViewBag.OrderList = OrderList;
-         
+            ViewBag.flag = flag;
             return View();
         }
 
@@ -139,6 +147,18 @@ namespace EcommerceAdmin.Controllers
             OrderList = balOrder.SelectOrderDetails(OrderID);
             ViewBag.OrderList = OrderList;
             return View(entOrder);
+        }
+
+        public int UpdateNotification()
+        {
+            int i = balOrder.UpdateNotification(0);
+            return i;
+        }
+
+        public RedirectToRouteResult UpdateOrderNotification()
+        {
+            int i = balOrder.UpdateNotification(1);
+            return RedirectToAction("OrderList", "Admin", new { flag = "1" });
         }
 
         public int UpdateOrderStatus(Ent_Order ent)
@@ -157,11 +177,11 @@ namespace EcommerceAdmin.Controllers
                 {
                     if (ent.Guest_ID == 0)
                     {
-                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("TrackOrder", "Order", new { Order_ID = ent.Order_ID }) + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("TrackOrder", "Order", new { Order_ID = ent.Order_ID }) + "' target = '_blank' style = 'color: #fc7ca0;' > here </a>";
                     }
                     else
                     {
-                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("Register", "Login") + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("Register", "Login") + "' target = '_blank' style = 'color: #fc7ca0;' > here </a>";
                     }
 
                     using (StreamReader reader = new StreamReader(Server.MapPath("~/Shipping.html")))
@@ -177,11 +197,11 @@ namespace EcommerceAdmin.Controllers
                 {
                     if (ent.Guest_ID == 0)
                     {
-                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("TrackOrder", "Order", new { Order_ID = ent.Order_ID }) + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("TrackOrder", "Order", new { Order_ID = ent.Order_ID }) + "' target = '_blank' style = 'color: #fc7ca0;' > here </a>";
                     }
                     else
                     {
-                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("Register", "Login") + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                        lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("Register", "Login") + "' target = '_blank' style = 'color: #fc7ca0;' > here </a>";
                     }
 
                     using (StreamReader reader = new StreamReader(Server.MapPath("~/Delivered.html")))

@@ -100,16 +100,7 @@
                     </div>
                 </div>
                 <!-- search form -->
-                <form action="#" method="get" class="sidebar-form">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </form>
+               
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
@@ -133,7 +124,7 @@
                         </ul>
                     </li>
 
-                    <li><a href="/Admin/OrderList"><i class="fa fa-edit"></i> <span> Order Details</span></a></li>
+                    <li><a href="/Admin/OrderList?flag=0"><i class="fa fa-edit"></i> <span> Order Details</span></a></li>
                 </ul>
             </section>
             <!-- /.sidebar -->
@@ -147,7 +138,7 @@
             <div class="pull-right hidden-xs">
                 <b>Version</b> 2.3.8
             </div>
-            <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+            <strong>Copyright &copy; 2019-2020 <a href="http://intellilabs.co.in/">intelliLabs</a>.</strong> All rights
             reserved.
         </footer>
         <!-- Control Sidebar -->
@@ -332,6 +323,8 @@
     <!-- DataTables -->
     <script src="../../assetsadmin/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="../../assetsadmin/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <!-- ChartJS 1.0.1 -->
+    <script src="../../assetsadmin/plugins/chartjs/Chart.min.js"></script>
     <!-- Morris.js charts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="../../assetsadmin/plugins/morris/morris.min.js"></script>
@@ -362,6 +355,22 @@
     <script src="../../assetsadmin/dist/js/demo.js"></script>
     <div class="overlay" id="loader">
         <div id="loading-img"></div>
+
+        <script>
+            $.ajax({
+                type: "GET",
+                url: "/Admin/GetNotification",
+                dataType: "json",
+                success: function (data) {
+                    document.getElementById('uploadcount').innerHTML = data;
+                    document.getElementById('uploadalert').innerHTML = data;
+                    if (data > 0)
+                        document.getElementById('listnotification').style.display = "block";
+                    else
+                        document.getElementById('listnotification').style.display = "none";
+                }
+            });
+        </script>
     </div>
 </body>
 </html>

@@ -616,5 +616,29 @@ namespace EcommerceAdmin.Models.Dal
             }
             return dt;
         }
+
+        public DataTable SelectYesterdayCount()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("EC_SelectYesterdayCount", con))
+                {
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally { con.Close(); }
+            return dt;
+        }
     }
 }
