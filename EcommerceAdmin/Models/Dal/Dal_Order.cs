@@ -216,6 +216,7 @@ namespace EcommerceAdmin.Models.Dal
                     cmd.Parameters.Add(new SqlParameter("@Order_Shipping", ent.Order_Shipping));
                     cmd.Parameters.Add(new SqlParameter("@Order_Total", ent.Order_Total));
                     cmd.Parameters.Add(new SqlParameter("@Created_Date", ent.Created_Date));
+                    cmd.Parameters.Add(new SqlParameter("@Payment_COD", ent.Payment_COD));
                     try
                     {
                         dataresult = Convert.ToInt32(cmd.ExecuteScalar());
@@ -491,6 +492,7 @@ namespace EcommerceAdmin.Models.Dal
                         ent.Shipping_Country = Convert.ToString(dr["Shipping_Country"]);
                         ent.Shipping_Email = Convert.ToString(dr["Shipping_Email"]);
                         ent.Shipping_Phone = Convert.ToString(dr["Shipping_Phone"]);
+                        ent.Payment_COD = Convert.ToInt32(dr["Payment_COD"]);
                         
                         ent.Created_Date = Convert.ToDateTime(dr["Created_Date"]);
                     }

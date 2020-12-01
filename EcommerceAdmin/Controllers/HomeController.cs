@@ -4,6 +4,7 @@ using EcommerceAdmin.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -85,7 +86,58 @@ namespace EcommerceAdmin.Controllers
             ViewBag.listSubCategory = listSubCategory;
             return PartialView( listCategory);
         }
-   
+        [HttpGet]
+        public ActionResult ContactUs()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ContactUs(Ent_Guest ent)
+        {
+            try
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    int port = 587;
+                    string host = "smtp.yandex.com.tr";
+                    string sendmail = "mailsupport@intellilabs.co.in";
+                    string password = "admin@123";
+
+                    mail.From = new MailAddress(sendmail, "ContactUs");
+                    mail.To.Add("haritha@intellilabs.co.in");
+                    mail.Subject = ent.Subject;
+                    mail.IsBodyHtml = true;
+
+                    string body = "<html><title>"+ent.Subject +"</title><body>From: " + ent.Guest_FirstName + "<br/>";
+                    body += "Email: " + ent.Guest_Email + "<br/>";
+                    body += "Message: " + ent.Message + "</body></html>";
+
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
+                    mail.AlternateViews.Add(htmlView);
+                    using (SmtpClient emailClient = new SmtpClient(host, port))
+                    {
+                        System.Net.NetworkCredential userInfo = new System.Net.NetworkCredential(sendmail, password);
+                        emailClient.UseDefaultCredentials = false;
+                        emailClient.EnableSsl = true;
+                        emailClient.DeliveryFormat = SmtpDeliveryFormat.International;
+                        emailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        if (!string.IsNullOrEmpty(userInfo.UserName.Trim()) && !string.IsNullOrEmpty(userInfo.Password.Trim()))
+                        {
+                            emailClient.Credentials = userInfo;
+                        }
+                        emailClient.Send(mail);
+                    }
+
+                }
+                ViewBag.Message = "Thank you for Contacting us.";
+            }
+            catch(Exception e)
+            {
+                ViewBag.Message = "Sorry we are facing Problem here";
+            }
+                return View();
+        }
+
         public ActionResult ProductsList(int categoryId, string SubCategory, string brand)
         {
             List<Ent_Category> listCategory = new List<Ent_Category>();

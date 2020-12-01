@@ -257,6 +257,31 @@ namespace EcommerceAdmin.Controllers
             if (i > 0)
             {
                 trans.Commit();
+                if (model.Payment_COD == 1)
+                {                    
+                        string body = string.Empty; var lnkHref = "";
+                     if (string.IsNullOrEmpty(GuestID))
+                     {
+                            lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("TrackOrder", "Order", new { Order_ID = i }) + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                        }
+                        else
+                        {
+                            lnkHref = "<a href='https://acsadmin.atintellilabs.live/" + @Url.Action("Register", "Login") + "' target = '_blank' style = 'color: #fc7ca0;' > here </ a >";
+                        }
+
+                        using (StreamReader reader = new StreamReader(Server.MapPath("~/OrderConfirmation.html")))
+                        {
+                            body = reader.ReadToEnd();
+                        }
+                        body = body.Replace("{Url}", lnkHref);
+
+                        Email em = new Email();
+                        em.SendConfirmationMail(i, body, "Order Confirmation");
+                        Session["Cart"] = null;
+                        Session["Total"] = null;
+                        Session["SubTotal"] = null;
+                        Session["Shipping"] = null;                    
+                }
             }
             else
             {

@@ -70,8 +70,8 @@ namespace EcommerceAdmin.Models.Entity
 
         public double Order_Shipping { get; set; }  
         public double Order_Total { get; set; }  
-        public int Total_Qty { get; set; }  
-
+        public int Total_Qty { get; set; }
+        public int Payment_COD { get; set; }
         public int Is_Active { get; set; }
         public DateTime Created_Date { get; set; }
         public DateTime Modified_Date { get; set; }

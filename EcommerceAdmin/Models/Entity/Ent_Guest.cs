@@ -30,6 +30,9 @@ namespace EcommerceAdmin.Models.Entity
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Unique_ID { get; set; }
 
+        public string Subject { get; set; }
+        public string Message { get; set; }
+
         public int Is_Active { get; set; }
         public DateTime Created_Date { get; set; }
         public DateTime Modified_Date { get; set; }

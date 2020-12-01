@@ -79,5 +79,46 @@ namespace EcommerceAdmin.Models.Common
                 return 0;
             }
         }
+
+        public int SendContactMail(string Mailbody, string MailFrom, string subject,string Message)
+        {
+            try
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    int port = 587;
+                    string host = "smtp.yandex.com.tr";
+                    string sendmail = "mailsupport@intellilabs.co.in";
+                    string password = "admin@123";
+
+                    mail.From = new MailAddress(MailFrom, "ACSpareparts.com");
+                    mail.To.Add(sendmail);
+                    mail.Subject = subject;
+                    mail.IsBodyHtml = true;
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Mailbody, null, "text/html");
+                    mail.AlternateViews.Add(htmlView);
+                    using (SmtpClient emailClient = new SmtpClient(host, port))
+                    {
+                        System.Net.NetworkCredential userInfo = new System.Net.NetworkCredential(sendmail, password);
+                        emailClient.UseDefaultCredentials = false;
+                        emailClient.EnableSsl = true;
+                        emailClient.DeliveryFormat = SmtpDeliveryFormat.International;
+                        emailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        if (!string.IsNullOrEmpty(userInfo.UserName.Trim()) && !string.IsNullOrEmpty(userInfo.Password.Trim()))
+                        {
+                            emailClient.Credentials = userInfo;
+                        }
+                        emailClient.Send(mail);
+                    }
+
+                }
+                return 1;
+
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
     }
 }

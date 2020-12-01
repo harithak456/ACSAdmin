@@ -4745,7 +4745,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 .footer_logo {
     margin-bottom: 15px;
-   margin-top:-50px;
+   /*margin-top:-50px;*/ /*added by haritha*/
 }
 @media only screen and (max-width: 767px) {
   .footer_logo a img {

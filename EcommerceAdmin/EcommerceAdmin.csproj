@@ -156,6 +156,8 @@
     <Content Include="assetsadmin\plugins\chartjs\Chart.js" />
     <Content Include="assetsadmin\plugins\chartjs\Chart.min.js" />
     <Content Include="assetsclient\img\logo\logo1.png" />
+    <Content Include="assetsclient\img\logo\logo2.png" />
+    <Content Include="assetsclient\img\logo\logo3.png" />
     <Content Include="assetsclient\img\slider\slider4.jpg" />
     <Content Include="assetsclient\loader.gif" />
     <Content Include="Delivered.html" />
@@ -321,6 +323,7 @@
     <Content Include="Views\Order\TrackOrder.cshtml" />
     <Content Include="Views\Admin\NavigationPartial.cshtml" />
     <Content Include="Views\Admin\NotFound.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

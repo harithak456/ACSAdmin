@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "ContactUs";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="/Home/Index">Home</a></li>
+                        <li>Contact Us</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!-- customer login start -->
+<div class="customer_login mt-32">
+    <div class="container">
+        <div class="row">
+            <!--login area start-->
+            <div class="col-lg-8 col-md-8">
+                <div class="account_form">
+                    <h2>Contact Us</h2>
+                    <form method="post">
+                        @if (ViewBag.Message != null)
+                        {
+                            <span style="margin:auto; display:table;color:chocolate;font-size:large">
+                                @ViewBag.Message
+                            </span>
+                           
+                        }
+                        <p>
+                            <label>Your Name <span>*</span></label>
+                            <input type="text" name="Guest_FirstName">
+                        </p>
+                        <p>
+                            <label>Email <span>*</span></label>
+                            <input type="text" name="Guest_Email">
+                        </p>
+                        <p>
+                            <label>Subject <span>*</span></label>
+                            <input type="text" name="Subject">
+                        </p>
+                        <p>
+                            <label>Message <span>*</span></label>
+                            <input type="text" name="Message">
+                        </p>
+                        <div class="login_submit">
+                            <button type="submit">Send Mail</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

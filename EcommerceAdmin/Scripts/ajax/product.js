@@ -80,7 +80,7 @@
 
             function OnSuccessSaveCall(data) {
                 if (data > "0") {
-                    alert("success");
+                    alert("Product Details Saved Successfully");
                     location.href="/Master/Products";
                     //$(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Save Successful.</div>');
@@ -88,14 +88,14 @@
 
                 }
                 else {
-                    alert("error");
+                    alert("Failed To Save Product Details");
                     //$(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                     //$(".msg").delay(4000).fadeOut(800);  
                 }
             }
             function OnErrorSaveCall() {
-                alert("error");
+                alert("Failed To Save Product Details");
                 //$(window).scrollTop(0);
                 //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                 //$(".msg").delay(4000).fadeOut(800);

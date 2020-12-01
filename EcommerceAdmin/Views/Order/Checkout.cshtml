@@ -20,6 +20,9 @@
                         <li><a href="/Home/Index">home</a></li>
                         <li>Checkout</li>
                     </ul>
+                    <span style="margin:auto; display:table;color:deeppink;font-size:large" id="spanMsg">
+                      
+                    </span>
                 </div>
             </div>
         </div>
@@ -147,39 +150,35 @@
                                     </tr>
                                 </tfoot>
                             </table>
-                        </div>
-                        <div class="payment_method">
-                            @*<div class="panel-default">
-                                    <input id="payment" name="check_method" type="radio" data-target="createp_account" />
-                                    <label for="payment" data-toggle="collapse" data-target="#method" aria-controls="method">Create an account?</label>
+                        </div> @if (Session["Cart"] != null)
+                        {
+                            <div class="payment_method">
+                                <h3>PAYMENT OPTION</h3>
+                                <div class="panel-default">
+                                    <input id="cod" name="check_method" value="cod" type="radio" data-target="createp_account" />
+                                    <label for="payment" data-toggle="collapse" data-target="#method" aria-controls="method">Cash On Delivery</label>
 
-                                    <div id="method" class="collapse one" data-parent="#accordion">
-                                        <div class="card-body1">
-                                            <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-                                        </div>
-                                    </div>
-                                </div>*@
-                            <div class="panel-default">
 
-                                <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult" aria-controls="collapsedefult">Tap Payment  <img src="../../assetsclient/img/icon/papyel.png" alt=""></label>
-
-                                <div id="collapsedefult" class="collapse one" data-parent="#accordion">
-                                    <div class="card-body1">
-                                        <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="order_button">
-                                <button id="checkoutBtn" onclick="SaveOrder()"  type="button">Proceed to Payment</button>                            
-                                <input type="hidden" id="amount" name="amount" value="@Session["Total"]" />
+
+                                <div class="panel-default">
+                                    <input id="online" checked name="check_method" value="online" type="radio" data-target="createp_account" />
+                                    <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult" aria-controls="collapsedefult">Online Payment  <img src="../../assetsclient/img/icon/papyel.png" alt=""></label>
+
+                                </div>
+
+                                <div class="order_button">
+                                    <button id="checkoutBtn" onclick="SaveOrder()" type="button">CONFIRM ORDER</button>
+                                    <input type="hidden" id="amount" name="amount" value="@Session["Total"]" />
 
 
-                            </div>
-                            @*<div id="root"></div>
-                            <button id="openLightBox" onclick="goSell.openLightBox()">open goSell LightBox</button>
-                            <button id="openPage" onclick="goSell.openPaymentPage()">open goSell Page</button>*@
-                        </div>
-                    </form>
+                                </div>
+                               
+                                @*<div id="root"></div>
+                <button id="openLightBox" onclick="goSell.openLightBox()">open goSell LightBox</button>
+                <button id="openPage" onclick="goSell.openPaymentPage()">open goSell Page</button>*@
+                            </div> }
+                        </form>
                 </div>
             </div>
         </div>
@@ -266,8 +265,11 @@
 
 
 
-    function SaveOrder() {            
-        if (Validate() == true) {
+    function SaveOrder() {  
+
+        $('#loader').css("display", "block");
+
+        @*if (Validate() == true) {
             var FName = $('#FName').val();
             var LName = $('#LName').val();
             var Address1 = $('#Address1').val();
@@ -277,7 +279,8 @@
             var Country = $('#Country').val();
             var Email = $('#Email').val();
             var Phone = $('#Phone').val();
-
+            var payment = $('input[name=check_method]:checked').val();
+           
             var data = new FormData();
             data.append("Shipping_FirstName", FName);
             data.append("Shipping_LastName", LName);
@@ -288,6 +291,10 @@
             data.append("Shipping_Country", Country);
             data.append("Shipping_Email", Email);
             data.append("Shipping_Phone", Phone);
+            if (payment == "cod")
+                data.append("Payment_COD", 1);
+            else
+                data.append("Payment_COD",0);
 
             $.ajax({
                 type: "POST",
@@ -305,8 +312,25 @@
 
             function OnSuccessSaveCall(data) {
                 if (data > "0") {
-               
-                    save(data);
+                    if (payment == "cod")
+                    {
+                        if (@Model.Guest_ID> 0)
+                        {                            
+                            //$('#loader').css("display", "none");
+                            $('#spanMsg').html("Your Order Placed Successfully !");
+                            $(window) .scrollTop(0);
+                            location.href = "/Login/MyAccount";
+                        }
+                        else {
+                            //$('#loader').css("display", "none");
+                            $('#spanMsg').html("Your Order Placed Successfully");
+                            $(window).scrollTop(0);
+                           
+                        }
+                    }
+                    else {
+                        save(data);
+                    }
                 }
                 else {
                     alert("An error occured while processing your request");
@@ -322,7 +346,7 @@
         }
         else {
             $(window).scrollTop(0);
-        }
+        }*@
     }
     function save(OrderId) {
       
