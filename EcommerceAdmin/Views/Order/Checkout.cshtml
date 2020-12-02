@@ -266,10 +266,8 @@
 
 
     function SaveOrder() {  
-
-        $('#loader').css("display", "block");
-
-        @*if (Validate() == true) {
+        //$('#clientloader').css("display", "block");
+        if (Validate() == true) {
             var FName = $('#FName').val();
             var LName = $('#LName').val();
             var Address1 = $('#Address1').val();
@@ -302,10 +300,10 @@
                 data: data,
                 contentType: false,
                 processData: false,
-                async: false,
+                //async: false,
                 dataType: "json",
-                beforeSend: function () { $('#loader').css("display", "block") },
-                complete: function () { $('#loader').css("display", "none") },
+                beforeSend: function () { $('#clientloader').css("display", "block") },
+                complete: function () { $('#clientloader').css("display", "none") },
                 success: OnSuccessSaveCall,
                 error: OnErrorSaveCall
             });
@@ -316,13 +314,13 @@
                     {
                         if (@Model.Guest_ID> 0)
                         {                            
-                            //$('#loader').css("display", "none");
+                            //$('#clientloader').css("display", "none");
                             $('#spanMsg').html("Your Order Placed Successfully !");
                             $(window) .scrollTop(0);
                             location.href = "/Login/MyAccount";
                         }
                         else {
-                            //$('#loader').css("display", "none");
+                            //$('#clientloader').css("display", "none");
                             $('#spanMsg').html("Your Order Placed Successfully");
                             $(window).scrollTop(0);
                            
@@ -346,7 +344,7 @@
         }
         else {
             $(window).scrollTop(0);
-        }*@
+        }
     }
     function save(OrderId) {
       

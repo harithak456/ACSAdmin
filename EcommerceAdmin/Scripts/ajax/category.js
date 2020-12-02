@@ -62,8 +62,8 @@
                 data: JSON.stringify({ "model": data }),              
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                //beforeSend: function () { $("#loader").css("display", "block"); },
-                //complete: function () { $("#loader").css("display", "none"); },
+                beforeSend: function () { $("#loader").css("display", "block"); },
+                complete: function () { $("#loader").css("display", "none"); },
                 success: OnSuccessSaveCall,
                 error: OnErrorSaveCall
             });
@@ -115,8 +115,8 @@
                 data: "{'Category_ID':'" + Category_ID + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                //beforeSend: function () { $("#loader").css("display", "block"); },
-                //complete: function () { $("#loader").css("display", "none"); },
+                beforeSend: function () { $("#loader").css("display", "block"); },
+                complete: function () { $("#loader").css("display", "none"); },
                 success: OnSuccessSaveCall,
                 error: OnErrorSaveCall
             });

@@ -30,7 +30,7 @@
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Add Product</h3>
-          
+
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -72,7 +72,6 @@
                         <span class="help-block inputValid" id="validSubCategory"></span>
                     </div>
                     <!-- /.form-group -->
-                  
                     <!-- /.form-group -->
                 </div>
                 <!-- /.col -->
@@ -136,11 +135,11 @@
                             <div class="col-sm-4">
                                 @if (Model.Product_Image != null)
                                 {
-                                  <img class="img-responsive" id="ProductImage" src="../../ProductImages/@Model.Product_Image" alt="Photo">
+                                    <img class="img-responsive" id="ProductImage" src="../../ProductImages/@Model.Product_Image" alt="Photo">
                                 }
                                 else
-                                { 
-                                  <img class="img-responsive" id="ProductImage" src="../../assetsadmin/dist/img/photo1.png" alt="Photo">
+                                {
+                                    <img class="img-responsive" id="ProductImage" src="../../assetsadmin/dist/img/photo1.png" alt="Photo">
                                 }
                             </div>
                         </div>
@@ -153,7 +152,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-            <button type="button" class="btn btn-success pull-right"  onclick="location.href='@Url.Action("Products", "Master")'">
+            <button type="button" class="btn btn-success pull-right" onclick="location.href='@Url.Action("Products", "Master")'">
                 CANCEL
             </button>
             <button type="button" class="btn btn-primary pull-right" id="btnSave" style="margin-right: 5px;">
@@ -166,19 +165,22 @@
 
 </section>
 <script>
-    $('#ChooseFile').click(function () {       
+    $('#ChooseFile').click(function () {
         $('#inputImage').click();
-                                });
+    });
 
     $('#inputImage').change(function () {
-                                    if (this.files && this.files[0]) {
-                                        var reader = new FileReader();
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
 
-                                        reader.onload = function (e) {
+            reader.onload = function (e) {
                 $('#ProductImage').attr('src', e.target.result);
-                                        }
+            }
 
-                                        reader.readAsDataURL(this.files[0]);
-                                    }
-                                });
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+</script>
+<script>
+    $('li#masters').addClass('active');
 </script>

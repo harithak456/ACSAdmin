@@ -82,8 +82,8 @@
                 contentType: false,
                 processData: false,
                 dataType: "json",
-                beforeSend: function () { $("#loader").css("display", "block"); },
-                complete: function () { $("#loader").css("display", "none"); },
+                beforeSend: function () { $("#clientloader").css("display", "block"); },
+                complete: function () { $("#clientloader").css("display", "none"); },
                 success: OnSuccessSaveCall,
                 error: OnErrorSaveCall
             });

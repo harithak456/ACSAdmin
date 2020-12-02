@@ -138,8 +138,8 @@
                 data: "{'User_ID':'" + userid + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                //beforeSend: function () { $("#loader").css("display", "block"); },
-                //complete: function () { $("#loader").css("display", "none"); },
+                beforeSend: function () { $("#loader").css("display", "block"); },
+                complete: function () { $("#loader").css("display", "none"); },
                 success: OnSuccessSaveCall,
                 error: OnErrorSaveCall
             });

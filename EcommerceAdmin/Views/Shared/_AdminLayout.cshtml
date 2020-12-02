@@ -80,7 +80,7 @@
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>A</b>LT</span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>ACS </b>Admin</span>
+                <span class="logo-lg"><img height="30" width="130" src="../../assetsclient/img/logo/logo2.png" alt=""></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             @Html.Action("NavigationPartial", "Admin")
@@ -104,10 +104,9 @@
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
-                    <li class="header">MAIN NAVIGATION</li>
-
+                   
                     <li class="active"><a href="/Admin/Dashboard"><i class="fa fa-dashboard"></i> <span> Dashboard</span></a></li>
-                    <li class="treeview">
+                    <li class="treeview" id="masters">
                         <a href="#">
                             <i class="fa fa-laptop"></i>
                             <span>Master Forms</span>
@@ -115,7 +114,7 @@
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
-                        <ul class="treeview-menu">
+                        <ul class="treeview-menu" >
                             <li><a href="/Master/Organization"><i class="fa fa-laptop"></i> <span> Organization Master</span></a></li>
                             <li><a href="/Master/Users"><i class="fa fa-share"></i> <span> User Master</span></a></li>
                             <li><a href="/Master/Products"><i class="fa fa-edit"></i> <span> Products Master</span></a></li>
@@ -355,7 +354,7 @@
     <script src="../../assetsadmin/dist/js/demo.js"></script>
     <div class="overlay" id="loader">
         <div id="loading-img"></div>
-
+    </div>
         <script>
             $.ajax({
                 type: "GET",
@@ -371,6 +370,6 @@
                 }
             });
         </script>
-    </div>
+   
 </body>
 </html>

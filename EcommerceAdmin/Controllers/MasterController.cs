@@ -25,7 +25,22 @@ namespace EcommerceAdmin.Controllers
         {
             List<Ent_Product> listProduct = new List<Ent_Product>();
             listProduct = balProduct.SelectProductList(0);
+
+            List<Ent_Category> listCategory = new List<Ent_Category>();
+            listCategory = balCategory.SelectCategoryList(0, "");
+
+            List<Ent_SubCategory> listSubCategory = new List<Ent_SubCategory>();
+            listSubCategory = balCategory.SelectSubCategoryList(0);
+
+            List<Ent_Brand> listBrand = new List<Ent_Brand>();
+            listBrand = balMaster.SelectBrandList(0);
+
+            ViewBag.listBrand = listBrand;
+            ViewBag.listCategory = listCategory;
+            ViewBag.listSubCategory = listSubCategory;
             ViewBag.listProduct = listProduct;
+
+
             return View();
         }
         // GET: Master     

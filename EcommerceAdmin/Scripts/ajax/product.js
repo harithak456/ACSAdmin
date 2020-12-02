@@ -72,8 +72,8 @@
                 contentType: false,
                 processData: false,
                 dataType: "json",
-                //beforeSend: function () { $("#loader").css("display", "block"); },
-                //complete: function () { $("#loader").css("display", "none"); },
+                beforeSend: function () { $("#loader").css("display", "block"); },
+                complete: function () { $("#loader").css("display", "none"); },
                 success: OnSuccessSaveCall,
                 error: OnErrorSaveCall
             });
@@ -105,10 +105,11 @@
 
     //Category Change
     $('#Category').change(function () {
+        
         $('#SubCategory').empty();
 
         var Category = $(this).val();    
-      
+
         $.ajax({
             type: "POST",
             url: "/Category/SelectSubCategory",
@@ -149,8 +150,8 @@
                 data: "{'Product_ID':'" + ProductId + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                //beforeSend: function () { $("#loader").css("display", "block"); },
-                //complete: function () { $("#loader").css("display", "none"); },
+                beforeSend: function () { $("#loader").css("display", "block"); },
+                complete: function () { $("#loader").css("display", "none"); },
                 success: OnSuccessSaveCall,
                 error: OnErrorSaveCall
             });

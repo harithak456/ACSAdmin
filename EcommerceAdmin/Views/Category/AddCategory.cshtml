@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     List<EcommerceAdmin.Models.Entity.Ent_SubCategory> listSubCategory = ViewBag.listSubCategory;
 
-}<style>
+}
+<style>
     .inputValid {
         color: #dd4b39;
     }
@@ -49,7 +50,7 @@
                             CANCEL
                         </button>
                     </div>
-                   
+
                 </form>
             </div>
             <!-- /.box -->
@@ -117,3 +118,6 @@
 </section>
 <!-- /.content -->
 <!-- /.content -->
+<script>
+    $('li#masters').addClass('active');
+</script>
