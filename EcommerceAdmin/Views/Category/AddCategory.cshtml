@@ -15,7 +15,7 @@
 <section class="content-header">
     <h1>
         CATEGORY MASTER
-    </h1>
+    </h1>                                                      
     <ol class="breadcrumb">
         <li><a href="/Admin/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="/Master/Category">Category List</a></li>
@@ -76,7 +76,7 @@
                                     <thead>
                                         <tr>
                                             <th>Sub Category Name</th>
-                                            <th>Action</th>
+                                            <th>Action</th>                                          
                                         </tr>
                                     </thead>
                                     <tbody id="tblSubCategoryBody">
@@ -85,20 +85,24 @@
                                             <tr class="tblRow" id="@item.Category_ID">
                                                 <td> <input type="text" class="form-control subCategory" value="@item.Category_Name" placeholder="Enter SubCategory"></td>
                                                 <td>
-                                                    <button type="button" disabled class="btn btn-primary btnAddRow">ADD</button>
-                                                    <button type="button" class="btn btn-primary btnDeleteRow">REMOVE</button>
+                                                    <button type="button"  class="btn btn-primary btnAddRow">ADD</button>
+                                                    @if (item.ProductsCount == 0)
+                                                    {<button type="button" class="btn btn-primary btnDeleteRow">REMOVE</button>}
+                                                    else
+                                                    { <button type="button" disabled class="btn btn-primary btnDeleteRow">REMOVE</button>}
+
                                                     <input type="hidden" id="subCategoryID" value="@item.Category_ID" />
                                                 </td>
                                             </tr>
                                         }
-                                        <tr class="tblRow">
-                                            <td> <input type="text" class="form-control subCategory" placeholder="Enter SubCategory"></td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary btnAddRow">ADD</button>
-                                                <button type="button" class="btn btn-primary btnDeleteRow">REMOVE</button>
-                                                <input type="hidden" id="subCategoryID" />
-                                            </td>
-                                        </tr>
+                                            <tr class="tblRow">
+                                                <td> <input type="text" class="form-control subCategory" placeholder="Enter SubCategory"></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary btnAddRow">ADD</button>
+                                                    <button type="button" class="btn btn-primary btnDeleteRow">REMOVE</button>
+                                                    <input type="hidden" id="subCategoryID" />
+                                                </td>
+                                            </tr>
                                     </tbody>
                                 </table>
                                 <!-- ENDS DINNER TABLE  -->
@@ -120,4 +124,5 @@
 <!-- /.content -->
 <script>
     $('li#masters').addClass('active');
+    $('li#CategoryNav').addClass('active');
 </script>

@@ -26,6 +26,8 @@ namespace EcommerceAdmin.Controllers
             dt = balMaster.SelectDashboardData();
             if (dt.Rows.Count > 0)
             {
+                ViewBag.TotalOrder = dt.Rows[0]["TotalOrder"];
+                ViewBag.NewOrder = dt.Rows[0]["NewOrder"];
                 ViewBag.NewOrder = dt.Rows[0]["NewOrder"];
                 ViewBag.ShippedOrder = dt.Rows[0]["ShippedOrder"];
                 ViewBag.DeliveredOrder = dt.Rows[0]["DeliveredOrder"];
@@ -40,7 +42,10 @@ namespace EcommerceAdmin.Controllers
                 ViewBag.RegisteredGuest = dtD.Rows[0]["RegisteredGuest"];
                 ViewBag.UniqueGuest = dtD.Rows[0]["UniqueGuest"];
             }
+            List<Ent_Order> OrderList = new List<Ent_Order>();
 
+            OrderList = balOrder.SelectGuestOrder(0);
+            ViewBag.OrderList = OrderList.Where(x=>x.Created_Date.ToString("dd/MM/yyyy")==DateTime.Now.ToString("dd/MM/yyyy")).ToList<Ent_Order>();
 
             return View();
         }

@@ -161,9 +161,9 @@ namespace EcommerceAdmin.Models.Dal
                     {
                         ent = new Ent_Category();
                         ent.Category_ID = Convert.ToInt32(dr["Category_ID"]);
-                        ent.Category_Name = Convert.ToString(dr["Category_Name"]);
-                       
+                        ent.Category_Name = Convert.ToString(dr["Category_Name"]);                       
                             ent.Parent_Category = Convert.ToInt32(dr["Parent_Category"]);                                            
+                            ent.SubCategoryCount = Convert.ToInt32(dr["SubCategoryCount"]);                                            
                         result.Add(ent);
                     }
                 }
@@ -236,6 +236,7 @@ namespace EcommerceAdmin.Models.Dal
                         ent.Category_ID = Convert.ToInt32(dr["Category_ID"]);
                         ent.Category_Name = Convert.ToString(dr["Category_Name"]);
                         ent.Parent_Category = Convert.ToInt32(dr["Parent_Category"]);
+                        ent.ProductsCount = Convert.ToInt32(dr["ProductsCount"]);
                         result.Add(ent);
                     }
                 }

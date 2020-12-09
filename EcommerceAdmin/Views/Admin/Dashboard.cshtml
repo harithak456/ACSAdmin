@@ -2,7 +2,8 @@
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-
+    List<EcommerceAdmin.Models.Entity.Ent_Order> OrderList = ViewBag.OrderList;
+    var i = 0;
 }
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -22,6 +23,19 @@
         <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>@ViewBag.TotalOrder</h3>
+                    <p>Total Orders</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                <a href="/Admin/OrderList?flag=0" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
                 <div class="inner">
                     <h3>@ViewBag.NewOrder</h3>
                     <p>New Orders</p>
@@ -46,129 +60,196 @@
                 <a href="/Admin/OrderList?flag=2" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
             <!-- small box -->
-            <div class="small-box bg-yellow">
+            <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>@ViewBag.UserRegistration</h3>
-                    <p>User Registrations</p>
+                    <h3>@ViewBag.DeliveredOrder</h3>
+                    <p>Delivered Orders</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-person-add"></i>
+                    <i class="ion ion-bag"></i>
                 </div>
-                <a href="/Admin/OrderList?flag=0" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/Admin/OrderList?flag=3" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-red">
-                <div class="inner">
-                    <h3>@ViewBag.UniqueVisitors</h3>
-                    <p>Unique Visitors</p>
+
+        @*<!-- ./col -->
+            <div class="col-lg-2 col-xs-3">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>@ViewBag.UserRegistration</h3>
+                        <p>User Registrations</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="/Admin/OrderList?flag=0" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="/Admin/OrderList?flag=0" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
-        </div>
+            <!-- ./col -->
+            <div class="col-lg-2 col-xs-3">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>@ViewBag.UniqueVisitors</h3>
+                        <p>Unique Visitors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/Admin/OrderList?flag=0" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>*@
+
+
         <!-- ./col -->
     </div>
     <!-- /.row -->
-    <!-- Main row -->
+    <!-- Main row -->    
     <div class="row">
         <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-            @*<!-- Custom tabs (Charts with tabs)-->
-            <div class="nav-tabs-custom">
-                <!-- Tabs within a box -->
-                <ul class="nav nav-tabs pull-right">
-                    <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-                    <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
-                </ul>
-                <div class="tab-content no-padding">
-                    <!-- Morris chart - Sales -->
-                    <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-                </div>
-            </div>*@
-            <!-- /.nav-tabs-custom -->
-
-
+        <section class="col-lg-12 connectedSortable">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Sale Chart</h3>
+                    <h3 class="box-title">Todays Order</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
+                   
                 </div>
                 <div class="box-body">
-                    <div class="chart">
-                        <canvas id="areaChart" style="height: 250px; width: 467px;" height="375" width="700"></canvas>
-                    </div>
+                    <table id="dtOrder" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sl No.</th>
+                                <th>Order No.</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email ID</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th style="display:none">active</th>
+                                <th style="width:80px;">View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in OrderList)
+                            {
+                                i++;
+                                <tr id="@item.Order_ID">
+                                    <td>@i</td>
+                                    <td># @item.Order_ID</td>
+                                    <td>@item.Billing_FirstName @item.Billing_LastName</td>
+                                    <td>@item.Billing_Phone</td>
+                                    <td>@item.Billing_Email</td>
+                                    <td>AED @item.Order_Total</td>
+                                    @if (item.Is_Active == 1)
+                                    {
+                                        <td>Received</td>
+                                    }
+                                    else if (item.Is_Active == 2)
+                                    {
+                                        <td>Shipped</td>
+                                    }
+                                    else if (item.Is_Active == 3)
+                                    {
+                                        <td>Delivered</td>
+                                    }
+                                    else if (item.Is_Active == 4)
+                                    {
+                                        <td>Returned</td>
+                                    }
+                                    else if (item.Is_Active == 5)
+                                    {
+                                        <td>Cancelled</td>
+                                    }
+                                    <td style="display:none">@item.Is_Active</td>
+                                    <td>
+                                        <div class="tools">
+                                            <a href="/Admin/Orders?OrderID=@item.Order_ID">  <i class="fa fa-edit"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
                 <!-- /.box-body -->
-
             </div>
         </section>
         <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-5 connectedSortable">
-                   
-            <!-- Calendar -->
-            <div class="box box-solid bg-green-gradient">
-                <div class="box-header">
-                    <i class="fa fa-calendar"></i>
-                    <h3 class="box-title">Calendar</h3>
-                    <!-- tools box -->
-                    <div class="pull-right box-tools">
-                        <!-- button with a dropdown -->
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-bars"></i>
-                            </button>
-                            <ul class="dropdown-menu pull-right" role="menu">
-                                <li><a href="#">Add new event</a></li>
-                                <li><a href="#">Clear events</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">View calendar</a></li>
-                            </ul>
-                        </div>
-                        <button type="button" class="btn btn-success btn-sm" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-success btn-sm" data-widget="remove">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <!-- /. tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body no-padding">
-                    <!--The calendar -->
-                    <div id="calendar" style="width: 100%"></div>
-                </div>
-                <!-- /.box-body -->
-              
-            </div>
-            <!-- /.box -->
-        </section>
-        <!-- right col -->
+   
     </div>
+    @*<div class="row">
+            <!-- Left col -->
+            <section class="col-lg-7 connectedSortable">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Sale Chart</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="chart">
+                            <canvas id="areaChart" style="height: 250px; width: 467px;" height="375" width="700"></canvas>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </section>
+            <!-- /.Left col -->
+            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            <section class="col-lg-5 connectedSortable">
+                <!-- Calendar -->
+                <div class="box box-solid bg-green-gradient">
+                    <div class="box-header">
+                        <i class="fa fa-calendar"></i>
+                        <h3 class="box-title">Calendar</h3>
+                        <!-- tools box -->
+                        <div class="pull-right box-tools">
+                            <!-- button with a dropdown -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-right" role="menu">
+                                    <li><a href="#">Add new event</a></li>
+                                    <li><a href="#">Clear events</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">View calendar</a></li>
+                                </ul>
+                            </div>
+                            <button type="button" class="btn btn-success btn-sm" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <!-- /. tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <!--The calendar -->
+                        <div id="calendar" style="width: 100%"></div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </section>
+            <!-- right col -->
+        </div>*@
     <!-- /.row (main row) -->
 </section>
 <!-- /.content -->
-<!-- Morris.js charts -->
-@*<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="../../assetsadmin/plugins/morris/morris.min.js"></script>
-<script src="../../assetsadmin/dist/js/pages/dashboard.js"></script>*@
 
-<script>
+
+@*<script>
     $(function () {
         /* ChartJS
          * -------
@@ -289,5 +370,12 @@
 
     
       
+    });
+</script>*@
+<script>
+    $('li#Dashboard').addClass('active');
+
+    $(function () {
+        $("#dtOrder").DataTable();
     });
 </script>

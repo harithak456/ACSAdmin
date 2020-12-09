@@ -29,7 +29,7 @@
             function OnSuccessSaveCall(data) {
                 if (data > "0") {
                     alert("Details have been submitted successfully.");
-                    //$(window).scrollTop(0);
+                    $(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Save Successful.</div>');
                     //$(".msg").delay(8000).fadeOut(800);
                     // FillTable();
@@ -38,14 +38,14 @@
                 }
                 else {
                     alert("Failed to submit details !");
-                    //$(window).scrollTop(0);
+                    $(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                     //$(".msg").delay(4000).fadeOut(800);  
                 }
             }
             function OnErrorSaveCall() {
                 alert("Failed to submit details !");
-                //$(window).scrollTop(0);
+                $(window).scrollTop(0);
                 //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                 //$(".msg").delay(4000).fadeOut(800);
             }
@@ -80,8 +80,7 @@
                         txt = "<tr id = '" + dbval.Brand_ID + "'><td>" + index + "</td><td>" + dbval.Brand_Name + "</td><td>" +
                             "<div class='tools'> <a class='' onclick='EditBrand(" + dbval.Brand_ID + ",'asd')'><i class='fa fa-edit' ></i>" +
                             " </a><a href='' class='btnDeleteBrand'>  <i class='fa fa-trash-o'></i></a><input type='hidden' value='@item.Brand_ID' />" +
-                            "</div> </td></tr>";
-                        console.log(txt);
+                            "</div> </td></tr>";                     
                         $('#tbBrandBody').append(txt);
                     });
                 }               
@@ -109,19 +108,21 @@
                 if (data > 0) {
                     $("#" + brandid).fadeOut("slow").remove();
                     $(window).scrollTop(0);
-                    $(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Delete Successful.</div>');
-                    $(".msg").delay(4000).fadeOut(800);
+                    //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Delete Successful.</div>');
+                    //$(".msg").delay(4000).fadeOut(800);
                 }
                 else {
                     $(window).scrollTop(0);
+                    alert("Failed to delete brand");
                     $(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
                     $(".msg").delay(4000).fadeOut(800);
                 }
             }
             function OnErrorSaveCall() {
                 $(window).scrollTop(0);
-                $(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
-                $(".msg").delay(4000).fadeOut(800);
+                alert("Failed to delete brand");
+                //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
+                //$(".msg").delay(4000).fadeOut(800);
             }
         }
     });

@@ -104,7 +104,8 @@ namespace EcommerceAdmin.Controllers
                     string password = "admin@123";
 
                     mail.From = new MailAddress(sendmail, "ContactUs");
-                    mail.To.Add("haritha@intellilabs.co.in");
+                    //mail.To.Add("haritha@intellilabs.co.in");
+                    mail.To.Add("refrikingdxb@gmail.com");
                     mail.Subject = ent.Subject;
                     mail.IsBodyHtml = true;
 
@@ -176,8 +177,8 @@ namespace EcommerceAdmin.Controllers
                 List<Ent_Product> objlt = (List<Ent_Product>)Session["listProduct"];
                 listProduct = objlt.Where(v => brand.Contains(v.Brand_ID.ToString())).ToList<Ent_Product>();
             }
-            ViewBag.listProduct = listProduct;
-            if(brand!=null)
+            ViewBag.listProduct = listProduct;        
+            if (brand!=null)
             ViewBag.BrandArray = brand.Split(',');
             else
                 ViewBag.BrandArray = null;

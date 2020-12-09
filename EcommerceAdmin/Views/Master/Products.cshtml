@@ -32,40 +32,38 @@
                     <div class="col-sm-12">
                         <div class="form-group col-sm-3">
                             <label>Category</label>
-                            <select class="form-control " id="Categoryy" onchange="">
-                                <option value="all">ALL</option>
+                            <select class="form-control " id="Categoryy" onchange="">                                
+                                <option value="" categoryid="0">ALL</option>
                                 @foreach (var item in listCategory)
                                 {
-                                    <option value="@item.Category_ID" >@item.Category_Name</option>
+                                    <option categoryid="@item.Category_ID" value="@item.Category_Name">@item.Category_Name</option>
                                 }
                             </select>
+                        
                         </div>
                         <div class="form-group col-sm-3">
                             <label>Sub Category</label>
-                            <select class="form-control " id="SubCategory" onchange="">
-                                <option value="all">ALL</option>                              
+                            <select class="form-control " id="SubCategory">                              
+                                <option value="">ALL</option>
                             </select>
                         </div>
                         <div class="form-group col-sm-3">
                             <label>Brand</label>
-                            <select class="form-control " id="Brand"  onchange="">
-                                <option value="all">ALL</option>
+                            <select class="form-control" id="Brand">
+                                <option value="">ALL</option>
                                 @foreach (var item in listBrand)
                                 {
-                                    <option value="@item.Brand_ID">@item.Brand_Name</option>
+                                    <option value="@item.Brand_Name">@item.Brand_Name</option>
                                 }
                             </select>
                         </div>
                         <a href="/Product/AddProduct" class="btn btn-info" style="float:right">+New</a>
-                    </div>
-
-                    @*<h3 class="box-title">Products</h3>*@
-                   
+                    </div>                   
                 </div>
                 
                 <!-- /.box-header -->
-                <div class="box-body">
-                    <table id="dtProduct" class="table table-bordered table-striped">
+                <div class="box-body">                
+                    <table id="example" class="display table table-bordered  table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Sl No.</th>
@@ -73,30 +71,31 @@
                                 <th>Category</th>
                                 <th>Sub Category</th>
                                 <th>Brand</th>
-                                <th style="width:80px;">Action</th>                               
+                                <th style="width:80px;">Action</th>                             
                             </tr>
                         </thead>
+                        
                         <tbody>
                             @foreach (var item in listProduct)
                             {
                                 i++;
-                            <tr id="@item.Product_ID" class="content">
-                                <td>@i</td>
-                                <td>@item.Product_Name</td>
-                                <td>@item.entCategory.Category_Name</td>
-                                <td>@item.SubCategory_Name</td>
-                                <td>@item.Brand_Name</td>
-                                <td>
-                                    <div class="tools">
-                                        <a href="/Product/AddProduct?ProductId=@item.Product_ID">  <i class="fa fa-edit"></i></a>
-                                        <a href="" class="btnDeleteProduct">  <i class="fa fa-trash-o"></i></a>
-                                        <input type="hidden" value="@item.Product_ID" />
-                                    </div>
-                                </td>                            
-                            </tr>
-                            }
+                                <tr id="@item.Product_ID">
+                                    <td>@i</td>
+                                    <td>@item.Product_Name</td>
+                                    <td>@item.entCategory.Category_Name</td>
+                                    <td>@item.SubCategory_Name</td>
+                                    <td>@item.Brand_Name</td>
+                                    <td>
+                                        <div class="tools">
+                                            <a href="/Product/AddProduct?ProductId=@item.Product_ID">  <i class="fa fa-edit"></i></a>
+                                            <a href="" class="btnDeleteProduct">  <i class="fa fa-trash-o"></i></a>
+                                            <input type="hidden" value="@item.Product_ID" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }                           
                         </tbody>
-                    </table>
+                    </table>                  
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -110,142 +109,74 @@
 
 <script type="text/javascript">
 
+   
     //Category Change
     $('#Categoryy').change(function () {
         $('#SubCategory').empty();
-        var Category = $(this).val();
-        if (Category == 'all')
-            Category = 0;
+        var Category = $('option:selected',this).attr('categoryid');      
         $.ajax({
             type: "POST",
+            serverSide: "true",
             url: "/Category/SelectSubCategory",
             data: "{'Category':'" + Category + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
                 var txt = "";
-                txt = "<option value='all'>ALL</option>";
+                txt = "<option value=''>ALL</option>";
                 $('#SubCategory').append(txt);
 
                 if (Object.keys(data).length > 0) {
                     $.each(data, function (index, dbval) {
-                       
-                        txt = "<option value='" + dbval.Category_ID + "'>" + dbval.Category_Name + "</option>";
+
+                        txt = "<option value='" + dbval.Category_Name + "'>" + dbval.Category_Name + "</option>";
                         $('#SubCategory').append(txt);
                     });
-                    $('#SubCategory option:first').attr('selected', 'selected');                                   
-                    SearchData();
-
+                    $('#SubCategory option:first').attr('selected', 'selected');
+                    //SearchData();
+                    FilterTable();
                 }
                 else {
                     $('#SubCategory').empty();
-                    var txt1 = "<option value='all'>ALL</option>";
+                    var txt1 = "<option value=''>ALL</option>";
                     $('#SubCategory').append(txt1);
                 }
-            
+
             },
             error: function () {
                 $('#SubCategory').empty();
-                var txt1 = "<option value='all'>ALL</option>";
+                var txt1 = "<option value=''>ALL</option>";
                 $('#SubCategory').append(txt1);
             }
         });
     });
 
-
-    $("#SubCategory").on("change", function () {
-        SearchData();
-    });
-
-    $("#Brand").on("change", function () {
-        SearchData();
-    });
-   
-    function SearchData() {
-        var Category = $('#Categoryy').find("option:selected").text();
-        var SubCategory = $('#SubCategory').find("option:selected").text();       
-        var Brand = $('#Brand').find("option:selected").text();   
-        
-        if (Category.toUpperCase() == 'ALL' && SubCategory.toUpperCase() == 'ALL' && Brand.toUpperCase() == 'ALL') {
-            $('#dtProduct tbody tr').show();
-        }
-        else {
-            $('#dtProduct tbody tr:has(td)').each(function () {
-                $(this).show();
-                var rowCategory = $.trim($(this).find('td:eq(2)').text());                
-                var rowSubCategory = $.trim($(this).find('td:eq(3)').text());              
-                var rowBrand = $.trim($(this).find('td:eq(4)').text());     
-                
-                 if (Category.toUpperCase() != 'ALL' && SubCategory.toUpperCase() != 'ALL') {                   
-                    if (rowCategory.toUpperCase() == Category.toUpperCase() && rowSubCategory == SubCategory) {                     
-                        $(this).show();
-                        if (Brand.toUpperCase() != 'ALL')
-                        {
-                            if (rowBrand.toUpperCase() == Brand.toUpperCase()) {
-                                $(this).show();
-                            }
-                            else {
-                                $(this).hide();
-                            }
-                        }
-                    } else {
-                        $(this).hide();
-                    }
-                }
-
-                else if ($(this).find('td:eq(2)').text() != '' || $(this).find('td:eq(2)').text() != '') {
-                    if (Category != 'ALL') {
-                        if (rowCategory.toUpperCase() == Category.toUpperCase()) {                          
-                            $(this).show();
-
-                            if (Brand != 'ALL') {
-                                if (rowBrand == Brand) {
-                                    $(this).show();
-                                }
-                                else {
-                                    $(this).hide();
-                                }
-                            }
-
-                        } else {
-                            $(this).hide();
-                        }
-                    }
-                    if (SubCategory != 'ALL') {
-                        if (rowSubCategory == SubCategory) {                       
-                            $(this).show();
-                            if (Brand != 'ALL') {
-                                if (rowBrand == Brand) {
-                                    $(this).show();
-                                }
-                                else {
-                                    $(this).hide();
-                                }
-                            }
-                        }
-                        else {
-                            $(this).hide();
-                        }
-                    }
-                     if (Category == 'ALL' && SubCategory == 'ALL') {
-                         if (rowBrand == Brand) {
-                             $(this).show();
-                         }
-                         else {
-                             $(this).hide();
-                         }}
-                }
-            });
-        }
-    }
+ 
 </script>
 
 <script>
     $(function () {
         $("#dtProduct").DataTable();
     });
+
+
+    $(document).ready(function () {
+        var table = $('#example').DataTable();
+
+        $('#Categoryy').on('change', function () {
+            table.columns(2).search(this.value).draw();
+        });
+        $('#SubCategory').on('change', function () {
+            table.columns(3).search(this.value).draw();
+        });
+        $('#Brand').on('change', function () {
+            table.columns(4).search(this.value).draw();
+        });
+    });
+
 </script>
 
 <script>
     $('li#masters').addClass('active');
+    $('li#ProductsNav').addClass('active');
 </script>

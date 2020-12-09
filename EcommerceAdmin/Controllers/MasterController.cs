@@ -36,7 +36,7 @@ namespace EcommerceAdmin.Controllers
             ViewBag.listBrand = listBrand;
             ViewBag.listCategory = listCategory;
             ViewBag.listProduct = listProduct;
-
+            Session["Products"] = listProduct;
 
             return View();
         }

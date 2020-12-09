@@ -52,7 +52,7 @@
                     <div class="form-group">
                         <label>Category</label>
                         <select class="form-control" id="Category" style="width: 100%;">
-                            <option value="" @(Model.Category_ID == 0 ? "selected" : "")>--SELECT--</option>
+                            <option value="0" @(Model.Category_ID == 0 ? "selected" : "")>--SELECT--</option>
                             @foreach (var item in listCategory)
                             {
                                 <option value="@item.Category_ID" @(Model.Category_ID == item.Category_ID ? "selected" : "")>@item.Category_Name</option>
@@ -63,7 +63,7 @@
                     <div class="form-group">
                         <label>Sub Category</label>
                         <select class="form-control" id="SubCategory" style="width: 100%;">
-                            <option value="" @(Model.SubCategory_ID == 0 ? "selected" : "")>--SELECT--</option>
+                            <option value="0" @(Model.SubCategory_ID == 0 ? "selected" : "")>--SELECT--</option>
                             @foreach (var item in listSubCategory)
                             {
                                 <option value="@item.Category_ID" @(Model.SubCategory_ID == item.Category_ID ? "selected" : "")>@item.Category_Name</option>
@@ -79,7 +79,7 @@
                     <div class="form-group">
                         <label>Brand</label>
                         <select class="form-control" id="Brand" style="width: 100%;">
-                            <option value="" @(Model.Brand_ID == 0 ? "selected" : "")>--SELECT--</option>
+                            <option value="0" @(Model.Brand_ID == 0 ? "selected" : "")>--SELECT--</option>
                             @foreach (var item in listBrand)
                             {
                                 <option value="@item.Brand_ID" @(Model.Brand_ID == item.Brand_ID ? "selected" : "")>@item.Brand_Name</option>
@@ -183,4 +183,5 @@
 </script>
 <script>
     $('li#masters').addClass('active');
+    $('li#ProductsNav').addClass('active');
 </script>

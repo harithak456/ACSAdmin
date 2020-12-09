@@ -117,5 +117,35 @@ namespace EcommerceAdmin.Controllers
 
             return i;
         }
+
+        public JsonResult FilterProduct(int Category, int SubCategory, int Brand)
+        {
+            List<Ent_Product> listProduct = new List<Ent_Product>();
+            if (Session["listProduct"] == null)
+            {
+                listProduct = balProduct.SelectProductList(0);
+            }
+            else
+            {
+                listProduct = (List<Ent_Product>)Session["listProduct"];
+            }
+            if (Category > 0)
+            {
+                listProduct = listProduct.Where(x => x.Category_ID == Category).ToList<Ent_Product>();
+            }
+
+            if (SubCategory > 0)
+            {
+                listProduct = listProduct.Where(x => x.SubCategory_ID == SubCategory).ToList<Ent_Product>();
+            }
+
+            if (Brand > 0)
+            {
+                listProduct = listProduct.Where(x => x.Brand_ID == Brand).ToList<Ent_Product>();
+            }
+
+
+            return Json(listProduct, JsonRequestBehavior.AllowGet);
+        }
     }
 }

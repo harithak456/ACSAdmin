@@ -9,7 +9,7 @@
         var Category = $('#Category option:selected').val();
         var SubCategory = $('#SubCategory option:selected').val();
         var Brand = $('#Brand option:selected').val();
-
+     
         if (Name == null || Name.trim() == "") {
             $("#validName").html("This field is required.");
             flag = false;
@@ -40,6 +40,8 @@
     }
 
     $('#btnSave').click(function () {      
+        //$("#loader").css("display", "block");
+
         if (Validate()) {
         var ProductID = $('#ProductID').val();
         var Name = $('#Name').val(); 
@@ -82,21 +84,21 @@
                 if (data > "0") {
                     alert("Product Details Saved Successfully");
                     location.href="/Master/Products";
-                    //$(window).scrollTop(0);
+                    $(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Save Successful.</div>');
                     //$(".msg").delay(8000).fadeOut(800);
 
                 }
                 else {
                     alert("Failed To Save Product Details");
-                    //$(window).scrollTop(0);
+                    $(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                     //$(".msg").delay(4000).fadeOut(800);  
                 }
             }
             function OnErrorSaveCall() {
                 alert("Failed To Save Product Details");
-                //$(window).scrollTop(0);
+                $(window).scrollTop(0);
                 //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Save.</div>');
                 //$(".msg").delay(4000).fadeOut(800);
             }
@@ -159,21 +161,23 @@
                 if (data > 0) {
                     $("#" + ProductId).fadeOut("slow").remove();
                     location.reload();
-                    //$(window).scrollTop(0);
+                    $(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Delete Successful.</div>');
                     //$(".msg").delay(4000).fadeOut(800);
                 }
                 else {
-                    //$(window).scrollTop(0);
+                    alert("Failed to Delete Product");
+                    $(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
                     //$(".msg").delay(4000).fadeOut(800);
                 }
             }
             function OnErrorSaveCall() {
-                //$(window).scrollTop(0);
+                alert("Failed to Delete Product");
+                $(window).scrollTop(0);
                 //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
                 //$(".msg").delay(4000).fadeOut(800);
             }
         }
-    });
+    });     
 });

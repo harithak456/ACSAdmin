@@ -35,6 +35,7 @@
                             <tr>
                                 <th>Sl No.</th>
                                 <th>Category Name</th>
+                                <th hidden>SubCategoryCount</th>
                                 <th style="width:80px;">Action</th>
                             </tr>
                         </thead>
@@ -45,6 +46,7 @@
                                 <tr id="@item.Category_ID">
                                     <td>@i</td>
                                     <td>@item.Category_Name</td>
+                                    <td hidden>@item.SubCategoryCount</td>
                                     <td>
                                         <div class="tools">
                                             <a href="/Category/AddCategory?CategoryId=@item.Category_ID">  <i class="fa fa-edit"></i></a>
@@ -72,4 +74,5 @@
     });</script>
 <script>
     $('li#masters').addClass('active');
+    $('li#CategoryNav').addClass('active');
 </script>

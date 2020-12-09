@@ -17,6 +17,7 @@ namespace EcommerceAdmin.Controllers
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         Bal_Category balCategory = new Bal_Category();
         Bal_Master balMaster = new Bal_Master();
+        Bal_Product balProduct = new Bal_Product();
         #endregion
 
         //Category
@@ -68,6 +69,8 @@ namespace EcommerceAdmin.Controllers
             listSubCategory = balCategory.SelectSubCategoryList(Category);          
             return Json(listSubCategory, JsonRequestBehavior.AllowGet);
         }
+
+     
 
         // GET: Category
         public int SaveBrand(Ent_Brand model)

@@ -14,7 +14,7 @@ namespace EcommerceAdmin.Models.Entity
         public string Category_Name { get; set; }
 
         public int Parent_Category { get; set; }
-
+        public int SubCategoryCount { get; set; }
         public List<Ent_SubCategory> SubCategoryList { get; set; }
 
         public int Created_By { get; set; }
@@ -32,6 +32,7 @@ namespace EcommerceAdmin.Models.Entity
 
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public int Parent_Category{ get; set; }
+        public int ProductsCount { get; set; }
 
     }
 

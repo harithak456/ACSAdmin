@@ -79,7 +79,7 @@
                     //else {
                     //    alert("Saved Success");
                     //}
-                    //location.href = "/Master/Category";
+                    location.href = "/Master/Category";
                 }
                 else if (data == 0) {
                     alert("Failed to submit details !");
@@ -93,7 +93,7 @@
                 }
             }
         function OnErrorSaveCall() {
-            alert("Failed");
+            alert("Failed to submit details !");
                 //$(".messagebox").append('<div class="alert alert-danger msg"><strong> Error!</strong> Please try again.</div>');
                 //$(".msg").delay(4000).fadeOut(800);
             }
@@ -105,42 +105,50 @@
         //$("html, body").animate({ scrollTop: 0 }, "slow");
     });
 
-    $(".btnDeleteCategory").click(function () {
-        if (confirm("Are You Sure You Want To Delete?")) {
-            var row = $(this).closest('tr');
-            var Category_ID = $(row).find('td:eq(2)').find('input').val();
-            $.ajax({
-                type: "POST",
-                url: "/Category/DeleteCategory",
-                data: "{'Category_ID':'" + Category_ID + "'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                beforeSend: function () { $("#loader").css("display", "block"); },
-                complete: function () { $("#loader").css("display", "none"); },
-                success: OnSuccessSaveCall,
-                error: OnErrorSaveCall
-            });
-            function OnSuccessSaveCall(data) {
-                if (data > 0) {
-                    //$("#" + Category_ID).fadeOut("slow").remove();
-                    location.reload();
-                    //$(window).scrollTop(0);
-                    //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Delete Successful.</div>');
-                    //$(".msg").delay(4000).fadeOut(800);
+    $(".btnDeleteCategory").click(function () {       
+        var row = $(this).closest('tr');
+        var SubCategoryCount = $(row).find('td:eq(2)').text();      
+        if (SubCategoryCount == 0) {
+            if (confirm("Are You Sure You Want To Delete?")) {
+              
+                var Category_ID = $(row).find('td:eq(3)').find('input').val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Category/DeleteCategory",
+                    data: "{'Category_ID':'" + Category_ID + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    beforeSend: function () { $("#loader").css("display", "block"); },
+                    complete: function () { $("#loader").css("display", "none"); },
+                    success: OnSuccessSaveCall,
+                    error: OnErrorSaveCall
+                });
+                function OnSuccessSaveCall(data) {
+                    if (data > 0) {
+                        //$("#" + Category_ID).fadeOut("slow").remove();
+                        location.reload();
+                        //$(window).scrollTop(0);
+                        //$(".messagebox").append('<div class="well bg-success msg"><strong> Success!</strong> Delete Successful.</div>');
+                        //$(".msg").delay(4000).fadeOut(800);
+                    }
+                    else {
+                        alert("Failed To Delete Data");
+                        $(window).scrollTop(0);
+                        //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
+                        //$(".msg").delay(4000).fadeOut(800);
+                    }
                 }
-                else {
-                    alert("error");
-                    //$(window).scrollTop(0);
+                function OnErrorSaveCall() {
+                    alert("Failed To Delete Data");
+                    $(window).scrollTop(0);
                     //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
                     //$(".msg").delay(4000).fadeOut(800);
                 }
             }
-            function OnErrorSaveCall() {
-                alert("error");
-                //$(window).scrollTop(0);
-                //$(".messagebox").append('<div class="well bg-primary msg"><strong> Error!</strong> Failed To Delete.</div>');
-                //$(".msg").delay(4000).fadeOut(800);
-            }
+        }
+        else {
+            alert("Sorry we could'nt delete this category because it has Subcategories");
+            $(window).scrollTop(0);
         }
     });
 });

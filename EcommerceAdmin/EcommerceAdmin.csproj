@@ -254,7 +254,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\ajax\brand.js" />
     <Content Include="Scripts\ajax\category.js" />
-    <Content Include="Scripts\ajax\checkout.js" />
     <Content Include="Scripts\ajax\login.js" />
     <Content Include="Scripts\ajax\myaccount.js" />
     <Content Include="Scripts\ajax\organization.js" />
