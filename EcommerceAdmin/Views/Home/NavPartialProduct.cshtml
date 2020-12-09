@@ -83,6 +83,10 @@
                             {
                                 i++;
                             }
+                            if (count == 101)
+                            {
+                                i++;
+                            }
                             if (count == 121)
                             {
                                 i++;
@@ -223,15 +227,15 @@
                     <div class="pagination">
                         <ul>
                             <li class="current"><a href="#" class="pages">1</a></li>
-                            @if (Enumerable.Count(ViewBag.listProduct) > 2)
+                            @if (Enumerable.Count(ViewBag.listProduct) > 20)
                             {
                                 <li class="" ><a href="#" class="pages">2</a></li>
                             }
-                            @if (Enumerable.Count(ViewBag.listProduct) > 4)
+                            @if (Enumerable.Count(ViewBag.listProduct) > 40)
                             {
                                 <li><a href="#" class="pages" >3</a></li>
                             }
-                            @if (Enumerable.Count(ViewBag.listProduct) > 6)
+                            @if (Enumerable.Count(ViewBag.listProduct) > 60)
                             {
                                 <li><a href="#" class="pages">4</a></li>
                             }
